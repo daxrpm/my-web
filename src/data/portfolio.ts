@@ -112,7 +112,7 @@ export const skills: Skill[] = [
   { 
     name: 'Python', 
     category: 'languages', 
-    level: 5, 
+    level: 4, 
     icon: SiPython,
     color: 'text-green-400',
     description: 'AI/ML, automation, and rapid development'
@@ -120,7 +120,7 @@ export const skills: Skill[] = [
   { 
     name: 'Java', 
     category: 'languages', 
-    level: 4, 
+    level: 3, 
     icon: FaJava,
     color: 'text-red-600',
     description: 'Object-Oriented Programming and Enterprise Applications'
@@ -136,7 +136,7 @@ export const skills: Skill[] = [
   {
     name: 'Bash',
     category: 'languages',
-    level: 4,
+    level: 3,
     icon: SiGnubash,
     color: 'text-green-600',
     description: 'Shell scripting and automation'
@@ -153,7 +153,7 @@ export const skills: Skill[] = [
   { 
     name: 'TypeScript', 
     category: 'languages', 
-    level: 3, 
+    level: 2, 
     icon: SiTypescript,
     color: 'text-blue-600',
     description: 'Type-safe JavaScript development'
@@ -257,7 +257,7 @@ export const skills: Skill[] = [
   { 
     name: 'MongoDB', 
     category: 'databases', 
-    level: 2, 
+    level: 1, 
     icon: SiMongodb,
     color: 'text-green-500',
     description: 'Document-oriented NoSQL database'
