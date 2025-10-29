@@ -42,7 +42,7 @@ export const personalInfo = {
   title: 'Backend Developer & Linux Enthusiast',
   subtitle: 'Passionate about networks, computer science, and physics',
   description: 'Backend and AI developer with a deep love for Open Source, network engineering, and the intersection of technology and science.',
-  email: 'dax@dax-ec.ru',
+  email: 'dax@daxrpm.dev',
   location: 'Ecuador',
   avatar: '/avatar.jpg',
 };
