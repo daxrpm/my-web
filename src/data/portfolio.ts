@@ -533,7 +533,7 @@ export const projects: Project[] = [
   {
     id: 'cms-colaboration',
     title: 'CERN CMS Collaboration',
-    description: 'Im a colaborator of the CERN CMS project at the DPOA (Data Preservation and Open Access) group, at my university EPN.',
+    description: 'Im a colaborator of the CERN CMS project at the DPOA (Data Preservation and Open Access) group and at BRIL group, at my university EPN.',
     technologies: ['Docker', 'Linux', 'Python', 'MadGraph', 'GitHub'],
     githubUrl: 'https://github.com/daxrpm/cms-colaboration',
     image: '/projects/cms.jpeg',
