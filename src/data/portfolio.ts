@@ -406,7 +406,7 @@ export const skills: Skill[] = [
   { 
     name: 'SciPy', 
     category: 'ai', 
-    level: 3, 
+    level: 2, 
     icon: SiScipy,
     color: 'text-blue-600',
     description: 'Scientific computing and optimization'
@@ -422,7 +422,7 @@ export const skills: Skill[] = [
   { 
     name: 'Matplotlib', 
     category: 'ai', 
-    level: 3, 
+    level: 2, 
     icon: SiPlotly,
     color: 'text-blue-500',
     description: 'Comprehensive plotting library for Python'
@@ -430,7 +430,7 @@ export const skills: Skill[] = [
   { 
     name: 'Seaborn', 
     category: 'ai', 
-    level: 3, 
+    level: 2, 
     icon: SiPlotly,
     color: 'text-purple-500',
     description: 'Statistical data visualization library'
@@ -464,7 +464,7 @@ export const skills: Skill[] = [
   { 
     name: 'Arch Linux', 
     category: 'tools', 
-    level: 5, 
+    level: 4, 
     icon: SiArchlinux,
     color: 'text-blue-500',
     description: 'Minimalist and flexible Linux distribution'
@@ -480,7 +480,7 @@ export const skills: Skill[] = [
   { 
     name: 'Wireshark', 
     category: 'tools', 
-    level: 4, 
+    level: 3, 
     icon: SiWireshark,
     color: 'text-blue-600',
     description: 'Network protocol analyzer'
