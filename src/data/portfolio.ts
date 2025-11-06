@@ -7,7 +7,6 @@ import {
   SiArchlinux, SiMongodb, SiMysql,
   SiDjango, SiSpringboot, SiFlask,
   SiSupabase,
-  SiHostinger,
   SiHetzner,
   SiAlacritty,
   SiFedora,
@@ -319,7 +318,7 @@ export const skills: Skill[] = [
   {name: 'Personal VPS',
     category: 'cloud',
     level: 4,
-    icon: SiHostinger,
+    icon: SiHetzner,
     color: 'text-purple-900',
     description: 'Personal VPS for development and testing'
   },
