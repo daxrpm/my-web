@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "sync:github": "node scripts/fetch-github.mjs",
+    "icons": "node scripts/build-icons.mjs",
     "check:links": "node scripts/check-links.mjs",
     "og": "node scripts/make-og.mjs",
     "dev": "astro dev",
@@ -19,9 +20,15 @@
     "@types/node": "^24.0.15",
     "astro": "^7.0.7",
     "autoprefixer": "^10.4.21",
+    "d3-geo": "^3.1.1",
+    "figlet": "^1.11.1",
+    "lucide-static": "^1.24.0",
     "postcss": "^8.5.6",
     "puppeteer-core": "^25.3.0",
+    "simple-icons": "^16.26.0",
     "tailwindcss": "^3.4.17",
-    "typescript": "~5.8.3"
+    "topojson-client": "^3.1.0",
+    "typescript": "~5.8.3",
+    "world-atlas": "^2.0.2"
   }
 }
