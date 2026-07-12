@@ -15,6 +15,9 @@ interface Props {
 
 const { lang, title = t(seo.title, lang), description = t(site.summary, lang) } = Astro.props;
 
+/** What a human sees when the link lands in a chat — no full name, no schema.org ballast. */
+const social = t(seo.social, lang);
+
 const canonical = new URL(localeUrl(lang), site.url).href;
 const ogImage = new URL('/og.png', site.url).href;
 const updated = github.generated_at;
@@ -124,13 +127,13 @@ const pageSchema = {
     <meta property="og:type" content="profile" />
     <meta property="og:url" content={canonical} />
     <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    <meta property="og:description" content={social} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={t(seo.imageAlt, lang)} />
-    <meta property="og:site_name" content={site.name} />
+    <meta property="og:site_name" content={site.displayName} />
     <meta property="og:locale" content={ogLocale[lang]} />
     <meta property="og:locale:alternate" content={ogLocale[otherLocale(lang)]} />
     <meta property="profile:first_name" content="Dax" />
@@ -139,7 +142,7 @@ const pageSchema = {
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:description" content={social} />
     <meta name="twitter:image" content={ogImage} />
     {/* Everyone sets twitter:image and forgets the alt, which is what a screen reader on
         X actually reads out. */}
