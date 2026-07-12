@@ -12,13 +12,14 @@
  * claim, and a map of it is evidence. The texture is the same character scatter the site's
  * background canvas is made of, so the card reads as a piece cut from the page.
  */
-import { writeFile, unlink } from 'node:fs/promises';
+import { writeFile, unlink, readFile } from 'node:fs/promises';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { createRequire } from 'node:module';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import figlet from 'figlet';
+import sharp from 'sharp';
 import { worldMap } from './lib/ascii-map.mjs';
 
 const run = promisify(execFile);
@@ -188,9 +189,22 @@ const shoot = async (name, w, h, banner) => {
     `--screenshot=${out}`,
     pathToFileURL(tmp).href,
   ]);
-
   await unlink(tmp);
-  console.log(`[og] wrote public/${name}.png (${w}×${h})`);
+
+  /**
+   * Chrome's PNG encoder is lazy: it wrote 287 KB for a picture that squeezes to 112 KB with
+   * no loss at all. That mattered — WhatsApp silently drops a link preview whose image is
+   * anywhere near 300 KB, which is exactly how this card ended up rendering as a bare URL.
+   *
+   * Lossless on purpose: a palette gets it to 56 KB, but quantising the flags to 128 colours
+   * turns them into grey smudges.
+   */
+  const raw = await readFile(out);
+  const squeezed = await sharp(raw).png({ compressionLevel: 9, effort: 10 }).toBuffer();
+  await writeFile(out, squeezed);
+
+  const kb = (n) => `${Math.round(n / 1024)} KB`;
+  console.log(`[og] wrote public/${name}.png (${w}×${h}, ${kb(raw.length)} → ${kb(squeezed.length)})`);
 };
 
 await shoot('og', 1200, 630, false);
