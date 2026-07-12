@@ -73,8 +73,8 @@ export const featured: Project[] = [
       caption:
         'Full mission: liftoff from Pedernales, staging, and orbital insertion. The long coast through the dark is sped up; the launch runs close to real time.',
     },
+    // No launch-pad still: the video already opens on that exact shot.
     media: [
-      { src: '/projects/apogee-launch.webp', alt: 'Apogee launch control panel with a rocket on the pad', caption: 'Launch control — target altitude and payload mass drive the trajectory solve.' },
       { src: '/projects/apogee-terrain.webp', alt: 'Apogee 3D terrain view of Quito', caption: 'Real elevation data — Quito at 2,850 m.' },
       { src: '/projects/apogee-globe.webp', alt: 'Apogee globe view of Earth from orbit', caption: 'Orbit view after insertion.' },
     ],

@@ -99,6 +99,8 @@
       cx: number, cy: number, r: number, spin: number,
       col: number[], alpha: number,
       tex?: (lat: number, lon: number) => number,
+      /** Per-point colour, so Earth can be blue ocean and green land on one sphere. */
+      colFn?: (lat: number, lon: number) => number[],
     ) => {
       if (r < 1.2 || alpha < 0.02) return;
       const pts = lodFor(r);
@@ -116,7 +118,7 @@
         const light = Math.max(0, -x1 * 0.42 + y1 * 0.3 + z2 * 0.86);
         const shade = tex ? tex(p.lat, p.lon) : 1;
         const b = Math.min(1, (0.18 + light * 0.92) * shade);
-        put(cx + x1 * r, cy + y1 * r, b, col, Math.min(1, (0.3 + light * 0.95) * alpha));
+        put(cx + x1 * r, cy + y1 * r, b, colFn ? colFn(p.lat, p.lon) : col, Math.min(1, (0.3 + light * 0.95) * alpha));
       }
     };
 
@@ -177,25 +179,32 @@
         return ((lat - la) / dla) ** 2 + (dl / dlo) ** 2 < 1;
       });
 
+    // Earth: green land on blue ocean, on one sphere.
+    const EARTH_TEX = (lat: number, lon: number) => (isLand(lat, lon) ? 1.05 : 0.72);
+    const EARTH_COL = (lat: number, lon: number) =>
+      isLand(lat, lon) ? [104, 196, 118] : [64, 132, 220];
+
     type Body = {
       name: string; r: number; size: number; speed: number; col: number[];
-      ring?: boolean; tex?: (lat: number, lon: number) => number;
+      ring?: boolean;
+      tex?: (lat: number, lon: number) => number;
+      colFn?: (lat: number, lon: number) => number[];
     };
     const SUN: Body = { name: 'Sun', r: 0, size: 5.2, speed: 0, col: [255, 226, 150] };
     const PLANETS: Body[] = [
       { name: 'Mercury', r: 0.32, size: 0.9, speed: 1.60, col: [172, 168, 158], tex: (la, lo) => 0.75 + 0.25 * Math.sin(la * 0.3 + lo * 0.2) },
       { name: 'Venus',   r: 0.45, size: 1.5, speed: 1.18, col: [235, 198, 126], tex: bands(3, 0.35) },
-      { name: 'Mars',    r: 0.72, size: 1.2, speed: 0.80, col: [214, 106, 66], tex: (la) => (Math.abs(la) > 72 ? 1.35 : 0.85 + 0.15 * Math.sin(la * 0.2)) },
-      { name: 'Jupiter', r: 1.02, size: 3.6, speed: 0.44, col: [219, 184, 142], tex: bands(9, 0.5) },
-      { name: 'Saturn',  r: 1.30, size: 3.1, speed: 0.32, col: [230, 212, 162], ring: true, tex: bands(7, 0.38) },
-      { name: 'Uranus',  r: 1.55, size: 2.2, speed: 0.23, col: [150, 214, 220], tex: bands(4, 0.22) },
+      { name: 'Earth',   r: 0.58, size: 1.6, speed: 1.00, col: [64, 132, 220], tex: EARTH_TEX, colFn: EARTH_COL },
+      { name: 'Mars',    r: 0.75, size: 1.2, speed: 0.80, col: [214, 106, 66], tex: (la) => (Math.abs(la) > 72 ? 1.35 : 0.85 + 0.15 * Math.sin(la * 0.2)) },
+      { name: 'Jupiter', r: 1.05, size: 3.6, speed: 0.44, col: [219, 184, 142], tex: bands(9, 0.5) },
+      { name: 'Saturn',  r: 1.32, size: 3.1, speed: 0.32, col: [230, 212, 162], ring: true, tex: bands(7, 0.38) },
+      { name: 'Uranus',  r: 1.56, size: 2.2, speed: 0.23, col: [150, 214, 220], tex: bands(4, 0.22) },
       { name: 'Neptune', r: 1.76, size: 2.1, speed: 0.18, col: [96, 122, 218], tex: bands(5, 0.3) },
     ];
-    // Earth is the destination, so it is not a stop on the tour.
-    const EARTH_TEX = (lat: number, lon: number) => (isLand(lat, lon) ? 1 : 0.62);
 
-    /** The tour: overview, the Sun, then outward through the planets. */
-    const STOPS = [null, SUN, ...PLANETS];
+    /** The tour: the Sun, then straight out through every planet, ending back at Earth. */
+    const EARTH = PLANETS[2];
+    const STOPS: Body[] = [SUN, ...PLANETS, EARTH];
 
     /* ── scroll ─────────────────────────────────────────────────────────────── */
 
@@ -313,55 +322,44 @@
         }
       }
 
-      /* ── Solar System: a tour ── */
+      /* ── Solar System: one continuous glide out through the planets ── */
       if (wSol > 0.01) {
-        const q = smooth(SOL[0], SOL[1], p) * (STOPS.length - 1); // position along the tour
-        const i0 = Math.min(STOPS.length - 1, Math.floor(q));
-        const i1 = Math.min(STOPS.length - 1, i0 + 1);
-        const f = smooth(0, 1, q - i0);
-
         const tilt = 0.42;
-        const baseR = S * 0.30;
 
         // Where a body sits, in system coordinates.
-        const posOf = (b: Body | null) => {
-          if (!b || b.r === 0) return { x: 0, y: 0, r: b ? b.size : 0 };
+        const posOf = (b: Body) => {
+          if (b.r === 0) return { x: 0, y: 0 };
           const a = t * b.speed * 0.18 + PLANETS.indexOf(b) * 1.7;
-          return { x: Math.cos(a) * b.r, y: Math.sin(a) * b.r * tilt, r: b.size };
+          return { x: Math.cos(a) * b.r, y: Math.sin(a) * b.r * tilt };
         };
 
-        // Camera: pan to the focused body and zoom in on it.
+        // A single, constant magnification for the whole tour. The camera simply drifts
+        // from body to body — no zoom pumping in and out at every stop.
+        const zoom = 2.5;
+        const R = S * 0.30 * zoom;
+
+        const q = smooth(SOL[0], SOL[1], p) * (STOPS.length - 1);
+        const i0 = Math.min(STOPS.length - 1, Math.floor(q));
+        const i1 = Math.min(STOPS.length - 1, i0 + 1);
+        // Ease within each leg so arrivals and departures glide rather than jerk, but the
+        // magnification never changes — the motion is a pan, not a dolly.
+        const f = smooth(0, 1, q - i0);
+
         const a0 = posOf(STOPS[i0]);
         const a1 = posOf(STOPS[i1]);
-        const focus = STOPS[i0] || STOPS[i1];
-        const fx = a0.x + (a1.x - a0.x) * f;
-        const fy = a0.y + (a1.y - a0.y) * f;
-        // Stop 0 is the wide overview; every stop after it is a close pass.
-        //
-        // Zoom out to travel, back in to arrive. Without this the camera crosses the huge
-        // gap between two planets at full magnification and the frame is simply empty for
-        // most of the transition.
-        const z0 = STOPS[i0] ? 3.6 : 1;
-        const z1 = STOPS[i1] ? 3.6 : 1;
-        const travel = Math.sin(Math.PI * f); // 0 at each stop, 1 mid-flight
-        const zoom = (z0 + (z1 - z0) * f) * (1 - 0.72 * travel);
-        const camX = fx;
-        const camY = fy;
+        const focus = f < 0.5 ? STOPS[i0] : STOPS[i1];
+        const camX = a0.x + (a1.x - a0.x) * f;
+        const camY = a0.y + (a1.y - a0.y) * f;
 
-        const R = baseR * zoom;
         const px = (x: number) => cx + (x - camX) * R;
         const py = (y: number) => cy + (y - camY) * R;
 
-        // Orbit rings. They fade as the camera closes in on a single planet — at that
-        // zoom they are just noise sweeping across the frame.
-        const ringA = 0.34 * (1 - smooth(1, 2.4, zoom));
-        if (ringA > 0.01) {
-          for (const b of PLANETS) {
-            const steps = MOBILE ? 90 : 200;
-            for (let i = 0; i < steps; i++) {
-              const a = (i / steps) * 6.283;
-              put(px(Math.cos(a) * b.r), py(Math.sin(a) * b.r * tilt), 0.25, [80, 150, 120], ringA * wSol * vis);
-            }
+        // Orbit rings: the track the camera is flying along.
+        for (const b of PLANETS) {
+          const steps = MOBILE ? 120 : 300;
+          for (let i = 0; i < steps; i++) {
+            const a = (i / steps) * 6.283;
+            put(px(Math.cos(a) * b.r), py(Math.sin(a) * b.r * tilt), 0.25, [80, 150, 120], 0.3 * wSol * vis);
           }
         }
 
@@ -375,9 +373,9 @@
           const pos = posOf(b);
           const sx = px(pos.x), sy = py(pos.y);
           const rad = b.size * R * K;
-          // The focused planet is the star of the shot; give it a little extra presence.
+          // The body being visited is the subject of the shot; the rest sit back a little.
           const near = focus === b ? 1 : 0.72;
-          sphere(sx, sy, rad, t * 0.12 + PLANETS.indexOf(b), b.col, wSol * vis * near, b.tex);
+          sphere(sx, sy, rad, t * 0.12 + PLANETS.indexOf(b), b.col, wSol * vis * near, b.tex, b.colFn);
 
           if (b.ring) {
             const steps = MOBILE ? 90 : 260;
@@ -393,7 +391,7 @@
       /* ── Earth: home ── */
       if (wEar > 0.01) {
         const lp = smooth(EAR[0], 1, p);
-        sphere(cx, cy, (0.17 + lp * 0.13) * S, t * 0.05 + 2.2, [96, 176, 230], wEar * vis, EARTH_TEX);
+        sphere(cx, cy, (0.17 + lp * 0.13) * S, t * 0.05 + 2.2, EARTH.col, wEar * vis, EARTH_TEX, EARTH_COL);
       }
     };
 

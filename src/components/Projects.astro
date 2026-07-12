@@ -17,12 +17,14 @@ const has = (p?: string) => Boolean(p && existsSync(`public${p}`));
 const items = featured.map((p: Project) => {
   const repo = byName.get(p.repo);
   const media = (p.media ?? []).filter((m) => has(m.src));
+  const video = p.video && has(p.video.webm) ? p.video : undefined;
   return {
     ...p,
-    // The first entry is the lead image; the rest become the strip beneath it.
-    lead: media[0],
-    rest: media.slice(1),
-    video: p.video && has(p.video.webm) ? p.video : undefined,
+    // The first image leads — unless there is a video, in which case the video is the
+    // lead and every image goes into the strip beneath it.
+    lead: video ? undefined : media[0],
+    rest: video ? media : media.slice(1),
+    video,
     url: repo?.url ?? `https://github.com/${p.owner ?? 'daxrpm'}/${p.repo}`,
     stars: repo?.stars ?? 0,
     pushed_at: repo?.pushed_at,
