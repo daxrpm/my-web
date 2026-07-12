@@ -1,7 +1,6 @@
 ---
 import { site } from '../data/profile';
 import github from '../data/github.json';
-import AsciiUniverse from './AsciiUniverse.astro';
 
 const { stats } = github;
 
@@ -12,27 +11,18 @@ const figures = [
 ];
 ---
 
-<section id="top" class="relative flex min-h-[92vh] items-center overflow-hidden">
-  <AsciiUniverse />
-
-  <!-- Shields the copy without washing out the canvas: opaque on the left where the
-       text sits, clear on the right where the mass is, and fading into the next section. -->
-  <div class="pointer-events-none absolute inset-0 bg-gradient-to-r from-canvas via-canvas/80 to-transparent lg:via-canvas/60"></div>
-  <div class="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-canvas to-transparent"></div>
-
-  <div class="wrap relative z-10 py-24">
+<section id="top" class="relative flex min-h-[92vh] items-center">
+  <div class="wrap py-24">
     <p class="eyebrow">{site.location}</p>
 
-    <h1 class="mt-4 text-5xl font-bold tracking-tight text-fg sm:text-6xl lg:text-7xl">
-      {site.name}
+    <h1 class="mt-4 text-6xl font-bold tracking-tight text-fg sm:text-7xl">
+      {site.displayName}
     </h1>
 
     <p class="mt-5 max-w-2xl text-xl leading-snug text-fg sm:text-2xl">
       {site.tagline}
     </p>
 
-    <!-- The CERN affiliation is the single most load-bearing fact on the page, so it
-         gets stated in the hero rather than waiting for a project card. -->
     <p class="mt-6 max-w-2xl leading-relaxed text-fg-muted">
       Computer Science undergraduate at <span class="text-fg">Escuela Politécnica Nacional</span>, and a
       research collaborator on the <span class="text-fg">CMS experiment at CERN</span> — machine learning for
@@ -62,7 +52,7 @@ const figures = [
       </a>
       <a
         href={`mailto:${site.email}`}
-        class="rounded-md border border-line-hi bg-canvas/50 px-4 py-2 text-sm font-medium text-fg-muted backdrop-blur transition-colors hover:border-accent/60 hover:text-accent"
+        class="rounded-md border border-line-hi bg-canvas/60 px-4 py-2 text-sm font-medium text-fg-muted backdrop-blur transition-colors hover:border-accent/60 hover:text-accent"
         data-umami-event="cta-click"
         data-umami-event-cta="get-in-touch"
       >

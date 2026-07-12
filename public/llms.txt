@@ -5,8 +5,14 @@
 > physics — jet flavour tagging and dark matter search analyses — and writes systems
 > software in Rust and C. GitHub: @daxrpm.
 
-Also known as: daxrpm, Ariel Dax Navarrete Freire.
+Also known as: Dax, daxrpm, Ariel Dax Navarrete Freire.
 Contact: dax@daxrpm.dev · ariel.dax.navarrette.freire@cern.ch
+
+## Experience
+
+- **CMS Collaborator — CERN, CMS Experiment** (May 2025 – present). Associate contributor working on research reproducibility and software architecture for large-scale scientific computing. Reproduced an antimatter physics paper with the Data Preservation and Open Access (DPOA) group; proposed software architectures for the BRIL group supporting the CERN Phase-2 upgrades; evaluated containerised, Airflow-based research pipelines.
+- **Research Assistant — ADA Data Science Laboratory** (Mar 2025 – present). Applied machine learning research on optimization methods, including second-order optimizers. Built Python pipelines for training, evaluation and benchmarking; co-authored a paper on second-order optimization for AI models.
+- **AI Developer & Linux Systems Integrator — WORB** (Apr 2025 – Dec 2025). Full-stack development integrating AI into production workflows: backend architecture, AI embedding search and LLM integration, database design, frontend.
 
 ## Research (CMS Collaboration, CERN)
 

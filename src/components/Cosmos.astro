@@ -1,0 +1,390 @@
+---
+/**
+ * A scroll-driven ASCII journey behind the entire page.
+ *
+ *   Milky Way  →  the Solar System  →  a black hole  →  Earth
+ *
+ * One fixed full-viewport canvas sits behind all content; scroll progress through the
+ * document (0..1) is the only input. Scenes overlap and cross-fade, so it reads as one
+ * continuous flight rather than four slides.
+ *
+ * Decorative: aria-hidden, behind the content, and every word on the page is real HTML.
+ * If this never boots — no JS, reduced motion, a crawler — the site is unchanged.
+ */
+---
+
+<canvas id="cosmos" aria-hidden="true"></canvas>
+
+<style>
+  #cosmos {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+  }
+  #cosmos.ready {
+    opacity: 1;
+  }
+</style>
+
+<script>
+  const canvas = document.getElementById('cosmos') as HTMLCanvasElement | null;
+  if (canvas) {
+    const ctx = canvas.getContext('2d', { alpha: true })!;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Dark → bright. Depth and heat pick a glyph from this.
+    const RAMP = '.·:-=+*#%@';
+    const glyphFor = (b: number) => RAMP[Math.max(0, Math.min(RAMP.length - 1, Math.round(b * (RAMP.length - 1))))];
+
+    let W = 0, H = 0, DPR = 1, MOBILE = false;
+    const resize = () => {
+      DPR = Math.min(window.devicePixelRatio || 1, 1.5);
+      W = window.innerWidth;
+      H = window.innerHeight;
+      MOBILE = W < 768;
+      canvas.width = W * DPR;
+      canvas.height = H * DPR;
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    };
+
+    /* ── scene data ─────────────────────────────────────────────────────────── */
+
+    const N_GAL = MOBILE ? 900 : 2000;
+    const N_STARS = MOBILE ? 180 : 400;
+    const N_DISK = MOBILE ? 700 : 1500;
+    const N_EARTH = MOBILE ? 900 : 2000;
+
+    /** Milky Way: four logarithmic spiral arms on a tilted disc, plus a dense core. */
+    const galaxy = Array.from({ length: N_GAL }, (_, i) => {
+      const core = i < N_GAL * 0.18;
+      const r = core ? Math.pow(Math.random(), 2) * 0.28 : 0.18 + Math.pow(Math.random(), 0.7) * 1.05;
+      const arm = Math.floor(Math.random() * 4) * (Math.PI / 2);
+      // Winding: angle grows with radius, with scatter that widens outward.
+      const a = arm + r * 2.9 + (Math.random() - 0.5) * (core ? 6.3 : 0.55);
+      return {
+        r,
+        a,
+        y: (Math.random() - 0.5) * (core ? 0.22 : 0.06) * (1 - r * 0.4),
+        b: core ? 0.75 + Math.random() * 0.25 : 0.25 + Math.random() * 0.6,
+        // Blue-white core, green-cyan arms — keeps the site's accent in the palette.
+        hot: core ? 1 : Math.random() * 0.5,
+        spin: 0.35 + Math.random() * 0.25,
+      };
+    });
+
+    /** Deep-field stars: always present, parallax only. */
+    const stars = Array.from({ length: N_STARS }, () => ({
+      x: (Math.random() - 0.5) * 3,
+      y: (Math.random() - 0.5) * 3,
+      z: (Math.random() - 0.5) * 3,
+      b: 0.2 + Math.random() * 0.8,
+    }));
+
+    /** The Solar System. Radii are compressed (real ones would not fit a screen). */
+    const PLANETS = [
+      { name: 'Mercury', r: 0.30, size: 0.9, speed: 1.60, col: [170, 168, 160] },
+      { name: 'Venus',   r: 0.42, size: 1.5, speed: 1.18, col: [232, 196, 130] },
+      { name: 'Earth',   r: 0.56, size: 1.6, speed: 1.00, col: [ 90, 165, 230] },
+      { name: 'Mars',    r: 0.70, size: 1.2, speed: 0.80, col: [214, 106,  66] },
+      { name: 'Jupiter', r: 0.98, size: 3.4, speed: 0.44, col: [216, 180, 140] },
+      { name: 'Saturn',  r: 1.22, size: 2.9, speed: 0.32, col: [227, 209, 160] },
+      { name: 'Uranus',  r: 1.44, size: 2.1, speed: 0.23, col: [150, 214, 220] },
+      { name: 'Neptune', r: 1.64, size: 2.0, speed: 0.18, col: [ 92, 118, 214] },
+    ];
+    // Each planet is a little ASCII disc, not a single character.
+    const disc = (n: number) =>
+      Array.from({ length: n }, () => {
+        const a = Math.random() * 6.283;
+        const rr = Math.sqrt(Math.random());
+        return { dx: Math.cos(a) * rr, dy: Math.sin(a) * rr, b: 0.4 + Math.random() * 0.6 };
+      });
+    const PLANET_PTS = PLANETS.map((p) => disc(Math.round(p.size * (MOBILE ? 10 : 22))));
+    const SUN_PTS = disc(MOBILE ? 90 : 200);
+
+    /** Black hole: an accretion disc with Doppler brightening on the approaching side. */
+    const bhDisk = Array.from({ length: N_DISK }, () => {
+      const r = 0.30 + Math.pow(Math.random(), 1.6) * 0.95;
+      return { r, a: Math.random() * 6.283, b: 0.3 + Math.random() * 0.7, w: 0.55 / Math.pow(r, 1.3) };
+    });
+
+    /**
+     * Earth. Land is approximated by elliptical blobs in lat/lon — plenty of fidelity at
+     * ASCII resolution, and far smaller than shipping a real heightmap.
+     */
+    const LAND: [number, number, number, number][] = [
+      [ 50, -100, 26, 32], [ 15,  -90,  9,  9], [-15,  -60, 26, 13],
+      [  5,   20, 33, 20], [ 50,   18, 14, 22], [ 45,   95, 26, 48],
+      [ 20,   78, 11, 11], [  0,  115,  9, 16], [-25,  134, 13, 19],
+      [ 72,  -42,  9, 14], [-82,    0,  9, 180],
+    ];
+    const isLand = (lat: number, lon: number) =>
+      LAND.some(([la, lo, dla, dlo]) => {
+        let dl = Math.abs(lon - lo);
+        if (dl > 180) dl = 360 - dl;
+        return Math.pow((lat - la) / dla, 2) + Math.pow(dl / dlo, 2) < 1;
+      });
+    const earth = Array.from({ length: N_EARTH }, (_, i) => {
+      const t = (i + 0.5) / N_EARTH;
+      const phi = Math.acos(1 - 2 * t);
+      const theta = Math.PI * (1 + Math.sqrt(5)) * i;
+      const lat = 90 - (phi * 180) / Math.PI;
+      const lon = (((theta * 180) / Math.PI) % 360) - 180;
+      return {
+        x: Math.sin(phi) * Math.cos(theta),
+        y: Math.cos(phi),
+        z: Math.sin(phi) * Math.sin(theta),
+        land: isLand(lat, lon),
+      };
+    });
+
+    /* ── scroll ─────────────────────────────────────────────────────────────── */
+
+    let p = 0;      // 0..1 through the document
+    let pTarget = 0;
+    const onScroll = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      pTarget = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+    };
+
+    /** Smoothstep window: 0 outside [a,b], easing in and out at the edges. */
+    const win = (x: number, a: number, b: number, f = 0.07) => {
+      const s = (e0: number, e1: number, v: number) => {
+        const t = Math.min(1, Math.max(0, (v - e0) / (e1 - e0)));
+        return t * t * (3 - 2 * t);
+      };
+      return s(a - f, a + f, x) * (1 - s(b - f, b + f, x));
+    };
+
+    /* ── render ─────────────────────────────────────────────────────────────── */
+
+    const put = (sx: number, sy: number, b: number, col: number[], alpha: number) => {
+      if (sx < -12 || sx > W + 12 || sy < -12 || sy > H + 12 || alpha < 0.015) return;
+      ctx.fillStyle = `rgba(${col[0]},${col[1]},${col[2]},${alpha.toFixed(3)})`;
+      ctx.fillText(glyphFor(b), sx, sy);
+    };
+
+    const draw = (time: number) => {
+      const t = time * 0.001;
+      ctx.clearRect(0, 0, W, H);
+
+      // Push the scenes right of the (left-aligned, centred-column) content on desktop,
+      // so the copy is never read through a star field. Centred on mobile, where the
+      // cosmos is dimmed hard instead.
+      const cx = W >= 1024 ? W * 0.68 : W / 2;
+      const cy = H / 2;
+      // Scale off the diagonal so the scenes fill any aspect ratio, and are big enough
+      // that their structure reads in the gutters beside the content column.
+      const S = Math.hypot(W, H);
+
+      // Content must stay readable, so the cosmos dims once you are past the hero.
+      const vis = 1 - win(p, 0.06, 1.1, 0.05) * 0.42;
+
+      ctx.font = `${MOBILE ? 10 : 12}px "JetBrains Mono", ui-monospace, monospace`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+
+      const wGal = win(p, -0.1, 0.26);
+      const wSol = win(p, 0.28, 0.58);
+      const wBh = win(p, 0.60, 0.80);
+      const wEar = win(p, 0.82, 1.2);
+
+      /* deep field — always there, drifting */
+      for (const s of stars) {
+        const zz = s.z + 1.8 - p * 0.6;
+        if (zz < 0.15) continue;
+        const k = 1.1 / zz;
+        put(cx + s.x * k * S * 0.9, cy + s.y * k * S * 0.9, s.b * 0.5, [190, 220, 210], s.b * 0.22 * vis);
+      }
+
+      /* ── Milky Way ── */
+      if (wGal > 0.01) {
+        // Dive in: the galaxy grows and tilts toward face-on as you approach.
+        const lp = Math.min(1, Math.max(0, p / 0.26));
+        const zoom = 0.55 + lp * 1.5;
+        const tilt = 1.15 - lp * 0.55; // radians of X-rotation
+        const cosT = Math.cos(tilt), sinT = Math.sin(tilt);
+        const rot = t * 0.05;
+
+        for (const g of galaxy) {
+          const a = g.a + rot * g.spin;
+          const x = Math.cos(a) * g.r;
+          const z = Math.sin(a) * g.r;
+          const y = g.y;
+          const y2 = y * cosT - z * sinT;
+          const z2 = y * sinT + z * cosT;
+          const persp = 2.2 / (2.2 + z2 * 0.8);
+          const sx = cx + x * zoom * S * 0.34 * persp;
+          const sy = cy + y2 * zoom * S * 0.34 * persp;
+          const col = g.hot > 0.5 ? [225, 235, 245] : [80, 200, 140];
+          put(sx, sy, g.b, col, g.b * 0.8 * wGal * vis);
+        }
+      }
+
+      /* ── Solar System ── */
+      if (wSol > 0.01) {
+        const lp = Math.min(1, Math.max(0, (p - 0.28) / 0.30));
+        // Fly in from outside Neptune to roughly Earth's orbit.
+        // Start wide enough that all eight orbits fit, then fly inward.
+        const zoom = 0.62 + lp * 0.55;
+        const tilt = 1.05 - lp * 0.45;
+        const cosT = Math.cos(tilt), sinT = Math.sin(tilt);
+        const R = zoom * S * 0.26;
+
+        const proj = (x: number, z: number, y = 0) => {
+          const y2 = y * cosT - z * sinT;
+          const z2 = y * sinT + z * cosT;
+          const persp = 2.4 / (2.4 + z2 * 0.6);
+          return [cx + x * R * persp, cy + y2 * R * persp, persp] as const;
+        };
+
+        // Orbit rings: the structure that actually makes it legible as a solar system.
+        for (let i = 0; i < PLANETS.length; i++) {
+          const pl = PLANETS[i];
+          const steps = MOBILE ? 60 : 130;
+          for (let k = 0; k < steps; k++) {
+            const a = (k / steps) * 6.283;
+            const [sx, sy] = proj(Math.cos(a) * pl.r, Math.sin(a) * pl.r);
+            put(sx, sy, 0.25, [80, 150, 120], 0.32 * wSol * vis);
+          }
+        }
+
+        // sun
+        const sunR = 0.1 * R;
+        for (const d of SUN_PTS) {
+          put(cx + d.dx * sunR, cy + d.dy * sunR, 0.9 + d.b * 0.1, [255, 232, 160], (0.75 + d.b * 0.25) * wSol * vis);
+        }
+
+        // planets
+        for (let i = 0; i < PLANETS.length; i++) {
+          const pl = PLANETS[i];
+          const a = t * pl.speed * 0.18 + i * 1.7;
+          const [sx, sy, persp] = proj(Math.cos(a) * pl.r, Math.sin(a) * pl.r);
+          const rad = pl.size * (MOBILE ? 4 : 6.5) * persp;
+
+          for (const d of PLANET_PTS[i]) {
+            put(sx + d.dx * rad, sy + d.dy * rad, 0.6 + d.b * 0.4, pl.col, (0.7 + d.b * 0.3) * wSol * vis);
+          }
+
+          // Saturn's ring
+          if (pl.name === 'Saturn') {
+            const steps = MOBILE ? 30 : 56;
+            for (let k = 0; k < steps; k++) {
+              const ra = (k / steps) * 6.283;
+              put(sx + Math.cos(ra) * rad * 2.2, sy + Math.sin(ra) * rad * 0.7, 0.5, [230, 214, 170], 0.75 * wSol * vis);
+            }
+          }
+        }
+      }
+
+      /* ── Black hole ── */
+      if (wBh > 0.01) {
+        const lp = Math.min(1, Math.max(0, (p - 0.60) / 0.20));
+        const zoom = 0.75 + lp * 0.55;
+        const tilt = 1.32 - lp * 0.42; // near edge-on, so the disc reads as a disc
+        const cosT = Math.cos(tilt), sinT = Math.sin(tilt);
+        const R = zoom * S * 0.30;
+
+        for (const d of bhDisk) {
+          const a = d.a + t * d.w * 0.5;
+          const x = Math.cos(a) * d.r;
+          const z = Math.sin(a) * d.r;
+          const y2 = -z * sinT;
+          const z2 = z * cosT;
+          const persp = 2.4 / (2.4 + z2 * 0.7);
+          const sx = cx + x * R * persp;
+          const sy = cy + y2 * R * persp;
+
+          // Doppler: the side rotating toward us is brighter and whiter.
+          const beam = 0.45 + 0.55 * Math.max(0, Math.cos(a));
+          const heat = Math.min(1, (0.45 / d.r) * beam);
+          const col = [255, Math.round(150 + heat * 100), Math.round(60 + heat * 120)];
+          put(sx, sy, d.b * beam, col, d.b * beam * 1.05 * wBh * vis);
+        }
+
+        // photon ring + event horizon (a hole punched in the disc)
+        const hr = 0.30 * R;
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.beginPath();
+        ctx.arc(cx, cy, hr * 0.86, 0, 6.283);
+        ctx.fill();
+        ctx.globalCompositeOperation = 'source-over';
+        for (let k = 0; k < (MOBILE ? 60 : 120); k++) {
+          const a = (k / (MOBILE ? 60 : 120)) * 6.283;
+          put(cx + Math.cos(a) * hr, cy + Math.sin(a) * hr, 0.95, [255, 214, 150], 0.8 * wBh * vis);
+        }
+      }
+
+      /* ── Earth ── */
+      if (wEar > 0.01) {
+        const lp = Math.min(1, Math.max(0, (p - 0.82) / 0.18));
+        const R = (0.17 + lp * 0.12) * S; // arriving: the planet grows
+        const rot = t * 0.06 + 2.2;
+        const cosR = Math.cos(rot), sinR = Math.sin(rot);
+        const tilt = -0.41; // axial tilt
+        const cosT = Math.cos(tilt), sinT = Math.sin(tilt);
+
+        for (const e of earth) {
+          const x1 = e.x * cosR - e.z * sinR;
+          const z1 = e.x * sinR + e.z * cosR;
+          const y1 = e.y * cosT - z1 * sinT;
+          const z2 = e.y * sinT + z1 * cosT;
+          if (z2 < -0.05) continue; // far side
+
+          // Day/night terminator, lit from the upper left.
+          const light = Math.max(0, x1 * -0.45 + y1 * 0.35 + z2 * 0.82);
+          const b = 0.18 + light * 0.82;
+          const col = e.land ? [90, 200, 120] : [70, 130, 210];
+          put(cx + x1 * R, cy + y1 * R, b, col, (0.2 + light * 0.8) * 0.9 * wEar * vis);
+        }
+      }
+    };
+
+    /* ── loop ───────────────────────────────────────────────────────────────── */
+
+    let raf = 0;
+    let running = false;
+    const loop = (time: number) => {
+      // Recomputed every frame, not just on scroll: lazy-loaded images grow the document
+      // after load, which silently shifts what a given scrollY means.
+      onScroll();
+      // Ease toward the target so fast flicks glide instead of snapping.
+      p += (pTarget - p) * 0.08;
+      draw(time);
+      raf = requestAnimationFrame(loop);
+    };
+
+    resize();
+    onScroll();
+    p = pTarget;
+    canvas.classList.add('ready');
+
+    if (reduced) {
+      draw(0);
+    } else {
+      const start = () => {
+        if (!running) {
+          running = true;
+          raf = requestAnimationFrame(loop);
+        }
+      };
+      const stop = () => {
+        running = false;
+        cancelAnimationFrame(raf);
+      };
+      start();
+      window.addEventListener('scroll', onScroll, { passive: true });
+      document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
+    }
+
+    window.addEventListener('resize', () => {
+      resize();
+      onScroll();
+      if (reduced) draw(0);
+    });
+  }
+</script>

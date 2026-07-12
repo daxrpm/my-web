@@ -6,6 +6,9 @@
 
 export const site = {
   url: 'https://daxrpm.dev',
+  /** Shown on the page. */
+  displayName: 'Dax',
+  /** Kept for schema.org and meta: search engines and LLMs resolve entities by full name. */
   name: 'Dax Navarrete',
   handle: 'daxrpm',
   role: 'Computer Science undergraduate · CMS (CERN) collaborator',
@@ -67,7 +70,8 @@ export const featured: Project[] = [
       webm: '/video/apogee.webm',
       mp4: '/video/apogee.mp4',
       poster: '/video/apogee-poster.jpg',
-      caption: 'Full mission, 8× speed: liftoff from Pedernales, staging, and orbital insertion.',
+      caption:
+        'Full mission: liftoff from Pedernales, staging, and orbital insertion. The long coast through the dark is sped up; the launch runs close to real time.',
     },
     media: [
       { src: '/projects/apogee-launch.webp', alt: 'Apogee launch control panel with a rocket on the pad', caption: 'Launch control — target altitude and payload mass drive the trajectory solve.' },
@@ -98,10 +102,10 @@ export const featured: Project[] = [
       'A self-hosted, voice-first AI assistant that runs locally, speaks to any LLM, and can act on your machine through a sandboxed tool layer.',
     stack: ['Python', 'FastAPI', 'MCP', 'React', 'Ollama'],
     media: [
+      { src: '/projects/dax-assistant-main.webp', alt: 'Dax Assistant chat: answering a question about a song, then creating a calendar event', caption: 'Ask it anything, and it can act — here it reads what is playing, then books the calendar event.' },
       { src: '/projects/dax-assistant-tools.webp', alt: 'Dax Assistant confirmation modal gating a calendar tool call', caption: 'Every destructive tool call is gated — the model proposes, you approve.' },
       { src: '/projects/dax-assistant-dashboard.webp', alt: 'Dax Assistant dashboard showing 5 MCP servers and 204 tools', caption: '5 MCP servers, 204 tools, with an audit log of everything executed.' },
       { src: '/projects/dax-assistant-settings.webp', alt: 'Dax Assistant settings showing the LLM provider dropdown', caption: 'One provider port, six adapters — Ollama, Anthropic, OpenAI, Gemini, DeepSeek, Codex.' },
-      { src: '/projects/dax-assistant-chat.webp', alt: 'Dax Assistant chat answering a question and creating a calendar event', caption: 'Voice or text, with memory across sessions.' },
     ],
     tag: 'ai',
   },
@@ -120,8 +124,8 @@ export const featured: Project[] = [
       'A degree-progress and grade tracker for Escuela Politécnica Nacional students, with the academic rules of the university encoded as a pure domain core.',
     stack: ['FastAPI', 'PostgreSQL', 'Redis', 'React', 'Docker'],
     media: [
-      { src: '/projects/epn-tracker-landing.webp', alt: 'EPN Tracker landing page with a grade calculator', caption: 'Answers the one question every student has: what do I need on the retake?' },
-      { src: '/projects/epn-tracker-malla.webp', alt: 'EPN Tracker interactive curriculum graph', caption: 'The full curriculum as a prerequisite graph — tap a course to light up its chain.' },
+      { src: '/projects/epn-tracker-malla.webp', alt: 'EPN Tracker interactive curriculum graph showing 50 courses across semesters', caption: 'The whole degree as a prerequisite graph — 50 courses, 135 credits. Tap one to light up its chain.' },
+      { src: '/projects/epn-tracker-landing.webp', alt: 'EPN Tracker landing page with a grade calculator', caption: 'Answers the one question every student actually has: what do I need on the retake?' },
       { src: '/projects/epn-tracker-notas.webp', alt: 'EPN Tracker grade breakdown for a course', caption: 'Weighted components, with eligibility computed from EPN’s real rules.' },
     ],
     tag: 'backend',
@@ -197,7 +201,7 @@ export const education = [
     institution: 'Escuela Politécnica Nacional',
     logo: '/logos/epn.png',
     title: 'BSc Computer Science',
-    period: '2023 — 2028',
+    period: 'Nov 2023 — present',
     note: "Ecuador's leading engineering university. Algorithms, data structures, operating systems, numerical methods.",
   },
   {
@@ -226,18 +230,44 @@ export const education = [
   },
 ];
 
-/**
- * Professional experience. EMPTY ON PURPOSE — LinkedIn blocks automated reads (HTTP 999),
- * so nothing here can be filled in without Dax supplying it. The Experience section does
- * not render while this is empty; it is better to omit the section than to invent roles,
- * which is exactly what the previous site did.
- */
-export const experience: {
-  role: string;
-  org: string;
-  period: string;
-  note: string;
-}[] = [];
+/** Professional experience, transcribed from Dax's CV. */
+export const experience = [
+  {
+    role: 'CMS Collaborator',
+    org: 'CERN — CMS Experiment',
+    logo: '/logos/cms.png',
+    period: 'May 2025 — present',
+    note: 'Associate contributor to the CMS experiment, working on research reproducibility and modern software architectures for large-scale scientific computing.',
+    points: [
+      'Reproduced an antimatter physics research paper with the Data Preservation and Open Access (DPOA) group, focusing on reproducibility, data integrity and experiment validation.',
+      'Designed and proposed modern software architectures for the BRIL group, supporting the CERN Phase-2 upgrades.',
+      'Evaluated containerised, workflow-based solutions using Docker and Apache Airflow for scalable research pipelines.',
+    ],
+  },
+  {
+    role: 'Research Assistant',
+    org: 'ADA Data Science Laboratory',
+    logo: '/logos/epn.png',
+    period: 'Mar 2025 — present',
+    note: 'Applied machine learning research and optimization algorithms.',
+    points: [
+      'Conducted applied research on machine learning optimization methods, including second-order optimizers.',
+      'Designed and implemented Python experimental pipelines for model training, evaluation and benchmarking.',
+      'Co-authored a research paper on second-order optimization methods for AI models.',
+    ],
+  },
+  {
+    role: 'AI Developer & Linux Systems Integrator',
+    org: 'WORB',
+    period: 'Apr 2025 — Dec 2025',
+    note: 'Full-stack development integrating AI into production workflows and applications.',
+    points: [
+      'Backend architecture design, development and integration.',
+      'AI embedding search and LLM integration.',
+      'Database design and integration, plus frontend development.',
+    ],
+  },
+];
 
 /**
  * Grouped, not rated. Self-assigned 1–5 levels invite an argument you cannot win and tell

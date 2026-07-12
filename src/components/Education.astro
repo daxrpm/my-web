@@ -1,0 +1,41 @@
+---
+import { education } from '../data/profile';
+---
+
+<section id="education" aria-labelledby="edu-h" class="wrap py-16 sm:py-20">
+  <h2 id="edu-h" class="eyebrow">Education &amp; certifications</h2>
+
+  <ul class="mt-6 grid gap-3 sm:grid-cols-2">
+    {
+      education.map((e) => (
+        <li class="card flex gap-4 bg-surface/80 p-4 backdrop-blur-sm sm:p-5">
+          {/* No white tile: the marks are rendered as monochrome so they sit on the dark
+              canvas without a plate under them. */}
+          <img
+            src={e.logo}
+            alt={`${e.institution} logo`}
+            loading="lazy"
+            class="logo-mark h-9 w-9 shrink-0 object-contain"
+          />
+          <div class="min-w-0">
+            <h3 class="font-medium leading-snug text-fg">{e.title}</h3>
+            <p class="mt-0.5 text-sm text-fg-muted">{e.institution}</p>
+            <p class="mt-1 font-mono text-xs text-fg-subtle">{e.period}</p>
+            <p class="mt-2 text-sm leading-relaxed text-fg-subtle">{e.note}</p>
+            {e.href && (
+              <a
+                href={e.href}
+                rel="noopener"
+                class="link mt-2 inline-block text-sm"
+                data-umami-event="credential-click"
+                data-umami-event-credential={e.title}
+              >
+                View certificate
+              </a>
+            )}
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+</section>
