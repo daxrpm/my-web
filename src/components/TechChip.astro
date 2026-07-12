@@ -1,0 +1,15 @@
+---
+/** The one chip used for skills and project stacks, so both stay in step. */
+import TechIcon from './TechIcon.astro';
+
+interface Props {
+  name: string;
+}
+
+const { name } = Astro.props;
+---
+
+<span class="chip inline-flex items-center gap-1.5">
+  <TechIcon name={name} />
+  {name}
+</span>
