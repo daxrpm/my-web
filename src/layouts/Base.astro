@@ -15,8 +15,13 @@ interface Props {
 
 const { lang, title = t(seo.title, lang), description = t(site.summary, lang) } = Astro.props;
 
-/** What a human sees when the link lands in a chat — no full name, no schema.org ballast. */
-const social = t(seo.social, lang);
+/**
+ * The same summary, with the surname dropped — the site says "Dax" to people. The full name
+ * stays in the meta description and the schema.org Person, where it does real work: a search
+ * engine needs it to resolve "Dax Navarrete", "daxrpm" and the CERN author name as one
+ * entity. Derived rather than written twice, so the two can never drift apart.
+ */
+const social = t(site.summary, lang).replaceAll(site.name, site.displayName);
 
 const canonical = new URL(localeUrl(lang), site.url).href;
 const ogImage = new URL('/og.png', site.url).href;

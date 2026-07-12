@@ -775,18 +775,6 @@ export const seo = {
     en: 'Dax — Linux Infrastructure & Scientific Computing',
     es: 'Dax — Infraestructura Linux y computación científica',
   } as L,
-
-  /**
-   * The blurb on a shared link (WhatsApp, LinkedIn, Slack, Discord). Deliberately NOT
-   * site.summary: that one opens with the full name, because the meta description and the
-   * schema.org Person are read by search engines, and a full name is what lets them resolve
-   * the entity. A link dropped in a chat is read by a human, who only needs to know what Dax
-   * does — and gets to see just "Dax".
-   */
-  social: {
-    en: 'I run seven Linux servers across three countries, keep a security platform in production, and build scientific computing for the CMS experiment at CERN.',
-    es: 'Administro siete servidores Linux en tres países, mantengo en producción una plataforma de seguridad y construyo computación científica para el experimento CMS del CERN.',
-  } as L,
   /** Only these three. The legal name stays off the site entirely. */
   alternateNames: ['Dax', 'daxrpm'],
   /** What the social card shows, for anyone who cannot see it. Regenerate it with `npm run og`. */
