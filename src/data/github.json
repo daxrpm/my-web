@@ -1,0 +1,2854 @@
+{
+  "generated_at": "2026-07-12T02:15:20.756Z",
+  "user": {
+    "login": "daxrpm",
+    "name": "Dax",
+    "bio": "Computer Science BSc. \r\nLove Science",
+    "avatar": "https://avatars.githubusercontent.com/u/86321595?v=4",
+    "url": "https://github.com/daxrpm",
+    "followers": 15,
+    "public_repos": 85,
+    "created_at": "2021-06-22T18:44:28Z"
+  },
+  "stats": {
+    "public_repos": 85,
+    "stars": 6,
+    "contributions_last_year": 1352,
+    "coding_since": 2021,
+    "languages": [
+      {
+        "name": "Python",
+        "count": 15
+      },
+      {
+        "name": "Jupyter Notebook",
+        "count": 15
+      },
+      {
+        "name": "Java",
+        "count": 11
+      },
+      {
+        "name": "TypeScript",
+        "count": 7
+      },
+      {
+        "name": "JavaScript",
+        "count": 4
+      },
+      {
+        "name": "Shell",
+        "count": 3
+      },
+      {
+        "name": "Rust",
+        "count": 2
+      },
+      {
+        "name": "HTML",
+        "count": 1
+      }
+    ]
+  },
+  "calendar": {
+    "total": 1352,
+    "source": "proxy",
+    "days": [
+      {
+        "date": "2025-07-13",
+        "count": 7,
+        "level": 1
+      },
+      {
+        "date": "2025-07-14",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-07-15",
+        "count": 5,
+        "level": 1
+      },
+      {
+        "date": "2025-07-16",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-07-17",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-07-18",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-07-19",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-07-20",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2025-07-21",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-07-22",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-07-23",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-07-24",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-07-25",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-07-26",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-07-27",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-07-28",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-07-29",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2025-07-30",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-07-31",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-08-01",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-08-02",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-08-03",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-08-04",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-08-05",
+        "count": 5,
+        "level": 1
+      },
+      {
+        "date": "2025-08-06",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-08-07",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-08-08",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-08-09",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-08-10",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-08-11",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-08-12",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-08-13",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-08-14",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-08-15",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-08-16",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-08-17",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-08-18",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-08-19",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-08-20",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-08-21",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-08-22",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-08-23",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-08-24",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-08-25",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2025-08-26",
+        "count": 6,
+        "level": 1
+      },
+      {
+        "date": "2025-08-27",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2025-08-28",
+        "count": 2,
+        "level": 1
+      },
+      {
+        "date": "2025-08-29",
+        "count": 4,
+        "level": 1
+      },
+      {
+        "date": "2025-08-30",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-08-31",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-09-01",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-09-02",
+        "count": 4,
+        "level": 1
+      },
+      {
+        "date": "2025-09-03",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-09-04",
+        "count": 19,
+        "level": 3
+      },
+      {
+        "date": "2025-09-05",
+        "count": 9,
+        "level": 2
+      },
+      {
+        "date": "2025-09-06",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-09-07",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-09-08",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2025-09-09",
+        "count": 4,
+        "level": 1
+      },
+      {
+        "date": "2025-09-10",
+        "count": 7,
+        "level": 1
+      },
+      {
+        "date": "2025-09-11",
+        "count": 7,
+        "level": 1
+      },
+      {
+        "date": "2025-09-12",
+        "count": 11,
+        "level": 2
+      },
+      {
+        "date": "2025-09-13",
+        "count": 2,
+        "level": 1
+      },
+      {
+        "date": "2025-09-14",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-09-15",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2025-09-16",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-09-17",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-09-18",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-09-19",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-09-20",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-09-21",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-09-22",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-09-23",
+        "count": 8,
+        "level": 1
+      },
+      {
+        "date": "2025-09-24",
+        "count": 3,
+        "level": 1
+      },
+      {
+        "date": "2025-09-25",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-09-26",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-09-27",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-09-28",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-09-29",
+        "count": 2,
+        "level": 1
+      },
+      {
+        "date": "2025-09-30",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-10-01",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-10-02",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-10-03",
+        "count": 3,
+        "level": 1
+      },
+      {
+        "date": "2025-10-04",
+        "count": 2,
+        "level": 1
+      },
+      {
+        "date": "2025-10-05",
+        "count": 3,
+        "level": 1
+      },
+      {
+        "date": "2025-10-06",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-10-07",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-10-08",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-10-09",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2025-10-10",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-10-11",
+        "count": 2,
+        "level": 1
+      },
+      {
+        "date": "2025-10-12",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-10-13",
+        "count": 5,
+        "level": 1
+      },
+      {
+        "date": "2025-10-14",
+        "count": 6,
+        "level": 1
+      },
+      {
+        "date": "2025-10-15",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2025-10-16",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-10-17",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-10-18",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-10-19",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2025-10-20",
+        "count": 5,
+        "level": 1
+      },
+      {
+        "date": "2025-10-21",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-10-22",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2025-10-23",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-10-24",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-10-25",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-10-26",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-10-27",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-10-28",
+        "count": 4,
+        "level": 1
+      },
+      {
+        "date": "2025-10-29",
+        "count": 9,
+        "level": 2
+      },
+      {
+        "date": "2025-10-30",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2025-10-31",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-11-01",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-11-02",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-11-03",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-11-04",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-11-05",
+        "count": 4,
+        "level": 1
+      },
+      {
+        "date": "2025-11-06",
+        "count": 8,
+        "level": 1
+      },
+      {
+        "date": "2025-11-07",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-11-08",
+        "count": 2,
+        "level": 1
+      },
+      {
+        "date": "2025-11-09",
+        "count": 4,
+        "level": 1
+      },
+      {
+        "date": "2025-11-10",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2025-11-11",
+        "count": 6,
+        "level": 1
+      },
+      {
+        "date": "2025-11-12",
+        "count": 4,
+        "level": 1
+      },
+      {
+        "date": "2025-11-13",
+        "count": 4,
+        "level": 1
+      },
+      {
+        "date": "2025-11-14",
+        "count": 7,
+        "level": 1
+      },
+      {
+        "date": "2025-11-15",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-11-16",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2025-11-17",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-11-18",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-11-19",
+        "count": 5,
+        "level": 1
+      },
+      {
+        "date": "2025-11-20",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-11-21",
+        "count": 9,
+        "level": 2
+      },
+      {
+        "date": "2025-11-22",
+        "count": 5,
+        "level": 1
+      },
+      {
+        "date": "2025-11-23",
+        "count": 2,
+        "level": 1
+      },
+      {
+        "date": "2025-11-24",
+        "count": 2,
+        "level": 1
+      },
+      {
+        "date": "2025-11-25",
+        "count": 2,
+        "level": 1
+      },
+      {
+        "date": "2025-11-26",
+        "count": 8,
+        "level": 1
+      },
+      {
+        "date": "2025-11-27",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-11-28",
+        "count": 2,
+        "level": 1
+      },
+      {
+        "date": "2025-11-29",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-11-30",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2025-12-01",
+        "count": 3,
+        "level": 1
+      },
+      {
+        "date": "2025-12-02",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-12-03",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-12-04",
+        "count": 2,
+        "level": 1
+      },
+      {
+        "date": "2025-12-05",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-12-06",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-12-07",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-12-08",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-12-09",
+        "count": 5,
+        "level": 1
+      },
+      {
+        "date": "2025-12-10",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-12-11",
+        "count": 5,
+        "level": 1
+      },
+      {
+        "date": "2025-12-12",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-12-13",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-12-14",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-12-15",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-12-16",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-12-17",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-12-18",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-12-19",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-12-20",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-12-21",
+        "count": 11,
+        "level": 2
+      },
+      {
+        "date": "2025-12-22",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-12-23",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-12-24",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-12-25",
+        "count": 2,
+        "level": 1
+      },
+      {
+        "date": "2025-12-26",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2025-12-27",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2025-12-28",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2025-12-29",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-12-30",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2025-12-31",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-01-01",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-01-02",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-01-03",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-01-04",
+        "count": 3,
+        "level": 1
+      },
+      {
+        "date": "2026-01-05",
+        "count": 4,
+        "level": 1
+      },
+      {
+        "date": "2026-01-06",
+        "count": 7,
+        "level": 1
+      },
+      {
+        "date": "2026-01-07",
+        "count": 4,
+        "level": 1
+      },
+      {
+        "date": "2026-01-08",
+        "count": 4,
+        "level": 1
+      },
+      {
+        "date": "2026-01-09",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-01-10",
+        "count": 9,
+        "level": 2
+      },
+      {
+        "date": "2026-01-11",
+        "count": 3,
+        "level": 1
+      },
+      {
+        "date": "2026-01-12",
+        "count": 28,
+        "level": 4
+      },
+      {
+        "date": "2026-01-13",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-01-14",
+        "count": 8,
+        "level": 1
+      },
+      {
+        "date": "2026-01-15",
+        "count": 5,
+        "level": 1
+      },
+      {
+        "date": "2026-01-16",
+        "count": 5,
+        "level": 1
+      },
+      {
+        "date": "2026-01-17",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-01-18",
+        "count": 13,
+        "level": 2
+      },
+      {
+        "date": "2026-01-19",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2026-01-20",
+        "count": 6,
+        "level": 1
+      },
+      {
+        "date": "2026-01-21",
+        "count": 30,
+        "level": 4
+      },
+      {
+        "date": "2026-01-22",
+        "count": 4,
+        "level": 1
+      },
+      {
+        "date": "2026-01-23",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-01-24",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-01-25",
+        "count": 12,
+        "level": 2
+      },
+      {
+        "date": "2026-01-26",
+        "count": 5,
+        "level": 1
+      },
+      {
+        "date": "2026-01-27",
+        "count": 11,
+        "level": 2
+      },
+      {
+        "date": "2026-01-28",
+        "count": 2,
+        "level": 1
+      },
+      {
+        "date": "2026-01-29",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-01-30",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2026-01-31",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-02-01",
+        "count": 8,
+        "level": 1
+      },
+      {
+        "date": "2026-02-02",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-02-03",
+        "count": 2,
+        "level": 1
+      },
+      {
+        "date": "2026-02-04",
+        "count": 3,
+        "level": 1
+      },
+      {
+        "date": "2026-02-05",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-02-06",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-02-07",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-02-08",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-02-09",
+        "count": 16,
+        "level": 2
+      },
+      {
+        "date": "2026-02-10",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2026-02-11",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-02-12",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-02-13",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-02-14",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-02-15",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-02-16",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-02-17",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-02-18",
+        "count": 26,
+        "level": 4
+      },
+      {
+        "date": "2026-02-19",
+        "count": 3,
+        "level": 1
+      },
+      {
+        "date": "2026-02-20",
+        "count": 2,
+        "level": 1
+      },
+      {
+        "date": "2026-02-21",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-02-22",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-02-23",
+        "count": 26,
+        "level": 4
+      },
+      {
+        "date": "2026-02-24",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-02-25",
+        "count": 2,
+        "level": 1
+      },
+      {
+        "date": "2026-02-26",
+        "count": 3,
+        "level": 1
+      },
+      {
+        "date": "2026-02-27",
+        "count": 4,
+        "level": 1
+      },
+      {
+        "date": "2026-02-28",
+        "count": 3,
+        "level": 1
+      },
+      {
+        "date": "2026-03-01",
+        "count": 2,
+        "level": 1
+      },
+      {
+        "date": "2026-03-02",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-03-03",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-03-04",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-03-05",
+        "count": 11,
+        "level": 2
+      },
+      {
+        "date": "2026-03-06",
+        "count": 3,
+        "level": 1
+      },
+      {
+        "date": "2026-03-07",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-03-08",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-03-09",
+        "count": 3,
+        "level": 1
+      },
+      {
+        "date": "2026-03-10",
+        "count": 14,
+        "level": 2
+      },
+      {
+        "date": "2026-03-11",
+        "count": 5,
+        "level": 1
+      },
+      {
+        "date": "2026-03-12",
+        "count": 15,
+        "level": 2
+      },
+      {
+        "date": "2026-03-13",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-03-14",
+        "count": 2,
+        "level": 1
+      },
+      {
+        "date": "2026-03-15",
+        "count": 9,
+        "level": 2
+      },
+      {
+        "date": "2026-03-16",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2026-03-17",
+        "count": 3,
+        "level": 1
+      },
+      {
+        "date": "2026-03-18",
+        "count": 3,
+        "level": 1
+      },
+      {
+        "date": "2026-03-19",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2026-03-20",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2026-03-21",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-03-22",
+        "count": 2,
+        "level": 1
+      },
+      {
+        "date": "2026-03-23",
+        "count": 5,
+        "level": 1
+      },
+      {
+        "date": "2026-03-24",
+        "count": 15,
+        "level": 2
+      },
+      {
+        "date": "2026-03-25",
+        "count": 20,
+        "level": 3
+      },
+      {
+        "date": "2026-03-26",
+        "count": 17,
+        "level": 3
+      },
+      {
+        "date": "2026-03-27",
+        "count": 7,
+        "level": 1
+      },
+      {
+        "date": "2026-03-28",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-03-29",
+        "count": 4,
+        "level": 1
+      },
+      {
+        "date": "2026-03-30",
+        "count": 4,
+        "level": 1
+      },
+      {
+        "date": "2026-03-31",
+        "count": 2,
+        "level": 1
+      },
+      {
+        "date": "2026-04-01",
+        "count": 3,
+        "level": 1
+      },
+      {
+        "date": "2026-04-02",
+        "count": 4,
+        "level": 1
+      },
+      {
+        "date": "2026-04-03",
+        "count": 10,
+        "level": 2
+      },
+      {
+        "date": "2026-04-04",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-04-05",
+        "count": 19,
+        "level": 3
+      },
+      {
+        "date": "2026-04-06",
+        "count": 3,
+        "level": 1
+      },
+      {
+        "date": "2026-04-07",
+        "count": 3,
+        "level": 1
+      },
+      {
+        "date": "2026-04-08",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-04-09",
+        "count": 3,
+        "level": 1
+      },
+      {
+        "date": "2026-04-10",
+        "count": 20,
+        "level": 3
+      },
+      {
+        "date": "2026-04-11",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2026-04-12",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-04-13",
+        "count": 15,
+        "level": 2
+      },
+      {
+        "date": "2026-04-14",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2026-04-15",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2026-04-16",
+        "count": 5,
+        "level": 1
+      },
+      {
+        "date": "2026-04-17",
+        "count": 3,
+        "level": 1
+      },
+      {
+        "date": "2026-04-18",
+        "count": 14,
+        "level": 2
+      },
+      {
+        "date": "2026-04-19",
+        "count": 13,
+        "level": 2
+      },
+      {
+        "date": "2026-04-20",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-04-21",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-04-22",
+        "count": 4,
+        "level": 1
+      },
+      {
+        "date": "2026-04-23",
+        "count": 15,
+        "level": 2
+      },
+      {
+        "date": "2026-04-24",
+        "count": 2,
+        "level": 1
+      },
+      {
+        "date": "2026-04-25",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-04-26",
+        "count": 7,
+        "level": 1
+      },
+      {
+        "date": "2026-04-27",
+        "count": 5,
+        "level": 1
+      },
+      {
+        "date": "2026-04-28",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-04-29",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2026-04-30",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-05-01",
+        "count": 20,
+        "level": 3
+      },
+      {
+        "date": "2026-05-02",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2026-05-03",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-05-04",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2026-05-05",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-05-06",
+        "count": 5,
+        "level": 1
+      },
+      {
+        "date": "2026-05-07",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-05-08",
+        "count": 17,
+        "level": 3
+      },
+      {
+        "date": "2026-05-09",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-05-10",
+        "count": 13,
+        "level": 2
+      },
+      {
+        "date": "2026-05-11",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-05-12",
+        "count": 8,
+        "level": 1
+      },
+      {
+        "date": "2026-05-13",
+        "count": 16,
+        "level": 2
+      },
+      {
+        "date": "2026-05-14",
+        "count": 13,
+        "level": 2
+      },
+      {
+        "date": "2026-05-15",
+        "count": 5,
+        "level": 1
+      },
+      {
+        "date": "2026-05-16",
+        "count": 17,
+        "level": 3
+      },
+      {
+        "date": "2026-05-17",
+        "count": 28,
+        "level": 4
+      },
+      {
+        "date": "2026-05-18",
+        "count": 3,
+        "level": 1
+      },
+      {
+        "date": "2026-05-19",
+        "count": 17,
+        "level": 3
+      },
+      {
+        "date": "2026-05-20",
+        "count": 3,
+        "level": 1
+      },
+      {
+        "date": "2026-05-21",
+        "count": 3,
+        "level": 1
+      },
+      {
+        "date": "2026-05-22",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-05-23",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-05-24",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-05-25",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-05-26",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2026-05-27",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-05-28",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-05-29",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-05-30",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2026-05-31",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-06-01",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-06-02",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-06-03",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-06-04",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-06-05",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-06-06",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-06-07",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2026-06-08",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2026-06-09",
+        "count": 6,
+        "level": 1
+      },
+      {
+        "date": "2026-06-10",
+        "count": 5,
+        "level": 1
+      },
+      {
+        "date": "2026-06-11",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-06-12",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-06-13",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-06-14",
+        "count": 2,
+        "level": 1
+      },
+      {
+        "date": "2026-06-15",
+        "count": 9,
+        "level": 2
+      },
+      {
+        "date": "2026-06-16",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-06-17",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-06-18",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2026-06-19",
+        "count": 16,
+        "level": 2
+      },
+      {
+        "date": "2026-06-20",
+        "count": 4,
+        "level": 1
+      },
+      {
+        "date": "2026-06-21",
+        "count": 7,
+        "level": 1
+      },
+      {
+        "date": "2026-06-22",
+        "count": 23,
+        "level": 3
+      },
+      {
+        "date": "2026-06-23",
+        "count": 14,
+        "level": 2
+      },
+      {
+        "date": "2026-06-24",
+        "count": 21,
+        "level": 3
+      },
+      {
+        "date": "2026-06-25",
+        "count": 59,
+        "level": 4
+      },
+      {
+        "date": "2026-06-26",
+        "count": 33,
+        "level": 4
+      },
+      {
+        "date": "2026-06-27",
+        "count": 5,
+        "level": 1
+      },
+      {
+        "date": "2026-06-28",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-06-29",
+        "count": 15,
+        "level": 2
+      },
+      {
+        "date": "2026-06-30",
+        "count": 19,
+        "level": 3
+      },
+      {
+        "date": "2026-07-01",
+        "count": 32,
+        "level": 4
+      },
+      {
+        "date": "2026-07-02",
+        "count": 12,
+        "level": 2
+      },
+      {
+        "date": "2026-07-03",
+        "count": 2,
+        "level": 1
+      },
+      {
+        "date": "2026-07-04",
+        "count": 2,
+        "level": 1
+      },
+      {
+        "date": "2026-07-05",
+        "count": 22,
+        "level": 3
+      },
+      {
+        "date": "2026-07-06",
+        "count": 16,
+        "level": 2
+      },
+      {
+        "date": "2026-07-07",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-07-08",
+        "count": 9,
+        "level": 2
+      },
+      {
+        "date": "2026-07-09",
+        "count": 2,
+        "level": 1
+      },
+      {
+        "date": "2026-07-10",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2026-07-11",
+        "count": 5,
+        "level": 1
+      },
+      {
+        "date": "2026-07-12",
+        "count": 0,
+        "level": 0
+      }
+    ]
+  },
+  "recent": [
+    {
+      "name": "chatbot-ui",
+      "full_name": "daxrpm/chatbot-ui",
+      "description": null,
+      "url": "https://github.com/daxrpm/chatbot-ui",
+      "homepage": null,
+      "language": "TypeScript",
+      "topics": [],
+      "stars": 1,
+      "pushed_at": "2026-07-06T22:15:49Z"
+    },
+    {
+      "name": "epn-tracker",
+      "full_name": "daxrpm/epn-tracker",
+      "description": "A simple tracker for EPN courses",
+      "url": "https://github.com/daxrpm/epn-tracker",
+      "homepage": null,
+      "language": "Python",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-07-06T22:08:06Z"
+    },
+    {
+      "name": "dax-assistant",
+      "full_name": "daxrpm/dax-assistant",
+      "description": null,
+      "url": "https://github.com/daxrpm/dax-assistant",
+      "homepage": null,
+      "language": "Python",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-07-01T01:06:09Z"
+    },
+    {
+      "name": "dotfiles",
+      "full_name": "daxrpm/dotfiles",
+      "description": "My personal linux dotfiles",
+      "url": "https://github.com/daxrpm/dotfiles",
+      "homepage": null,
+      "language": "Shell",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-06-24T21:21:15Z"
+    },
+    {
+      "name": "dax-auth",
+      "full_name": "daxrpm/dax-auth",
+      "description": "A simple PAM module with face authentication for Linux",
+      "url": "https://github.com/daxrpm/dax-auth",
+      "homepage": null,
+      "language": "Rust",
+      "topics": [
+        "c",
+        "face-authentication",
+        "face-recognition",
+        "linux",
+        "pam-authentication",
+        "pam-module",
+        "python"
+      ],
+      "stars": 1,
+      "pushed_at": "2026-06-09T20:54:44Z"
+    },
+    {
+      "name": "TexTeller-Rust",
+      "full_name": "daxrpm/TexTeller-Rust",
+      "description": "Native Rust port of TexTeller - convert images of math formulas into LaTeX, byte-exact with the upstream Python implementation.",
+      "url": "https://github.com/daxrpm/TexTeller-Rust",
+      "homepage": null,
+      "language": "Rust",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-05-02T02:03:44Z"
+    },
+    {
+      "name": "dax-sync",
+      "full_name": "daxrpm/dax-sync",
+      "description": null,
+      "url": "https://github.com/daxrpm/dax-sync",
+      "homepage": null,
+      "language": null,
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-05-01T01:06:24Z"
+    },
+    {
+      "name": "fedora-dotfiles",
+      "full_name": "daxrpm/fedora-dotfiles",
+      "description": null,
+      "url": "https://github.com/daxrpm/fedora-dotfiles",
+      "homepage": null,
+      "language": "JavaScript",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-04-11T16:13:04Z"
+    },
+    {
+      "name": "drone-detector",
+      "full_name": "daxrpm/drone-detector",
+      "description": "A simple computer vision–based drone detection system that sends notifications via WhatsApp.",
+      "url": "https://github.com/daxrpm/drone-detector",
+      "homepage": null,
+      "language": "Python",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-04-03T19:08:46Z"
+    },
+    {
+      "name": "ai-optimizers-benchmark",
+      "full_name": "daxrpm/ai-optimizers-benchmark",
+      "description": null,
+      "url": "https://github.com/daxrpm/ai-optimizers-benchmark",
+      "homepage": null,
+      "language": "Python",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-02-28T03:17:30Z"
+    },
+    {
+      "name": "apogee",
+      "full_name": "daxrpm/apogee",
+      "description": "A rocket launch ascent simulator for circular Low Earth Orbit insertion with numerical methods",
+      "url": "https://github.com/daxrpm/apogee",
+      "homepage": "https://apogee.daxrpm.dev",
+      "language": "TypeScript",
+      "topics": [
+        "physics",
+        "physics-simulation",
+        "python"
+      ],
+      "stars": 2,
+      "pushed_at": "2026-02-03T19:34:34Z"
+    },
+    {
+      "name": "least_squares_vs_gradient_descent",
+      "full_name": "daxrpm/least_squares_vs_gradient_descent",
+      "description": "Mathematical comparison of least squares and gradient descent",
+      "url": "https://github.com/daxrpm/least_squares_vs_gradient_descent",
+      "homepage": null,
+      "language": "Python",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-01-06T12:30:03Z"
+    }
+  ],
+  "all": [
+    {
+      "name": "chatbot-ui",
+      "full_name": "daxrpm/chatbot-ui",
+      "description": null,
+      "url": "https://github.com/daxrpm/chatbot-ui",
+      "homepage": null,
+      "language": "TypeScript",
+      "topics": [],
+      "stars": 1,
+      "pushed_at": "2026-07-06T22:15:49Z"
+    },
+    {
+      "name": "epn-tracker",
+      "full_name": "daxrpm/epn-tracker",
+      "description": "A simple tracker for EPN courses",
+      "url": "https://github.com/daxrpm/epn-tracker",
+      "homepage": null,
+      "language": "Python",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-07-06T22:08:06Z"
+    },
+    {
+      "name": "dax-assistant",
+      "full_name": "daxrpm/dax-assistant",
+      "description": null,
+      "url": "https://github.com/daxrpm/dax-assistant",
+      "homepage": null,
+      "language": "Python",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-07-01T01:06:09Z"
+    },
+    {
+      "name": "dotfiles",
+      "full_name": "daxrpm/dotfiles",
+      "description": "My personal linux dotfiles",
+      "url": "https://github.com/daxrpm/dotfiles",
+      "homepage": null,
+      "language": "Shell",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-06-24T21:21:15Z"
+    },
+    {
+      "name": "dax-auth",
+      "full_name": "daxrpm/dax-auth",
+      "description": "A simple PAM module with face authentication for Linux",
+      "url": "https://github.com/daxrpm/dax-auth",
+      "homepage": null,
+      "language": "Rust",
+      "topics": [
+        "c",
+        "face-authentication",
+        "face-recognition",
+        "linux",
+        "pam-authentication",
+        "pam-module",
+        "python"
+      ],
+      "stars": 1,
+      "pushed_at": "2026-06-09T20:54:44Z"
+    },
+    {
+      "name": "TexTeller-Rust",
+      "full_name": "daxrpm/TexTeller-Rust",
+      "description": "Native Rust port of TexTeller - convert images of math formulas into LaTeX, byte-exact with the upstream Python implementation.",
+      "url": "https://github.com/daxrpm/TexTeller-Rust",
+      "homepage": null,
+      "language": "Rust",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-05-02T02:03:44Z"
+    },
+    {
+      "name": "dax-sync",
+      "full_name": "daxrpm/dax-sync",
+      "description": null,
+      "url": "https://github.com/daxrpm/dax-sync",
+      "homepage": null,
+      "language": null,
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-05-01T01:06:24Z"
+    },
+    {
+      "name": "fedora-dotfiles",
+      "full_name": "daxrpm/fedora-dotfiles",
+      "description": null,
+      "url": "https://github.com/daxrpm/fedora-dotfiles",
+      "homepage": null,
+      "language": "JavaScript",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-04-11T16:13:04Z"
+    },
+    {
+      "name": "drone-detector",
+      "full_name": "daxrpm/drone-detector",
+      "description": "A simple computer vision–based drone detection system that sends notifications via WhatsApp.",
+      "url": "https://github.com/daxrpm/drone-detector",
+      "homepage": null,
+      "language": "Python",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-04-03T19:08:46Z"
+    },
+    {
+      "name": "ai-optimizers-benchmark",
+      "full_name": "daxrpm/ai-optimizers-benchmark",
+      "description": null,
+      "url": "https://github.com/daxrpm/ai-optimizers-benchmark",
+      "homepage": null,
+      "language": "Python",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-02-28T03:17:30Z"
+    },
+    {
+      "name": "MN-examen-02",
+      "full_name": "daxrpm/MN-examen-02",
+      "description": null,
+      "url": "https://github.com/daxrpm/MN-examen-02",
+      "homepage": null,
+      "language": "Jupyter Notebook",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-02-04T18:13:36Z"
+    },
+    {
+      "name": "apogee",
+      "full_name": "daxrpm/apogee",
+      "description": "A rocket launch ascent simulator for circular Low Earth Orbit insertion with numerical methods",
+      "url": "https://github.com/daxrpm/apogee",
+      "homepage": "https://apogee.daxrpm.dev",
+      "language": "TypeScript",
+      "topics": [
+        "physics",
+        "physics-simulation",
+        "python"
+      ],
+      "stars": 2,
+      "pushed_at": "2026-02-03T19:34:34Z"
+    },
+    {
+      "name": "nm-hw-11",
+      "full_name": "daxrpm/nm-hw-11",
+      "description": null,
+      "url": "https://github.com/daxrpm/nm-hw-11",
+      "homepage": null,
+      "language": null,
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-01-28T19:42:53Z"
+    },
+    {
+      "name": "nm-hw-10",
+      "full_name": "daxrpm/nm-hw-10",
+      "description": null,
+      "url": "https://github.com/daxrpm/nm-hw-10",
+      "homepage": null,
+      "language": null,
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-01-28T19:40:11Z"
+    },
+    {
+      "name": "taller-Metodos-iterativos",
+      "full_name": "daxrpm/taller-Metodos-iterativos",
+      "description": null,
+      "url": "https://github.com/daxrpm/taller-Metodos-iterativos",
+      "homepage": null,
+      "language": null,
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-01-20T16:34:44Z"
+    },
+    {
+      "name": "MN-prueba-02",
+      "full_name": "daxrpm/MN-prueba-02",
+      "description": null,
+      "url": "https://github.com/daxrpm/MN-prueba-02",
+      "homepage": null,
+      "language": "Jupyter Notebook",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-01-14T00:15:46Z"
+    },
+    {
+      "name": "nm-hw-9",
+      "full_name": "daxrpm/nm-hw-9",
+      "description": null,
+      "url": "https://github.com/daxrpm/nm-hw-9",
+      "homepage": null,
+      "language": "Jupyter Notebook",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-01-07T22:42:45Z"
+    },
+    {
+      "name": "least_squares_vs_gradient_descent",
+      "full_name": "daxrpm/least_squares_vs_gradient_descent",
+      "description": "Mathematical comparison of least squares and gradient descent",
+      "url": "https://github.com/daxrpm/least_squares_vs_gradient_descent",
+      "homepage": null,
+      "language": "Python",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-01-06T12:30:03Z"
+    },
+    {
+      "name": "taller-gauss",
+      "full_name": "daxrpm/taller-gauss",
+      "description": null,
+      "url": "https://github.com/daxrpm/taller-gauss",
+      "homepage": null,
+      "language": "Jupyter Notebook",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-12-26T00:54:48Z"
+    },
+    {
+      "name": "workshop_5",
+      "full_name": "daxrpm/workshop_5",
+      "description": null,
+      "url": "https://github.com/daxrpm/workshop_5",
+      "homepage": null,
+      "language": "Jupyter Notebook",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-12-09T18:22:06Z"
+    },
+    {
+      "name": "MN-exam",
+      "full_name": "daxrpm/MN-exam",
+      "description": null,
+      "url": "https://github.com/daxrpm/MN-exam",
+      "homepage": null,
+      "language": "Jupyter Notebook",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-12-01T17:57:52Z"
+    },
+    {
+      "name": "workshop_4",
+      "full_name": "daxrpm/workshop_4",
+      "description": "Celeste Lascano, Dax Navarrete",
+      "url": "https://github.com/daxrpm/workshop_4",
+      "homepage": null,
+      "language": "Jupyter Notebook",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-11-26T14:42:26Z"
+    },
+    {
+      "name": "proyecto_metodos_numericos",
+      "full_name": "daxrpm/proyecto_metodos_numericos",
+      "description": null,
+      "url": "https://github.com/daxrpm/proyecto_metodos_numericos",
+      "homepage": null,
+      "language": "Jupyter Notebook",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-11-25T18:52:28Z"
+    },
+    {
+      "name": "linux-dotfiles",
+      "full_name": "daxrpm/linux-dotfiles",
+      "description": "My personal linux dotfiles and scripts ",
+      "url": "https://github.com/daxrpm/linux-dotfiles",
+      "homepage": null,
+      "language": null,
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-11-16T00:58:16Z"
+    },
+    {
+      "name": "PDFeditor-web",
+      "full_name": "daxrpm/PDFeditor-web",
+      "description": "A simple web to use PDFeditor-api",
+      "url": "https://github.com/daxrpm/PDFeditor-web",
+      "homepage": "https://pdf-editor.daxrpm.dev/",
+      "language": "TypeScript",
+      "topics": [
+        "pdf-editor-free"
+      ],
+      "stars": 0,
+      "pushed_at": "2025-11-14T23:13:55Z"
+    },
+    {
+      "name": "my-web",
+      "full_name": "daxrpm/my-web",
+      "description": "My personal web page",
+      "url": "https://github.com/daxrpm/my-web",
+      "homepage": null,
+      "language": "TypeScript",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-11-14T15:36:10Z"
+    },
+    {
+      "name": "PDFeditor-api",
+      "full_name": "daxrpm/PDFeditor-api",
+      "description": "A free PDFeditor API",
+      "url": "https://github.com/daxrpm/PDFeditor-api",
+      "homepage": "https://pdf-editor-api.daxrpm.dev/",
+      "language": "Python",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-11-13T13:54:21Z"
+    },
+    {
+      "name": "workshop_3",
+      "full_name": "daxrpm/workshop_3",
+      "description": null,
+      "url": "https://github.com/daxrpm/workshop_3",
+      "homepage": null,
+      "language": "Jupyter Notebook",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-11-13T01:25:00Z"
+    },
+    {
+      "name": "al-folio",
+      "full_name": "daxrpm/al-folio",
+      "description": null,
+      "url": "https://github.com/daxrpm/al-folio",
+      "homepage": null,
+      "language": "HTML",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-11-06T15:12:43Z"
+    },
+    {
+      "name": "numerical-methods_homeworks",
+      "full_name": "daxrpm/numerical-methods_homeworks",
+      "description": null,
+      "url": "https://github.com/daxrpm/numerical-methods_homeworks",
+      "homepage": null,
+      "language": "Jupyter Notebook",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-11-06T02:31:30Z"
+    },
+    {
+      "name": "workshop_2",
+      "full_name": "daxrpm/workshop_2",
+      "description": "Numerical Methods workshop 2",
+      "url": "https://github.com/daxrpm/workshop_2",
+      "homepage": null,
+      "language": "Jupyter Notebook",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-10-30T02:06:25Z"
+    },
+    {
+      "name": "workshop_ada_lab",
+      "full_name": "daxrpm/workshop_ada_lab",
+      "description": null,
+      "url": "https://github.com/daxrpm/workshop_ada_lab",
+      "homepage": null,
+      "language": "Jupyter Notebook",
+      "topics": [],
+      "stars": 1,
+      "pushed_at": "2025-10-28T16:18:31Z"
+    },
+    {
+      "name": "workshop_1",
+      "full_name": "daxrpm/workshop_1",
+      "description": "Numerical Methods workshop 1",
+      "url": "https://github.com/daxrpm/workshop_1",
+      "homepage": null,
+      "language": "Jupyter Notebook",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-10-15T02:23:50Z"
+    },
+    {
+      "name": "luxcal-dockerized",
+      "full_name": "daxrpm/luxcal-dockerized",
+      "description": "Simple Dockerfile for dockerizing Luxcal into Coolify",
+      "url": "https://github.com/daxrpm/luxcal-dockerized",
+      "homepage": null,
+      "language": "PHP",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-09-05T20:56:45Z"
+    },
+    {
+      "name": "cmstest",
+      "full_name": "daxrpm/cmstest",
+      "description": null,
+      "url": "https://github.com/daxrpm/cmstest",
+      "homepage": null,
+      "language": "JavaScript",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-09-04T17:10:25Z"
+    },
+    {
+      "name": "K-FAC-vs-AdaMuon",
+      "full_name": "daxrpm/K-FAC-vs-AdaMuon",
+      "description": "K-FAC algorithm implementation",
+      "url": "https://github.com/daxrpm/K-FAC-vs-AdaMuon",
+      "homepage": null,
+      "language": "Jupyter Notebook",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-08-30T02:20:23Z"
+    },
+    {
+      "name": "proyecto-final-EDA",
+      "full_name": "daxrpm/proyecto-final-EDA",
+      "description": "A networking simulation with graphs",
+      "url": "https://github.com/daxrpm/proyecto-final-EDA",
+      "homepage": null,
+      "language": "Java",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-08-05T19:09:29Z"
+    },
+    {
+      "name": "io-fs-experiments",
+      "full_name": "daxrpm/io-fs-experiments",
+      "description": "My I/O, FS and sockets experiments on Linux",
+      "url": "https://github.com/daxrpm/io-fs-experiments",
+      "homepage": null,
+      "language": "Shell",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-07-14T00:56:37Z"
+    },
+    {
+      "name": "dash",
+      "full_name": "daxrpm/dash",
+      "description": "My own simple Linux shell",
+      "url": "https://github.com/daxrpm/dash",
+      "homepage": null,
+      "language": "C",
+      "topics": [
+        "linux",
+        "linux-shell"
+      ],
+      "stars": 0,
+      "pushed_at": "2025-06-06T20:03:59Z"
+    },
+    {
+      "name": "poli-retos",
+      "full_name": "daxrpm/poli-retos",
+      "description": "Group 4 resolution",
+      "url": "https://github.com/daxrpm/poli-retos",
+      "homepage": null,
+      "language": "Java",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-05-26T22:33:29Z"
+    },
+    {
+      "name": "apps_runner",
+      "full_name": "daxrpm/apps_runner",
+      "description": null,
+      "url": "https://github.com/daxrpm/apps_runner",
+      "homepage": null,
+      "language": "Shell",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-03-31T02:36:27Z"
+    },
+    {
+      "name": "osint-api",
+      "full_name": "daxrpm/osint-api",
+      "description": "Research open data in Ecuador",
+      "url": "https://github.com/daxrpm/osint-api",
+      "homepage": null,
+      "language": "Python",
+      "topics": [],
+      "stars": 1,
+      "pushed_at": "2025-03-31T02:32:13Z"
+    },
+    {
+      "name": "osint-web",
+      "full_name": "daxrpm/osint-web",
+      "description": "A simple Front-end for osint api",
+      "url": "https://github.com/daxrpm/osint-web",
+      "homepage": null,
+      "language": "TypeScript",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-03-31T02:27:14Z"
+    },
+    {
+      "name": "epn-cms-exercise",
+      "full_name": "daxrpm/epn-cms-exercise",
+      "description": null,
+      "url": "https://github.com/daxrpm/epn-cms-exercise",
+      "homepage": null,
+      "language": "Java",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-03-22T21:47:43Z"
+    },
+    {
+      "name": "fastapi-keycloak",
+      "full_name": "daxrpm/fastapi-keycloak",
+      "description": "Full auth in fastapi with keycloak",
+      "url": "https://github.com/daxrpm/fastapi-keycloak",
+      "homepage": null,
+      "language": "Python",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-03-21T20:21:09Z"
+    },
+    {
+      "name": "fastapi-auth",
+      "full_name": "daxrpm/fastapi-auth",
+      "description": "Auth api in FastAPI",
+      "url": "https://github.com/daxrpm/fastapi-auth",
+      "homepage": null,
+      "language": "Python",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-03-13T02:17:59Z"
+    },
+    {
+      "name": "keycloak-auth",
+      "full_name": "daxrpm/keycloak-auth",
+      "description": "A full authentication system in spring boot using keycloak",
+      "url": "https://github.com/daxrpm/keycloak-auth",
+      "homepage": null,
+      "language": "Java",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-02-24T17:16:50Z"
+    },
+    {
+      "name": "EcuaAnt2K24A",
+      "full_name": "daxrpm/EcuaAnt2K24A",
+      "description": "Examen final ",
+      "url": "https://github.com/daxrpm/EcuaAnt2K24A",
+      "homepage": null,
+      "language": "Java",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-02-14T04:20:00Z"
+    },
+    {
+      "name": "SmartTurn",
+      "full_name": "daxrpm/SmartTurn",
+      "description": "SmartTurn - sistema medico con autenticación de multifactores (contraseña, reconocimiento facial). Proyecto EPN - G4",
+      "url": "https://github.com/daxrpm/SmartTurn",
+      "homepage": null,
+      "language": "Java",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-02-11T01:49:09Z"
+    },
+    {
+      "name": "ExamenFinalProgra2",
+      "full_name": "daxrpm/ExamenFinalProgra2",
+      "description": null,
+      "url": "https://github.com/daxrpm/ExamenFinalProgra2",
+      "homepage": null,
+      "language": null,
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-02-06T21:03:32Z"
+    },
+    {
+      "name": "SistemaMedicoFaceAuthAPI",
+      "full_name": "daxrpm/SistemaMedicoFaceAuthAPI",
+      "description": "API para la autenticación facial de SistemaMedico. Proyecto EPN - G4",
+      "url": "https://github.com/daxrpm/SistemaMedicoFaceAuthAPI",
+      "homepage": null,
+      "language": "Python",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-02-01T17:47:50Z"
+    },
+    {
+      "name": "PoliSalud",
+      "full_name": "daxrpm/PoliSalud",
+      "description": "EPN - G4 - PoliSalud ",
+      "url": "https://github.com/daxrpm/PoliSalud",
+      "homepage": null,
+      "language": "Java",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-01-30T04:45:44Z"
+    },
+    {
+      "name": "MultiFactorSecuritySystem",
+      "full_name": "daxrpm/MultiFactorSecuritySystem",
+      "description": "Multifactor security system in Java",
+      "url": "https://github.com/daxrpm/MultiFactorSecuritySystem",
+      "homepage": null,
+      "language": "Java",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-01-23T00:40:44Z"
+    },
+    {
+      "name": "homework-bot",
+      "full_name": "daxrpm/homework-bot",
+      "description": "...",
+      "url": "https://github.com/daxrpm/homework-bot",
+      "homepage": null,
+      "language": "Python",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-01-18T02:35:54Z"
+    },
+    {
+      "name": "java-sqlite",
+      "full_name": "daxrpm/java-sqlite",
+      "description": "jdbc",
+      "url": "https://github.com/daxrpm/java-sqlite",
+      "homepage": null,
+      "language": null,
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-01-18T00:28:42Z"
+    },
+    {
+      "name": "movie-alert-ec",
+      "full_name": "daxrpm/movie-alert-ec",
+      "description": "Simple alert system when a movie is aviable",
+      "url": "https://github.com/daxrpm/movie-alert-ec",
+      "homepage": null,
+      "language": "Python",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-01-07T18:54:03Z"
+    },
+    {
+      "name": "EPN-project",
+      "full_name": "daxrpm/EPN-project",
+      "description": "Object Oriented Programming project ",
+      "url": "https://github.com/daxrpm/EPN-project",
+      "homepage": null,
+      "language": "Java",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2024-12-25T16:26:58Z"
+    },
+    {
+      "name": "ticket-manager-api",
+      "full_name": "daxrpm/ticket-manager-api",
+      "description": "A simple ticket manager api with Django",
+      "url": "https://github.com/daxrpm/ticket-manager-api",
+      "homepage": null,
+      "language": "Python",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2024-12-20T14:52:12Z"
+    },
+    {
+      "name": "ticket-manager-web",
+      "full_name": "daxrpm/ticket-manager-web",
+      "description": "Simple front end for ticket manager api (Imbad atfront)",
+      "url": "https://github.com/daxrpm/ticket-manager-web",
+      "homepage": null,
+      "language": "TypeScript",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2024-12-20T14:45:43Z"
+    },
+    {
+      "name": "dax-web",
+      "full_name": "daxrpm/dax-web",
+      "description": "My personal web page",
+      "url": "https://github.com/daxrpm/dax-web",
+      "homepage": null,
+      "language": "TypeScript",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2024-12-11T16:14:45Z"
+    },
+    {
+      "name": "areaBetweenPoints",
+      "full_name": "daxrpm/areaBetweenPoints",
+      "description": null,
+      "url": "https://github.com/daxrpm/areaBetweenPoints",
+      "homepage": null,
+      "language": "Jupyter Notebook",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2024-11-29T23:22:20Z"
+    },
+    {
+      "name": "test1-progra",
+      "full_name": "daxrpm/test1-progra",
+      "description": null,
+      "url": "https://github.com/daxrpm/test1-progra",
+      "homepage": null,
+      "language": "Java",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2024-11-13T16:46:53Z"
+    },
+    {
+      "name": "dashboard",
+      "full_name": "daxrpm/dashboard",
+      "description": "Admin dashboard using react",
+      "url": "https://github.com/daxrpm/dashboard",
+      "homepage": null,
+      "language": "JavaScript",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2024-11-10T22:55:45Z"
+    },
+    {
+      "name": "dax_backend",
+      "full_name": "daxrpm/dax_backend",
+      "description": "Backend for my own app's",
+      "url": "https://github.com/daxrpm/dax_backend",
+      "homepage": null,
+      "language": "Python",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2024-10-20T19:39:19Z"
+    },
+    {
+      "name": "battleship-game-cpp",
+      "full_name": "daxrpm/battleship-game-cpp",
+      "description": "A console-based Battleship game implemented in C++.",
+      "url": "https://github.com/daxrpm/battleship-game-cpp",
+      "homepage": null,
+      "language": "C++",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2024-08-05T19:59:43Z"
+    },
+    {
+      "name": "unitTestingClass",
+      "full_name": "daxrpm/unitTestingClass",
+      "description": "Learn unit testing in Java",
+      "url": "https://github.com/daxrpm/unitTestingClass",
+      "homepage": null,
+      "language": "Java",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2024-07-07T17:05:19Z"
+    },
+    {
+      "name": "traccar-web-edit",
+      "full_name": "daxrpm/traccar-web-edit",
+      "description": null,
+      "url": "https://github.com/daxrpm/traccar-web-edit",
+      "homepage": null,
+      "language": "JavaScript",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2024-07-04T01:57:29Z"
+    },
+    {
+      "name": "AICarDistance",
+      "full_name": "daxrpm/AICarDistance",
+      "description": "Measure the distance between two cars using computer vision",
+      "url": "https://github.com/daxrpm/AICarDistance",
+      "homepage": null,
+      "language": "Python",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2024-07-04T01:12:09Z"
+    }
+  ],
+  "cms": [
+    {
+      "name": "minipart-topology-vs-flavor-autonomous",
+      "full_name": "CMS-EPN/minipart-topology-vs-flavor-autonomous",
+      "description": null,
+      "url": "https://github.com/CMS-EPN/minipart-topology-vs-flavor-autonomous",
+      "homepage": null,
+      "language": "Python",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-07-08T20:35:04Z"
+    },
+    {
+      "name": "minipart-topology-vs-flavor",
+      "full_name": "CMS-EPN/minipart-topology-vs-flavor",
+      "description": null,
+      "url": "https://github.com/CMS-EPN/minipart-topology-vs-flavor",
+      "homepage": null,
+      "language": "Jupyter Notebook",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-07-06T02:22:24Z"
+    },
+    {
+      "name": "search-for-dark-matter-docs",
+      "full_name": "CMS-EPN/search-for-dark-matter-docs",
+      "description": "Graphs generation of Search for dark matter produced in association with a single top quark or a top quark pair in proton-proton collisions at √s = 13 TeV",
+      "url": "https://github.com/CMS-EPN/search-for-dark-matter-docs",
+      "homepage": null,
+      "language": null,
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-04-07T12:48:16Z"
+    },
+    {
+      "name": "workshop-webpage",
+      "full_name": "CMS-EPN/workshop-webpage",
+      "description": "Web page for EPN workshop",
+      "url": "https://github.com/CMS-EPN/workshop-webpage",
+      "homepage": null,
+      "language": "TypeScript",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-09-09T15:16:51Z"
+    },
+    {
+      "name": "onboarding-guide",
+      "full_name": "CMS-EPN/onboarding-guide",
+      "description": "An onboarding guide to CMS platforms",
+      "url": "https://github.com/CMS-EPN/onboarding-guide",
+      "homepage": null,
+      "language": null,
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2025-06-09T21:24:06Z"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+---
+const links = [
+  { label: 'Work', href: '#work' },
+  { label: 'Activity', href: '#activity' },
+  { label: 'Stack', href: '#stack' },
+  { label: 'About', href: '#about' },
+  { label: 'Contact', href: '#contact' },
+];
+---
+
+<header class="sticky top-0 z-40 border-b border-line/70 bg-canvas/80 backdrop-blur">
+  <nav class="wrap flex h-16 items-center justify-between" aria-label="Primary">
+    <a href="#top" class="font-mono text-sm font-medium text-fg transition-colors hover:text-accent">
+      daxrpm<span class="text-accent">.</span>dev
+    </a>
+
+    <ul class="hidden items-center gap-7 text-sm sm:flex">
+      {
+        links.map((l) => (
+          <li>
+            <a
+              href={l.href}
+              class="text-fg-muted transition-colors hover:text-fg"
+              data-umami-event="nav-click"
+              data-umami-event-section={l.href.slice(1)}
+            >
+              {l.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <a
+      href="https://github.com/daxrpm"
+      rel="noopener"
+      class="rounded-md border border-line-hi px-3 py-1.5 text-sm text-fg-muted transition-colors hover:border-accent/60 hover:text-accent"
+      data-umami-event="github-profile"
+      data-umami-event-source="nav"
+    >
+      GitHub
+    </a>
+  </nav>
+</header>

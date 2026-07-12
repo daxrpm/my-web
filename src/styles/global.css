@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'calt';
+  }
+
+  ::selection {
+    @apply bg-accent/25 text-fg;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-accent/70 ring-offset-2 ring-offset-canvas;
+  }
+
+  /* The old build animated 182 elements on load. Respect the setting this time. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .wrap {
+    @apply mx-auto w-full max-w-content px-5 sm:px-6;
+  }
+
+  .card {
+    @apply rounded-lg border border-line bg-surface transition-colors duration-200 hover:border-line-hi;
+  }
+
+  /* Section labels: the one place monospace earns its keep. */
+  .eyebrow {
+    @apply font-mono text-xs uppercase tracking-widest text-fg-subtle;
+  }
+
+  .chip {
+    @apply rounded-md border border-line bg-canvas px-2 py-0.5 font-mono text-xs text-fg-muted;
+  }
+
+  .link {
+    @apply text-fg-muted underline-offset-4 transition-colors hover:text-accent hover:underline;
+  }
+}

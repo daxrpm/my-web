@@ -1,0 +1,174 @@
+---
+import { existsSync } from 'node:fs';
+import { featured, secondary, type Project } from '../data/profile';
+import github from '../data/github.json';
+
+/**
+ * Screenshots are optional: a project renders fine without one, and lights up as soon
+ * as the file is dropped into public/projects. Beats shipping a broken image box.
+ */
+const hasImage = (path?: string) => Boolean(path && existsSync(`public${path}`));
+
+type Repo = { name: string; full_name: string; url: string; description: string | null; language: string | null; stars: number; homepage: string | null; pushed_at: string };
+
+const byName = new Map<string, Repo>();
+for (const r of [...github.all, ...github.cms] as Repo[]) byName.set(r.name, r);
+
+/** Curated copy wins; the API supplies the things that go stale (stars, language, URL). */
+const items = featured.map((p: Project) => {
+  const repo = byName.get(p.repo);
+  return {
+    ...p,
+    url: repo?.url ?? `https://github.com/${p.owner ?? 'daxrpm'}/${p.repo}`,
+    stars: repo?.stars ?? 0,
+    language: repo?.language ?? p.stack[0],
+    pushed_at: repo?.pushed_at,
+  };
+});
+
+const more = secondary
+  .map((name) => byName.get(name))
+  .filter((r): r is Repo => Boolean(r));
+
+/** Recent repos not already featured above — this is the part that updates itself. */
+const featuredNames = new Set(featured.map((p) => p.repo));
+const recent = (github.recent as Repo[])
+  .filter((r) => !featuredNames.has(r.name) && !secondary.includes(r.name as never))
+  .slice(0, 6);
+
+const TAGS: Record<Project['tag'], string> = {
+  research: 'Physics research',
+  systems: 'Systems',
+  ai: 'AI / ML',
+  backend: 'Backend',
+};
+
+const ago = (iso?: string) => {
+  if (!iso) return null;
+  const days = Math.floor((Date.now() - new Date(iso).getTime()) / 86_400_000);
+  if (days < 1) return 'today';
+  if (days < 30) return `${days}d ago`;
+  if (days < 365) return `${Math.floor(days / 30)}mo ago`;
+  return `${Math.floor(days / 365)}y ago`;
+};
+---
+
+<section id="work" aria-labelledby="work-h" class="wrap py-16 sm:py-20">
+  <h2 id="work-h" class="eyebrow">Selected work</h2>
+  <p class="mt-3 max-w-2xl text-fg-muted">
+    Physics research at CMS, systems software in Rust and C, and applied machine learning.
+  </p>
+
+  <div class="mt-10 space-y-4">
+    {
+      items.map((p) => (
+        <article class="card p-5 sm:p-6">
+          <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+            <h3 class="text-lg font-semibold text-fg">
+              <a
+                href={p.url}
+                rel="noopener"
+                class="transition-colors hover:text-accent"
+                data-umami-event="project-click"
+                data-umami-event-project={p.repo}
+                data-umami-event-tag={p.tag}
+                data-umami-event-target="title"
+              >
+                {p.title}
+              </a>
+            </h3>
+            <span class="eyebrow shrink-0">{TAGS[p.tag]}</span>
+          </div>
+
+          {/* Written to stand alone as a quotable claim. */}
+          <p class="mt-3 leading-relaxed text-fg">{p.blurb}</p>
+          <p class="mt-2.5 text-sm leading-relaxed text-fg-muted">{p.detail}</p>
+
+          {p.terminal && (
+            <pre class="mt-4 overflow-x-auto rounded-md border border-line bg-canvas p-3.5 font-mono text-xs leading-relaxed text-fg-muted"><code>{p.terminal.join('\n')}</code></pre>
+          )}
+
+          {hasImage(p.image) && (
+            <img
+              src={p.image}
+              alt={`${p.title} screenshot`}
+              loading="lazy"
+              decoding="async"
+              class="mt-4 w-full rounded-md border border-line bg-canvas"
+            />
+          )}
+
+          <div class="mt-5 flex flex-wrap items-center gap-1.5">
+            {p.stack.map((s) => <span class="chip">{s}</span>)}
+          </div>
+
+          <div class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-line pt-4 text-sm">
+            <a
+              href={p.url}
+              rel="noopener"
+              class="link"
+              data-umami-event="project-click"
+              data-umami-event-project={p.repo}
+              data-umami-event-tag={p.tag}
+              data-umami-event-target="source"
+            >
+              Source
+            </a>
+            {p.live && (
+              <a
+                href={p.live}
+                rel="noopener"
+                class="link"
+                data-umami-event="project-click"
+                data-umami-event-project={p.repo}
+                data-umami-event-tag={p.tag}
+                data-umami-event-target="live-demo"
+              >
+                Live demo
+              </a>
+            )}
+            {p.stars > 0 && <span class="font-mono text-xs text-fg-subtle">★ {p.stars}</span>}
+            {p.pushed_at && <span class="font-mono text-xs text-fg-subtle">updated {ago(p.pushed_at)}</span>}
+          </div>
+        </article>
+      ))
+    }
+  </div>
+
+  <h3 class="eyebrow mt-16">Also on GitHub</h3>
+  <ul class="mt-5 grid gap-3 sm:grid-cols-2">
+    {
+      [...more, ...recent].map((r) => (
+        <li class="card p-4">
+          <a
+            href={r.url}
+            rel="noopener"
+            class="group block"
+            data-umami-event="repo-click"
+            data-umami-event-repo={r.name}
+          >
+            <div class="flex items-baseline justify-between gap-3">
+              <span class="font-mono text-sm text-fg transition-colors group-hover:text-accent">{r.name}</span>
+              {r.stars > 0 && <span class="shrink-0 font-mono text-xs text-fg-subtle">★ {r.stars}</span>}
+            </div>
+            {r.description && <p class="mt-1.5 line-clamp-2 text-sm text-fg-muted">{r.description}</p>}
+            {r.language && <span class="mt-2.5 block font-mono text-xs text-fg-subtle">{r.language}</span>}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  <p class="mt-6 text-sm text-fg-subtle">
+    This list updates automatically from the GitHub API.
+    <a
+      href="https://github.com/daxrpm?tab=repositories"
+      rel="noopener"
+      class="link"
+      data-umami-event="github-profile"
+      data-umami-event-source="all-repos"
+    >
+      See all {github.stats.public_repos} repositories
+    </a>.
+  </p>
+</section>

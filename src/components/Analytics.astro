@@ -1,0 +1,49 @@
+---
+/**
+ * Umami. Self-hosted, cookieless, no consent banner needed.
+ *
+ * Nearly all events are declared with `data-umami-event` attributes on the elements
+ * themselves, so they cost zero JavaScript beyond the tracker. The only script here is
+ * a section-view observer, which answers the one question attributes cannot: how far
+ * down the page people actually get before they leave.
+ */
+const HOST = import.meta.env.PUBLIC_UMAMI_HOST;
+const ID = import.meta.env.PUBLIC_UMAMI_ID;
+const enabled = Boolean(HOST && ID);
+---
+
+{
+  enabled && (
+    <>
+      <script
+        is:inline
+        defer
+        src={`${HOST}/script.js`}
+        data-website-id={ID}
+        data-domains="daxrpm.dev"
+        data-performance="true"
+        data-do-not-track="true"
+      />
+
+      <script is:inline>
+        {`
+        // Fire "section-view" once per section, the first time it is meaningfully on screen.
+        // Tells you whether visitors reach the work, and whether they ever reach contact.
+        document.addEventListener('DOMContentLoaded', () => {
+          if (!('IntersectionObserver' in window)) return;
+          const seen = new Set();
+          const io = new IntersectionObserver((entries) => {
+            for (const e of entries) {
+              if (!e.isIntersecting || seen.has(e.target.id)) continue;
+              seen.add(e.target.id);
+              window.umami?.track('section-view', { section: e.target.id });
+              io.unobserve(e.target);
+            }
+          }, { threshold: 0.35 });
+          document.querySelectorAll('main section[id]').forEach((s) => io.observe(s));
+        });
+        `}
+      </script>
+    </>
+  )
+}

@@ -1,0 +1,123 @@
+---
+import { site } from '../data/profile';
+import github from '../data/github.json';
+import Analytics from '../components/Analytics.astro';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = `${site.name} — Systems & ML for Particle Physics`,
+  description = site.summary,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, site.url).href;
+const ogImage = new URL('/og.png', site.url).href;
+const updated = github.generated_at;
+
+/**
+ * One Person entity with everything hanging off it. `sameAs` is what lets Google and
+ * the LLM crawlers reconcile "Dax Navarrete", "daxrpm" and the CERN author name as
+ * the same person — that reconciliation is most of what entity SEO actually is.
+ */
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': `${site.url}/#person`,
+  name: site.name,
+  alternateName: ['daxrpm', 'Ariel Dax Navarrete Freire'],
+  url: site.url,
+  image: `${site.url}/og.png`,
+  email: `mailto:${site.email}`,
+  jobTitle: 'Computer Science Undergraduate & Research Collaborator',
+  description: site.summary,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Quito',
+    addressCountry: 'EC',
+  },
+  affiliation: [
+    { '@type': 'CollegeOrUniversity', name: 'Escuela Politécnica Nacional', url: 'https://www.epn.edu.ec/' },
+    { '@type': 'ResearchOrganization', name: 'CMS Collaboration, CERN', url: 'https://cms.cern/' },
+  ],
+  alumniOf: { '@type': 'CollegeOrUniversity', name: 'Escuela Politécnica Nacional' },
+  knowsAbout: [
+    'Machine learning for particle physics',
+    'Jet flavour tagging',
+    'Rust systems programming',
+    'Linux PAM authentication',
+    'Network engineering',
+    'Cybersecurity',
+    'Numerical methods',
+    'Backend development',
+  ],
+  knowsLanguage: ['Spanish', 'English'],
+  sameAs: [
+    'https://github.com/daxrpm',
+    'https://www.linkedin.com/in/dax-navarrete-b07b3826a/',
+    'https://github.com/CMS-EPN',
+  ],
+};
+
+const pageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  '@id': `${site.url}/#page`,
+  url: site.url,
+  name: title,
+  description,
+  dateModified: updated,
+  mainEntity: { '@id': `${site.url}/#person` },
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="canonical" href={canonical} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={site.name} />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+
+    <meta property="og:type" content="profile" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content={site.name} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <meta name="theme-color" content="#0d1117" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+
+    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+    <script type="application/ld+json" set:html={JSON.stringify(pageSchema)} />
+
+    <Analytics />
+  </head>
+
+  <body class="bg-canvas text-fg antialiased">
+    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded focus:bg-accent focus:px-4 focus:py-2 focus:text-canvas">
+      Skip to content
+    </a>
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,44 @@
+---
+import { skills } from '../data/profile';
+import github from '../data/github.json';
+
+const langs = github.stats.languages;
+const max = Math.max(...langs.map((l) => l.count));
+---
+
+<section id="stack" aria-labelledby="stack-h" class="wrap py-16 sm:py-20">
+  <h2 id="stack-h" class="eyebrow">Stack</h2>
+  <p class="mt-3 max-w-2xl text-fg-muted">
+    Grouped, not rated. The projects above are the evidence.
+  </p>
+
+  <div class="mt-10 grid gap-x-10 gap-y-8 sm:grid-cols-2">
+    {
+      skills.map((g) => (
+        <div>
+          <h3 class="text-sm font-semibold text-fg">{g.group}</h3>
+          <ul class="mt-3 flex flex-wrap gap-1.5">
+            {g.items.map((s) => (
+              <li class="chip">{s}</li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </div>
+
+  <h3 class="mt-14 text-sm font-semibold text-fg">Most-used languages across public repos</h3>
+  <ul class="mt-4 space-y-2">
+    {
+      langs.map((l) => (
+        <li class="flex items-center gap-3">
+          <span class="w-32 shrink-0 font-mono text-xs text-fg-muted">{l.name}</span>
+          <span class="h-1.5 flex-1 overflow-hidden rounded-full bg-surface">
+            <span class="block h-full rounded-full bg-accent-dim" style={`width:${(l.count / max) * 100}%`} />
+          </span>
+          <span class="w-8 shrink-0 text-right font-mono text-xs text-fg-subtle">{l.count}</span>
+        </li>
+      ))
+    }
+  </ul>
+</section>
