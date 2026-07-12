@@ -1,21 +1,22 @@
 ---
 import { experience, affiliation } from '../data/profile';
-import Contributions from './Contributions.astro';
 ---
 
 <section id="work" aria-labelledby="work-h" class="wrap py-16 sm:py-20">
   <h2 id="work-h" class="eyebrow">Work</h2>
 
-  <!-- Activity first: the graph is the fastest proof that the rest of this is current. -->
-  <Contributions />
-
-  <ol class="mt-12 space-y-3">
+  <ol class="mt-6 space-y-3">
     {
       experience.map((e) => (
         <li class="card bg-surface/80 p-5 backdrop-blur-sm sm:p-6">
           <div class="flex flex-wrap items-start gap-x-4 gap-y-2">
             {e.logo && (
-              <img src={e.logo} alt="" loading="lazy" class="logo-mark mt-0.5 h-8 w-8 shrink-0 object-contain" />
+              <img
+                src={e.logo}
+                alt=""
+                loading="lazy"
+                class="logo-mark mt-0.5 h-8 w-auto max-w-[4.5rem] shrink-0 object-contain object-left"
+              />
             )}
             <div class="min-w-0 flex-1">
               <h3 class="font-semibold text-fg">{e.role}</h3>

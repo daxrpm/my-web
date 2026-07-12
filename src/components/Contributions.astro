@@ -43,8 +43,9 @@ const total = calendar.total.toLocaleString('en-US');
 const activeDays = days.filter((d) => d.count > 0).length;
 ---
 
-<!-- Rendered inside the Work section, so no wrapper/padding of its own. -->
-<div id="activity" class="mt-6">
+<!-- Sits between Work and Projects: the bridge from "what I do" to "what I've built". -->
+<section id="activity" aria-labelledby="activity-h" class="wrap pt-4 pb-8">
+  <h2 id="activity-h" class="sr-only">GitHub activity</h2>
   <p class="text-lg text-fg">
     <strong class="font-semibold">{total} contributions</strong> in the last year, across{' '}
     <strong class="font-semibold">{activeDays} active days</strong>.
@@ -107,4 +108,4 @@ const activeDays = days.filter((d) => d.count > 0).length;
       </div>
     </div>
   </div>
-</div>
+</section>

@@ -131,6 +131,23 @@ export const featured: Project[] = [
     tag: 'backend',
   },
   {
+    repo: 'server-monitor',
+    title: 'Fleet',
+    blurb:
+      'An agentless web console for a whole fleet of Linux servers — like Cockpit, but across every machine, with Headscale tailnet and Coolify built in.',
+    stack: ['Go', 'React', 'SSH', 'Headscale', 'Docker'],
+    media: [
+      {
+        src: '/projects/fleet-dashboard.webp',
+        alt: 'Fleet dashboard showing three Linux servers with live CPU, memory, disk and network',
+        // The metadata line is deliberately blurred — see the note in the README.
+        caption:
+          'Live CPU, memory, disk and network per server, collected entirely over SSH — no agent to install. Host IPs and OS versions are blurred on purpose.',
+      },
+    ],
+    tag: 'systems',
+  },
+  {
     repo: 'drone-detector',
     title: 'Drone Detector',
     blurb:
@@ -199,7 +216,7 @@ export const affiliation = {
 export const education = [
   {
     institution: 'Escuela Politécnica Nacional',
-    logo: '/logos/epn.png',
+    logo: '/logos/epn.svg',
     title: 'BSc Computer Science',
     period: 'Nov 2023 — present',
     note: "Ecuador's leading engineering university. Algorithms, data structures, operating systems, numerical methods.",
@@ -222,7 +239,7 @@ export const education = [
   },
   {
     institution: 'Escuela Politécnica Nacional',
-    logo: '/logos/epn.png',
+    logo: '/logos/epn.svg',
     title: 'Data Science Diploma',
     period: '2023',
     note: 'Statistical analysis, machine learning, data visualization.',
@@ -247,7 +264,7 @@ export const experience = [
   {
     role: 'Research Assistant',
     org: 'ADA Data Science Laboratory',
-    logo: '/logos/epn.png',
+    logo: '/logos/epn.svg',
     period: 'Mar 2025 — present',
     note: 'Applied machine learning research and optimization algorithms.',
     points: [

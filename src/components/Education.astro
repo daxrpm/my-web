@@ -11,11 +11,13 @@ import { education } from '../data/profile';
         <li class="card flex gap-4 bg-surface/80 p-4 backdrop-blur-sm sm:p-5">
           {/* No white tile: the marks are rendered as monochrome so they sit on the dark
               canvas without a plate under them. */}
+          {/* Width is free so wide lockups (EPN) are not crushed into a square box;
+              the height is what keeps them optically consistent. */}
           <img
             src={e.logo}
             alt={`${e.institution} logo`}
             loading="lazy"
-            class="logo-mark h-9 w-9 shrink-0 object-contain"
+            class="logo-mark h-8 w-auto max-w-[4.5rem] shrink-0 object-contain object-left"
           />
           <div class="min-w-0">
             <h3 class="font-medium leading-snug text-fg">{e.title}</h3>
