@@ -15,7 +15,7 @@ client-rendered Vite SPA, so every AI crawler saw exactly this:
 Everything now ships as real HTML in the initial response. Verify it any time with:
 
 ```bash
-curl -s -A GPTBot https://daxrpm.dev | grep -c "Dax Navarrete"
+curl -s -A GPTBot https://daxrpm.dev | grep -c "Dax"
 ```
 
 ## Commands
