@@ -1,5 +1,5 @@
 ---
-import { education, site } from '../data/profile';
+import { site } from '../data/profile';
 
 /**
  * Answers phrased as standalone facts, because an LLM lifts the answer without the
@@ -53,34 +53,6 @@ const faqSchema = {
       I believe in open source and the Unix idea of doing one thing well. Everything I build is public.
     </p>
   </div>
-
-  <h3 class="eyebrow mt-14">Education &amp; affiliations</h3>
-  <ul class="mt-5 space-y-3">
-    {
-      education.map((e) => (
-        <li class="card p-4 sm:p-5">
-          <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-            <h4 class="font-medium text-fg">{e.title}</h4>
-            <span class="shrink-0 font-mono text-xs text-fg-subtle">{e.period}</span>
-          </div>
-          <p class="mt-1 text-sm text-fg-muted">{e.institution}</p>
-          <p class="mt-2 text-sm leading-relaxed text-fg-subtle">{e.note}</p>
-          {/* Someone opening a certificate is verifying you — worth knowing which ones. */}
-          {e.href && (
-            <a
-              href={e.href}
-              rel="noopener"
-              class="link mt-2.5 inline-block text-sm"
-              data-umami-event="credential-click"
-              data-umami-event-credential={e.title}
-            >
-              View
-            </a>
-          )}
-        </li>
-      ))
-    }
-  </ul>
 
   <h3 class="eyebrow mt-14">FAQ</h3>
   <dl class="mt-5 space-y-5">

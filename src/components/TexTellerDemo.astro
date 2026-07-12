@@ -1,0 +1,50 @@
+---
+/**
+ * The pipeline, end to end: handwritten photo → LaTeX string → rendered equation.
+ *
+ * The rendered step is native MathML, not KaTeX. It costs zero JavaScript, renders in
+ * every current browser, and — unlike an image of an equation — a crawler can read it.
+ */
+---
+
+<div class="mt-5 grid gap-3 sm:grid-cols-3">
+  <figure class="sm:col-span-1">
+    <span class="eyebrow">Input</span>
+    <img
+      src="/projects/texteller-input.webp"
+      alt="Handwritten equation: the square root of 2x over 2x equals the sum from i=0 to infinity of 3i + 2 + 5x"
+      loading="lazy"
+      decoding="async"
+      class="mt-2 w-full rounded-lg border border-line bg-white p-2"
+    />
+    <figcaption class="mt-2 text-xs text-fg-subtle">A photo of handwriting.</figcaption>
+  </figure>
+
+  <div class="sm:col-span-2 flex flex-col gap-3">
+    <div>
+      <span class="eyebrow">Output — LaTeX</span>
+      <pre class="mt-2 overflow-x-auto rounded-lg border border-line bg-surface p-3.5 font-mono text-xs text-accent"><code>\frac&#123; \sqrt&#123;2x&#125;&#125;&#123;2x&#125;= \sum_&#123;i=0&#125;^&#123; \infty&#125;3i+2+5x</code></pre>
+    </div>
+
+    <div>
+      <span class="eyebrow">Rendered</span>
+      <div class="mt-2 flex min-h-[5rem] items-center justify-center rounded-lg border border-line bg-surface p-4 text-fg">
+        <math display="block" xmlns="http://www.w3.org/1998/Math/MathML" style="font-size:1.35rem">
+          <mfrac>
+            <msqrt><mn>2</mn><mi>x</mi></msqrt>
+            <mrow><mn>2</mn><mi>x</mi></mrow>
+          </mfrac>
+          <mo>=</mo>
+          <munderover>
+            <mo>&#x2211;</mo>
+            <mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow>
+            <mi>&#x221E;</mi>
+          </munderover>
+          <mrow>
+            <mn>3</mn><mi>i</mi><mo>+</mo><mn>2</mn><mo>+</mo><mn>5</mn><mi>x</mi>
+          </mrow>
+        </math>
+      </div>
+    </div>
+  </div>
+</div>
