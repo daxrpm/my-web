@@ -187,10 +187,10 @@ const pageSchema = {
       )
     }
 
-    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
-    <script type="application/ld+json" set:html={JSON.stringify(pageSchema)} />
-    {scholarlySchema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
-    {projectSchema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(pageSchema)} />
+    {scholarlySchema.map((s) => <script is:inline type="application/ld+json" set:html={JSON.stringify(s)} />)}
+    {projectSchema.map((s) => <script is:inline type="application/ld+json" set:html={JSON.stringify(s)} />)}
   </head>
 
   <body class="bg-canvas text-fg antialiased">
