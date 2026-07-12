@@ -1,0 +1,49 @@
+---
+import { education } from '../data/profile';
+import { ui } from '../i18n/ui';
+import { t, type Lang } from '../i18n/config';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+
+<section id="education" aria-labelledby="edu-h" class="wrap py-16 sm:py-20">
+  <h2 id="edu-h" class="eyebrow">{t(ui.education.heading, lang)}</h2>
+
+  <ul class="mt-6 grid gap-3 sm:grid-cols-2">
+    {
+      education.map((e) => (
+        <li class="card flex gap-4 bg-surface/80 p-4 backdrop-blur-sm sm:p-5">
+          {/* No white tile: the marks are rendered as monochrome so they sit on the dark
+              canvas without a plate under them. Width is free so wide lockups (EPN) are not
+              crushed into a square box; the height is what keeps them optically consistent. */}
+          <img
+            src={e.logo}
+            alt={`${e.institution} logo`}
+            loading="lazy"
+            class="logo-mark h-8 w-auto max-w-[4.5rem] shrink-0 object-contain object-left"
+          />
+          <div class="min-w-0">
+            <h3 class="font-medium leading-snug text-fg">{t(e.title, lang)}</h3>
+            <p class="mt-0.5 text-sm text-fg-muted">{e.institution}</p>
+            <p class="mt-1 font-mono text-xs text-fg-subtle">{e.period}</p>
+            <p class="mt-2 text-sm leading-relaxed text-fg-subtle">{t(e.note, lang)}</p>
+            {e.href && (
+              <a
+                href={e.href}
+                rel="noopener"
+                class="link mt-2 inline-block text-sm"
+                data-umami-event="credential-click"
+                data-umami-event-credential={t(e.title, 'en')}
+              >
+                {t(ui.education.certificate, lang)}
+              </a>
+            )}
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+</section>

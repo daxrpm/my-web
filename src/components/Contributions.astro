@@ -1,0 +1,123 @@
+---
+import { site } from '../data/profile';
+import { ui, fill } from '../i18n/ui';
+import { t, type Lang } from '../i18n/config';
+import github from '../data/github.json';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const { calendar } = github;
+type Day = { date: string; count: number; level: number };
+const days = calendar.days as Day[];
+
+// GitHub lays the calendar out as columns of weeks, rows of weekdays (Sun..Sat).
+// The feed rarely starts on a Sunday, so pad the first column with empty cells.
+const weeks: (Day | null)[][] = [];
+let week: (Day | null)[] = Array(new Date(days[0].date + 'T00:00:00Z').getUTCDay()).fill(null);
+
+for (const day of days) {
+  week.push(day);
+  if (week.length === 7) {
+    weeks.push(week);
+    week = [];
+  }
+}
+if (week.length) weeks.push([...week, ...Array(7 - week.length).fill(null)]);
+
+// Label a month at the first week that contains its 1st-of-month, matching GitHub.
+const months = t(ui.activity.months, lang);
+const monthLabels = weeks.map((w, i) => {
+  const first = w.find(Boolean);
+  if (!first) return null;
+  const d = new Date(first.date + 'T00:00:00Z');
+  const prev = weeks[i - 1]?.find(Boolean);
+  const prevMonth = prev ? new Date(prev.date + 'T00:00:00Z').getUTCMonth() : -1;
+  return d.getUTCMonth() !== prevMonth ? months[d.getUTCMonth()] : null;
+});
+
+const locale = lang === 'es' ? 'es-EC' : 'en-US';
+const fmt = (iso: string) =>
+  new Date(iso + 'T00:00:00Z').toLocaleDateString(locale, {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    timeZone: 'UTC',
+  });
+
+const LEVEL_BG = ['bg-level-0', 'bg-level-1', 'bg-level-2', 'bg-level-3', 'bg-level-4'];
+const total = calendar.total.toLocaleString(locale);
+const activeDays = days.filter((d) => d.count > 0).length;
+
+const noun = lang === 'es' ? 'contribuciones' : 'contributions';
+const nounOne = lang === 'es' ? 'contribución' : 'contribution';
+const on = lang === 'es' ? 'el' : 'on';
+const none = lang === 'es' ? 'Sin contribuciones' : 'No contributions';
+const tooltip = (d: Day) =>
+  `${d.count === 0 ? none : `${d.count} ${d.count === 1 ? nounOne : noun}`} ${on} ${fmt(d.date)}`;
+---
+
+<!-- Sits between Work and Projects: the bridge from "what I do" to "what I've built". -->
+<section id="activity" aria-labelledby="activity-h" class="wrap pt-4 pb-8">
+  <h2 id="activity-h" class="sr-only">{t(ui.activity.heading, lang)}</h2>
+  <p
+    class="rich text-lg text-fg"
+    set:html={fill(t(ui.activity.summary, lang), { total, days: activeDays })}
+  />
+
+  <div class="card no-scrollbar mt-4 overflow-x-auto bg-surface/80 p-4 backdrop-blur-sm sm:p-5">
+    <!-- The grid is decorative duplication of the sentence above; the sentence is what a
+         screen reader and a crawler should get. -->
+    <div
+      class="min-w-[46rem]"
+      role="img"
+      aria-label={fill(t(ui.activity.graphLabel, lang), { total })}
+    >
+      <div class="flex gap-[3px] pl-8">
+        {monthLabels.map((m) => <div class="w-[11px] shrink-0 text-[10px] text-fg-subtle">{m}</div>)}
+      </div>
+
+      <div class="mt-1 flex gap-[3px]">
+        <div class="flex w-8 shrink-0 flex-col gap-[3px] pr-2 text-[10px] leading-[11px] text-fg-subtle">
+          {t(ui.activity.weekdays, lang).map((d) => <div class="h-[11px]">{d}</div>)}
+        </div>
+
+        {
+          weeks.map((w) => (
+            <div class="flex flex-col gap-[3px]">
+              {w.map((day) =>
+                day ? (
+                  <div
+                    class={`h-[11px] w-[11px] rounded-[2px] ${LEVEL_BG[day.level]} ring-1 ring-inset ring-fg/[0.06]`}
+                    title={tooltip(day)}
+                  />
+                ) : (
+                  <div class="h-[11px] w-[11px]" />
+                ),
+              )}
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="mt-4 flex items-center justify-between pl-8 text-xs text-fg-subtle">
+      <a
+        class="link"
+        href={`https://github.com/${site.handle}`}
+        rel="noopener"
+        data-umami-event="github-profile"
+        data-umami-event-source="contribution-graph"
+      >
+        @{site.handle}
+      </a>
+      <div class="flex items-center gap-1">
+        <span class="mr-1">{t(ui.activity.less, lang)}</span>
+        {LEVEL_BG.map((bg) => <div class={`h-[11px] w-[11px] rounded-[2px] ${bg} ring-1 ring-inset ring-fg/[0.06]`} />)}
+        <span class="ml-1">{t(ui.activity.more, lang)}</span>
+      </div>
+    </div>
+  </div>
+</section>

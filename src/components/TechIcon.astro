@@ -1,0 +1,53 @@
+---
+/**
+ * One <svg> for any technology named in profile.ts. Brand marks carry their (tone-mapped)
+ * brand colour through a CSS variable so the theme swap needs no second render; glyphs
+ * have no brand and simply inherit currentColor from whatever they sit in.
+ *
+ * An unknown label renders nothing rather than a placeholder — a missing icon should be
+ * invisible, not a broken box.
+ */
+import { iconFor } from '../data/icons';
+
+interface Props {
+  name: string;
+  /** Tailwind size classes; the default suits a chip. */
+  class?: string;
+  /** Ignore the brand colour and inherit currentColor (used where colour would be noise). */
+  mono?: boolean;
+}
+
+const { name, class: cls = 'h-3.5 w-3.5', mono = false } = Astro.props;
+const icon = iconFor(name);
+
+const brand = icon?.kind === 'brand' && !mono ? icon.color : null;
+const style = brand ? `--ic-d:${brand.dark};--ic-l:${brand.light}` : undefined;
+---
+
+{
+  icon && (
+    <svg
+      viewBox="0 0 24 24"
+      class={`tech-icon shrink-0 ${brand ? 'is-brand' : ''} ${cls}`}
+      style={style}
+      aria-hidden="true"
+      focusable="false"
+      fill={icon.kind === 'brand' ? 'currentColor' : 'none'}
+      stroke={icon.kind === 'glyph' ? 'currentColor' : undefined}
+      stroke-width={icon.kind === 'glyph' ? 1.8 : undefined}
+      stroke-linecap={icon.kind === 'glyph' ? 'round' : undefined}
+      stroke-linejoin={icon.kind === 'glyph' ? 'round' : undefined}
+      set:html={icon.body}
+    />
+  )
+}
+
+<style>
+  /* Brand colour, tone-mapped per theme at build time. Glyphs inherit currentColor. */
+  .tech-icon.is-brand {
+    color: var(--ic-d);
+  }
+  :global(:root[data-theme='light']) .tech-icon.is-brand {
+    color: var(--ic-l);
+  }
+</style>

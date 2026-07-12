@@ -1,0 +1,88 @@
+---
+import { experience, affiliation, research, researchNote } from '../data/profile';
+import { ui } from '../i18n/ui';
+import { t, type Lang } from '../i18n/config';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+
+<section id="work" aria-labelledby="work-h" class="wrap py-16 sm:py-20">
+  <h2 id="work-h" class="eyebrow">{t(ui.work.heading, lang)}</h2>
+
+  <ol class="mt-6 space-y-3">
+    {
+      experience.map((e) => (
+        <li class="card bg-surface/80 p-5 backdrop-blur-sm sm:p-6">
+          <div class="flex flex-wrap items-start gap-x-4 gap-y-2">
+            {e.logo && (
+              <img
+                src={e.logo}
+                alt=""
+                loading="lazy"
+                class="logo-mark mt-0.5 h-8 w-auto max-w-[4.5rem] shrink-0 object-contain object-left"
+              />
+            )}
+            <div class="min-w-0 flex-1">
+              <h3 class="font-semibold text-fg">{t(e.role, lang)}</h3>
+              <p class="mt-0.5 text-sm text-fg-muted">{e.org}</p>
+            </div>
+            <span class="shrink-0 font-mono text-xs text-fg-subtle">{e.period}</span>
+          </div>
+
+          <p class="mt-4 text-sm leading-relaxed text-fg-muted">{t(e.note, lang)}</p>
+
+          <ul class="mt-3 space-y-1.5">
+            {t(e.points, lang).map((pt) => (
+              <li class="flex gap-2.5 text-sm leading-relaxed text-fg-subtle">
+                <span class="mt-[0.45rem] h-1 w-1 shrink-0 rounded-full bg-accent/70" />
+                <span>{pt}</span>
+              </li>
+            ))}
+          </ul>
+        </li>
+      ))
+    }
+  </ol>
+
+  <p class="mt-6 text-sm text-fg-subtle">
+    {t(researchNote, lang)}{' '}
+    {
+      affiliation.links.map((l, i) => (
+        <>
+          {i > 0 && <span aria-hidden="true"> · </span>}
+          <a
+            href={l.url}
+            rel="noopener"
+            class="link"
+            data-umami-event="research-click"
+            data-umami-event-repo={l.url}
+          >
+            {t(l.label, lang)}
+          </a>
+        </>
+      ))
+    }.
+  </p>
+
+  {/* Publications. Stated with their real status — a paper that is presented but not yet
+      published is worth more said plainly than dressed up. */}
+  <h3 class="eyebrow mt-14">{t(ui.work.researchHeading, lang)}</h3>
+  <ul class="mt-5 space-y-3">
+    {
+      research.map((r) => (
+        <li class="card bg-surface/80 p-5 backdrop-blur-sm">
+          <h4 class="font-medium leading-snug text-fg">{r.title}</h4>
+          <p class="mt-1.5 text-sm text-fg-muted">{r.authors}</p>
+          <p class="mt-1 font-mono text-xs text-fg-subtle">
+            {r.venue} · {t(r.status, lang)}
+          </p>
+          <p class="mt-3 text-sm leading-relaxed text-fg-muted">{t(r.summary, lang)}</p>
+          <p class="mt-2 text-sm leading-relaxed text-fg-subtle">{t(r.contribution, lang)}</p>
+        </li>
+      ))
+    }
+  </ul>
+</section>

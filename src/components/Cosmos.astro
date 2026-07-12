@@ -1,0 +1,632 @@
+---
+/**
+ * A scroll-driven ASCII journey behind the entire page.
+ *
+ *   Milky Way  →  a black hole  →  the Solar System, held wide  →  home, at Earth
+ *
+ * One fixed full-viewport canvas; scroll progress through the document (0..1) is the
+ * only input. Scenes cross-fade, so it reads as one continuous flight.
+ *
+ * The camera deliberately barely moves. This is a backdrop — the page has to stay
+ * readable in front of it — so the solar system is one wide held shot that drifts
+ * slowly inward toward Earth, not a tour that pans and zooms between planets.
+ *
+ * Performance: glyphs come from a pre-rendered sprite atlas rather than fillText, which
+ * was re-shaping every glyph on every call; bodies are cull-tested before their points
+ * are walked; and an adaptive controller measures the real draw cost, thinning detail
+ * and then halving the frame rate until the frame fits. A phone and a workstation both
+ * stay smooth, just at different densities.
+ *
+ * Decorative: aria-hidden, behind the content, and every word on the page is real HTML.
+ * If this never boots — no JS, reduced motion, a crawler — the site is unchanged.
+ */
+---
+
+<canvas id="cosmos" aria-hidden="true"></canvas>
+
+<style>
+  #cosmos {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+    contain: strict;
+  }
+  #cosmos.ready {
+    opacity: 1;
+  }
+</style>
+
+<script>
+  const canvas = document.getElementById('cosmos') as HTMLCanvasElement | null;
+  if (canvas) {
+    const ctx = canvas.getContext('2d', { alpha: true, desynchronized: true })!;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const RAMP = '.·:-=+*#%@';
+    const NG = RAMP.length;
+
+    let W = 0, H = 0, DPR = 1, MOBILE = false, FS = 12;
+
+    /* ── glyph atlas ─────────────────────────────────────────────────────────
+     * fillText re-shapes the glyph on every call. At a few thousand glyphs a frame
+     * that alone blew the budget. Each (colour, glyph) pair is rasterised once into a
+     * tiny canvas and then blitted with drawImage, which is an order of magnitude
+     * cheaper. Colours are quantised so the cache stays small and bounded.
+     */
+    const atlas = new Map<number, HTMLCanvasElement[]>();
+    const CQ = 24; // colour quantisation step
+
+    /**
+     * Light mode. The palette is built for glowing points on black; on white the same
+     * colours are invisible. Rather than a second palette, each colour is darkened toward
+     * its own hue — a dim green Milky Way on white reads the same way a bright one does
+     * on black — and the whole field is pulled back further so the text stays dominant.
+     */
+    let LIGHT = document.documentElement.dataset.theme === 'light';
+    window.addEventListener('themechange', (e) => {
+      LIGHT = (e as CustomEvent).detail === 'light';
+      atlas.clear(); // every sprite is the wrong colour now
+      lastAlpha = -1;
+    });
+
+    const sheetFor = (key: number, r: number, g: number, b: number) => {
+      let sheet = atlas.get(key);
+      if (sheet) return sheet;
+      sheet = [];
+      const size = Math.ceil(FS * 1.6);
+      for (let i = 0; i < NG; i++) {
+        const c = document.createElement('canvas');
+        c.width = c.height = size;
+        const cc = c.getContext('2d')!;
+        cc.font = `${FS}px "JetBrains Mono", ui-monospace, monospace`;
+        cc.textAlign = 'center';
+        cc.textBaseline = 'middle';
+        cc.fillStyle = `rgb(${r},${g},${b})`;
+        cc.fillText(RAMP[i], size / 2, size / 2);
+        sheet.push(c);
+      }
+      atlas.set(key, sheet);
+      return sheet;
+    };
+
+    let half = 0;
+    let lastAlpha = -1;
+
+    const put = (x: number, y: number, br: number, col: number[], a: number) => {
+      if (a < 0.02 || x < -14 || x > W + 14 || y < -14 || y > H + 14) return;
+
+      // Quantise hard: 10 alpha steps and a coarse colour grid. Every distinct alpha is a
+      // canvas state change, and at thousands of glyphs a frame those dominate. Neither
+      // quantisation is perceptible against a starfield.
+      const qa = Math.round(a * 10) / 10;
+      if (qa < 0.05) return;
+
+      // On white, darken the point toward its own hue instead of switching palettes.
+      const k = LIGHT ? 0.42 : 1;
+      const r = Math.min(255, Math.round((col[0] * k) / CQ) * CQ);
+      const g = Math.min(255, Math.round((col[1] * k) / CQ) * CQ);
+      const b = Math.min(255, Math.round((col[2] * k) / CQ) * CQ);
+      const key = (r << 16) | (g << 8) | b;
+
+      const gi = br <= 0 ? 0 : br >= 1 ? NG - 1 : (br * (NG - 1)) | 0;
+      const sheet = atlas.get(key) ?? sheetFor(key, r, g, b);
+
+      if (qa !== lastAlpha) {
+        ctx.globalAlpha = qa;
+        lastAlpha = qa;
+      }
+      ctx.drawImage(sheet[gi], (x - half) | 0, (y - half) | 0);
+    };
+
+    const resize = () => {
+      W = window.innerWidth;
+      H = window.innerHeight;
+      MOBILE = W < 768;
+      // Capping DPR is the single cheapest win on phones: a 3x buffer costs 9x the fill.
+      DPR = Math.min(window.devicePixelRatio || 1, MOBILE ? 1 : 1.25);
+      FS = MOBILE ? 10 : 12;
+      half = Math.ceil(FS * 1.6) / 2;
+      canvas.width = Math.round(W * DPR);
+      canvas.height = Math.round(H * DPR);
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      atlas.clear(); // font size changed, so the sprites are stale
+      lastAlpha = -1;
+    };
+    resize();
+
+    /* ── adaptive quality ────────────────────────────────────────────────────
+     * The honest way to be fast "on any device": measure, then spend what is left.
+     * `Q` scales every particle budget; it falls when frames run long and recovers
+     * when they are cheap.
+     */
+    let Q = MOBILE ? 0.55 : 1;
+    /** Render every Nth animation frame. A slow device gets a 30fps backdrop, not jank. */
+    let skip = 1;
+    let acc = 0, frames = 0;
+    const tuneQuality = (dt: number) => {
+      acc += dt;
+      if (++frames < 30) return;
+      const avg = acc / frames;
+      acc = 0;
+      frames = 0;
+
+      // Budget is the draw cost alone; under ~9ms leaves the frame comfortable.
+      //
+      // The floor is deliberately high. Thinned far enough the planets stop being planets
+      // and become confetti, so on a slow device the right trade is a dense 30fps backdrop
+      // rather than a sparse 60fps one — hence dropping frames before dropping more detail.
+      if (avg > 9 && Q > 0.5) {
+        Q = Math.max(0.5, Q - 0.1);
+      } else if (avg > 10 && skip < 2) {
+        skip = 2; // still slow at the density floor: halve the frame rate instead
+      } else if (avg < 5) {
+        if (skip > 1) skip = 1;
+        else if (Q < 1) Q = Math.min(1, Q + 0.06); // headroom: put the detail back
+      }
+    };
+
+    /* ── geometry ───────────────────────────────────────────────────────────── */
+
+    /** Continents, as elliptical blobs in lat/lon — plenty of fidelity at ASCII scale. */
+    const LAND: [number, number, number, number][] = [
+      [50, -100, 26, 32], [15, -90, 9, 9], [-15, -60, 26, 13], [5, 20, 33, 20],
+      [50, 18, 14, 22], [45, 95, 26, 48], [20, 78, 11, 11], [0, 115, 9, 16],
+      [-25, 134, 13, 19], [72, -42, 9, 14], [-82, 0, 9, 180],
+    ];
+    const isLand = (lat: number, lon: number) => {
+      for (let i = 0; i < LAND.length; i++) {
+        const [la, lo, dla, dlo] = LAND[i];
+        let dl = Math.abs(lon - lo);
+        if (dl > 180) dl = 360 - dl;
+        if (((lat - la) / dla) ** 2 + (dl / dlo) ** 2 < 1) return true;
+      }
+      return false;
+    };
+
+    type Pt = { x: number; y: number; z: number; lat: number; lon: number; land: boolean };
+
+    /**
+     * Sphere shells. `land` is resolved once, here — Earth's shading and its colour both
+     * need it, and recomputing eleven ellipse tests twice per point per frame was, on its
+     * own, dragging the Earth finale down to ~22fps.
+     */
+    const fib = (n: number): Pt[] =>
+      Array.from({ length: n }, (_, i) => {
+        const t = (i + 0.5) / n;
+        const phi = Math.acos(1 - 2 * t);
+        const th = Math.PI * (1 + Math.sqrt(5)) * i;
+        const lat = 90 - (phi * 180) / Math.PI;
+        const lon = (((th * 180) / Math.PI) % 360) - 180;
+        return {
+          x: Math.sin(phi) * Math.cos(th),
+          y: Math.cos(phi),
+          z: Math.sin(phi) * Math.sin(th),
+          lat,
+          lon,
+          land: isLand(lat, lon),
+        };
+      });
+
+    /** Level-of-detail shells: a 6px Mercury and a screen-filling Earth both stay solid. */
+    const LODS = [fib(48), fib(150), fib(400), fib(1000), fib(2400), fib(5200)];
+    const lodFor = (r: number, cap = 1) => {
+      // Points needed to cover a disc of radius r, given that back-face culling discards
+      // half the shell. The original factor was ~12x this, so every planet bigger than a
+      // coin slammed straight into the largest shell.
+      //
+      // `cap` trims bodies that carry no surface detail — the Sun is a uniform glowing
+      // ball, and spending 5000 glyphs on it buys nothing you can see.
+      const want = r * r * 0.075 * Q * cap;
+      for (let i = 0; i < LODS.length; i++) if (LODS[i].length >= want) return LODS[i];
+      return LODS[LODS.length - 1];
+    };
+
+    const sphere = (
+      cx: number, cy: number, r: number, spin: number,
+      col: number[], alpha: number,
+      tex?: (p: Pt) => number,
+      colFn?: (p: Pt) => number[],
+      cap = 1,
+    ) => {
+      if (r < 1.2 || alpha < 0.02) return;
+      // Bounding-circle cull. Without it an offscreen body still walked thousands of
+      // points only for put() to reject each one — most of the frame budget, spent
+      // entirely on things nobody can see.
+      if (cx + r < -16 || cx - r > W + 16 || cy + r < -16 || cy - r > H + 16) return;
+      const pts = lodFor(r, cap);
+      const cs = Math.cos(spin), sn = Math.sin(spin);
+      const ct = Math.cos(-0.4), st = Math.sin(-0.4);
+
+      for (let i = 0; i < pts.length; i++) {
+        const p = pts[i];
+        const x1 = p.x * cs - p.z * sn;
+        const z1 = p.x * sn + p.z * cs;
+        const y1 = p.y * ct - z1 * st;
+        const z2 = p.y * st + z1 * ct;
+        if (z2 < -0.06) continue; // back face
+
+        const light = Math.max(0, -x1 * 0.42 + y1 * 0.3 + z2 * 0.86);
+        const shade = tex ? tex(p) : 1;
+        const b = (0.18 + light * 0.92) * shade;
+        put(cx + x1 * r, cy + y1 * r, b > 1 ? 1 : b, colFn ? colFn(p) : col, (0.3 + light * 0.95) * alpha);
+      }
+    };
+
+    /* ── scene data ─────────────────────────────────────────────────────────── */
+
+    const N_GAL = MOBILE ? 900 : 2000;
+    const N_STAR = MOBILE ? 140 : 320;
+    const N_DISK = MOBILE ? 700 : 1600;
+    const N_HALO = MOBILE ? 380 : 900;
+
+    const galaxy = Array.from({ length: N_GAL }, (_, i) => {
+      const core = i < N_GAL * 0.18;
+      const r = core ? Math.pow(Math.random(), 2) * 0.28 : 0.18 + Math.pow(Math.random(), 0.7) * 1.05;
+      const arm = Math.floor(Math.random() * 4) * (Math.PI / 2);
+      const a = arm + r * 2.9 + (Math.random() - 0.5) * (core ? 6.3 : 0.55);
+      return {
+        r, a,
+        y: (Math.random() - 0.5) * (core ? 0.22 : 0.06),
+        b: core ? 0.75 + Math.random() * 0.25 : 0.25 + Math.random() * 0.6,
+        hot: core ? 1 : Math.random() * 0.5,
+        spin: 0.35 + Math.random() * 0.25,
+      };
+    });
+
+    const stars = Array.from({ length: N_STAR }, () => ({
+      x: (Math.random() - 0.5) * 3,
+      y: (Math.random() - 0.5) * 3,
+      z: (Math.random() - 0.5) * 3,
+      b: 0.2 + Math.random() * 0.8,
+    }));
+
+    const disk = Array.from({ length: N_DISK }, () => {
+      const r = 1.25 + Math.pow(Math.random(), 1.7) * 2.6;
+      return { r, a: Math.random() * 6.283, b: 0.35 + Math.random() * 0.65, w: 1 / Math.pow(r, 1.4) };
+    });
+    const halo = Array.from({ length: N_HALO }, () => ({
+      th: Math.random() * 6.283,
+      r: 1.02 + Math.pow(Math.random(), 2.2) * 0.5,
+      b: 0.4 + Math.random() * 0.6,
+    }));
+
+    /** Procedural surfaces, so each planet is recognisable rather than a coloured ball. */
+    const bands = (n: number, depth: number) => (p: Pt) =>
+      1 - depth * 0.5 * (1 + Math.sin(p.lat * n * 0.11));
+
+    const LAND_COL = [104, 196, 118];
+    const SEA_COL = [64, 132, 220];
+    const EARTH_TEX = (p: Pt) => (p.land ? 1.05 : 0.72);
+    const EARTH_COL = (p: Pt) => (p.land ? LAND_COL : SEA_COL);
+
+    type Body = {
+      name: string; r: number; size: number; speed: number; col: number[];
+      ring?: boolean;
+      tex?: (p: Pt) => number;
+      colFn?: (p: Pt) => number[];
+    };
+    const SUN: Body = { name: 'Sun', r: 0, size: 5.2, speed: 0, col: [255, 226, 150] };
+    const PLANETS: Body[] = [
+      { name: 'Mercury', r: 0.32, size: 0.9, speed: 1.60, col: [172, 168, 158], tex: (p) => 0.75 + 0.25 * Math.sin(p.lat * 0.3 + p.lon * 0.2) },
+      { name: 'Venus',   r: 0.45, size: 1.5, speed: 1.18, col: [235, 198, 126], tex: bands(3, 0.35) },
+      { name: 'Earth',   r: 0.58, size: 1.6, speed: 1.00, col: [64, 132, 220], tex: EARTH_TEX, colFn: EARTH_COL },
+      { name: 'Mars',    r: 0.75, size: 1.2, speed: 0.80, col: [214, 106, 66], tex: (p) => (Math.abs(p.lat) > 72 ? 1.35 : 0.85 + 0.15 * Math.sin(p.lat * 0.2)) },
+      { name: 'Jupiter', r: 1.05, size: 3.6, speed: 0.44, col: [219, 184, 142], tex: bands(9, 0.5) },
+      { name: 'Saturn',  r: 1.32, size: 3.1, speed: 0.32, col: [230, 212, 162], ring: true, tex: bands(7, 0.38) },
+      { name: 'Uranus',  r: 1.56, size: 2.2, speed: 0.23, col: [150, 214, 220], tex: bands(4, 0.22) },
+      { name: 'Neptune', r: 1.76, size: 2.1, speed: 0.18, col: [96, 122, 218], tex: bands(5, 0.3) },
+    ];
+    const EARTH = PLANETS[2];
+
+    /* ── scroll ─────────────────────────────────────────────────────────────── */
+
+    let p = 0, pTarget = 0;
+    const readScroll = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      pTarget = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+    };
+
+    const smooth = (e0: number, e1: number, v: number) => {
+      const t = Math.min(1, Math.max(0, (v - e0) / (e1 - e0)));
+      return t * t * (3 - 2 * t);
+    };
+    const win = (x: number, a: number, b: number, f = 0.05) =>
+      smooth(a - f, a + f, x) * (1 - smooth(b - f, b + f, x));
+
+    const GAL: [number, number] = [-0.1, 0.20];
+    const BH: [number, number] = [0.22, 0.42];
+    const SOL: [number, number] = [0.44, 0.86];
+    const EAR: [number, number] = [0.88, 1.2];
+
+
+    /* ── render ─────────────────────────────────────────────────────────────── */
+
+    const draw = (time: number) => {
+      const t = time * 0.001;
+      ctx.clearRect(0, 0, W, H);
+      lastAlpha = -1;
+
+      const cx = W >= 1024 ? W * 0.68 : W / 2;
+      const cy = H / 2;
+      const S = Math.hypot(W, H);
+
+      // Deliberately restrained: the cosmos is a backdrop, and the content has to be
+      // readable over it. Brightest in the hero, then it recedes. Pulled back further on
+      // light, where dark marks on white carry more visual weight than glow on black.
+      const ceiling = LIGHT ? 0.5 : 0.7;
+      const vis = ceiling - win(p, 0.06, 1.1, 0.05) * (LIGHT ? 0.28 : 0.36);
+
+      const wGal = win(p, ...GAL);
+      const wBh = win(p, ...BH);
+      const wSol = win(p, ...SOL);
+      const wEar = win(p, ...EAR);
+
+      /* deep field */
+      for (let i = 0; i < stars.length; i++) {
+        const s = stars[i];
+        const z = s.z + 1.8 - p * 0.6;
+        if (z < 0.15) continue;
+        const k = 1.1 / z;
+        put(cx + s.x * k * S * 0.5, cy + s.y * k * S * 0.5, s.b * 0.5, [190, 220, 210], s.b * 0.22 * vis);
+      }
+
+      /* ── Milky Way ── */
+      if (wGal > 0.01) {
+        const lp = Math.min(1, Math.max(0, p / GAL[1]));
+        const zoom = 0.55 + lp * 1.5;
+        const tilt = 1.15 - lp * 0.55;
+        const ct = Math.cos(tilt), st = Math.sin(tilt);
+        const n = Math.round(galaxy.length * Q);
+        for (let i = 0; i < n; i++) {
+          const g = galaxy[i];
+          const a = g.a + t * 0.05 * g.spin;
+          const x = Math.cos(a) * g.r, z = Math.sin(a) * g.r;
+          const y2 = g.y * ct - z * st;
+          const z2 = g.y * st + z * ct;
+          const k = 2.2 / (2.2 + z2 * 0.8);
+          put(
+            cx + x * zoom * S * 0.34 * k,
+            cy + y2 * zoom * S * 0.34 * k,
+            g.b,
+            g.hot > 0.5 ? [225, 235, 245] : [80, 200, 140],
+            g.b * 0.8 * wGal * vis,
+          );
+        }
+      }
+
+      /* ── Black hole (Gargantua) ──
+       * A black shadow on a near-black page is nothing at all. The hole is only visible
+       * because of what surrounds it, so the order matters:
+       *
+       *   glow  →  far half of the disc  →  lensed halo  →  the shadow  →  photon ring
+       *   →  near half of the disc, drawn last so it passes *in front* of the shadow.
+       *
+       * That last pass is the whole trick: a bright band crossing the face of the hole is
+       * what makes the eye read a sphere of darkness rather than a gap in the render.
+       */
+      if (wBh > 0.01) {
+        const lp = smooth(BH[0], BH[1], p);
+        // Small enough to sit inside the viewport. It used to be so large that the photon
+        // ring ran off the edges and only an arc of it was ever on screen.
+        const hr = (0.055 + lp * 0.025) * S;
+        const tilt = 0.11 + lp * 0.05; // near edge-on: the disc is a blade, not a ring
+        const spin = t * 0.35;
+        const A = wBh * vis;
+
+        // The other scenes are large enough to read around the content column. This one is
+        // a compact disc, so at the shared centre it just sat behind a screenshot. Tuck it
+        // into the right-hand gutter instead, where the whole hole is actually visible.
+        const bx = W >= 1024 ? Math.min(W - hr * 1.15, W * 0.92) : W / 2;
+        const cx = bx;
+
+        // Bloom behind the hole. Without something brighter than the page behind it, the
+        // shadow has nothing to be a shadow against.
+        const glow = ctx.createRadialGradient(cx, cy, hr * 0.9, cx, cy, hr * 3.4);
+        glow.addColorStop(0, `rgba(255,176,92,${(0.30 * A).toFixed(3)})`);
+        glow.addColorStop(0.35, `rgba(214,126,60,${(0.13 * A).toFixed(3)})`);
+        glow.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.globalAlpha = 1;
+        lastAlpha = -1;
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(cx, cy, hr * 3.4, 0, 6.283);
+        ctx.fill();
+
+        const nd = Math.round(disk.length * Q);
+        /** One disc particle. `front` picks the half that orbits toward the viewer. */
+        const drawDisk = (front: boolean) => {
+          for (let i = 0; i < nd; i++) {
+            const d = disk[i];
+            const a = d.a + spin * d.w * 2.2;
+            const sn = Math.sin(a);
+            if (front === sn < 0) continue; // the other half of the orbit
+            // Doppler beaming: the side sweeping toward us is far brighter and whiter.
+            const beam = 0.3 + 0.7 * Math.pow(Math.max(0, Math.cos(a - 1.57)), 0.7);
+            const heat = Math.min(1, (1.6 / d.r) * (0.5 + beam));
+            put(
+              cx + Math.cos(a) * d.r * hr,
+              cy + sn * d.r * hr * tilt,
+              Math.min(1, d.b * (0.4 + beam)),
+              [255, 148 + heat * 105, 55 + heat * 150],
+              Math.min(1, d.b * beam * 1.5) * A,
+            );
+          }
+        };
+
+        drawDisk(false); // far half — behind the hole
+
+        // Lensed halo: light from the far side of the disc bent up and over the shadow.
+        const nh = Math.round(halo.length * Q);
+        for (let i = 0; i < nh; i++) {
+          const h = halo[i];
+          const th = h.th + spin * 0.25;
+          const edge = Math.pow(Math.abs(Math.sin(th)), 0.55);
+          const beam = 0.45 + 0.55 * Math.pow(Math.max(0, Math.cos(th - 1.57)), 0.6);
+          put(
+            cx + Math.cos(th) * h.r * hr,
+            cy + Math.sin(th) * h.r * hr,
+            Math.min(1, h.b * edge + 0.25),
+            [255, 205, 140],
+            h.b * edge * beam * 1.5 * A,
+          );
+        }
+
+        // The shadow. Painted, not punched: `destination-out` would clear the glow behind
+        // it too, leaving the hole exactly the colour of the page — invisible.
+        ctx.globalAlpha = 1;
+        lastAlpha = -1;
+        ctx.beginPath();
+        ctx.arc(cx, cy, hr * 0.985, 0, 6.283);
+        ctx.fillStyle = LIGHT
+          ? `rgba(12,14,18,${Math.min(0.55, A * 1.6).toFixed(3)})`
+          : `rgba(0,0,0,${Math.min(1, 0.55 + A).toFixed(3)})`;
+        ctx.fill();
+
+        // Photon ring: the hard bright edge that defines where the shadow ends.
+        const steps = Math.round((MOBILE ? 130 : 260) * Q);
+        for (let i = 0; i < steps; i++) {
+          const a = (i / steps) * 6.283;
+          put(cx + Math.cos(a) * hr, cy + Math.sin(a) * hr, 1, [255, 232, 190], Math.min(1, 1.4 * A));
+        }
+
+        drawDisk(true); // near half — sweeps across the face of the hole
+      }
+
+      /* ── Solar System ──
+       * One shot, held wide: the whole system in frame, planets turning on their orbits.
+       * The camera does not tour them — it just drifts, very slowly, from far out toward
+       * Earth, which then takes over as the finale. Deliberately little movement: this is
+       * a backdrop, and the page has to stay readable in front of it.
+       */
+      if (wSol > 0.01) {
+        const tilt = 0.42;
+        const local = smooth(SOL[0], SOL[1], p); // 0..1 across the solar leg
+
+        const posOf = (b: Body) => {
+          if (b.r === 0) return { x: 0, y: 0 };
+          const a = t * b.speed * 0.18 + PLANETS.indexOf(b) * 1.7;
+          return { x: Math.cos(a) * b.r, y: Math.sin(a) * b.r * tilt };
+        };
+
+        // A gentle approach: wide enough for Neptune at the start, closing to roughly
+        // Earth's orbit by the end. No stops, no pans, no zoom pumping.
+        const approach = smooth(0, 1, local);
+        const zoom = 0.60 + approach * 0.85;
+
+        // The centre eases off the Sun and onto Earth over the whole leg, so the finale
+        // lands where the camera was already heading.
+        const e = posOf(EARTH);
+        const lead = approach * approach * 0.55; // stays near zero for most of the leg
+        const camX = e.x * lead;
+        const camY = e.y * lead;
+
+        const R = S * 0.30 * zoom;
+        const px = (x: number) => cx + (x - camX) * R;
+        const py = (y: number) => cy + (y - camY) * R;
+
+        // Orbit rings — the structure that makes this read as a solar system at all.
+        const ringAlpha = 0.34 * wSol * vis;
+        const ox = cx - camX * R, oy = cy - camY * R;
+        for (let bi = 0; bi < PLANETS.length; bi++) {
+          const b = PLANETS[bi];
+          // Skip a ring whose whole ellipse is off screen rather than walking its points.
+          const rx = b.r * R, ry = b.r * tilt * R;
+          if (ox + rx < -16 || ox - rx > W + 16 || oy + ry < -16 || oy - ry > H + 16) continue;
+
+          const steps = Math.round((MOBILE ? 90 : 170) * Q);
+          for (let i = 0; i < steps; i++) {
+            const a = (i / steps) * 6.283;
+            put(px(Math.cos(a) * b.r), py(Math.sin(a) * b.r * tilt), 0.25, [80, 150, 120], ringAlpha);
+          }
+        }
+
+        const K = MOBILE ? 0.055 : 0.045;
+        // The Sun has no surface detail to resolve, so it gets a fraction of the points.
+        sphere(px(0), py(0), SUN.size * R * K, t * 0.05, SUN.col, wSol * vis, undefined, undefined, 0.28);
+
+        for (let i = 0; i < PLANETS.length; i++) {
+          const b = PLANETS[i];
+          const pos = posOf(b);
+          const sx = px(pos.x), sy = py(pos.y);
+          const rad = b.size * R * K;
+          sphere(sx, sy, rad, t * 0.12 + i, b.col, wSol * vis, b.tex, b.colFn);
+
+          if (b.ring) {
+            const steps = Math.round((MOBILE ? 70 : 200) * Q);
+            for (let k = 0; k < steps; k++) {
+              const a = (k / steps) * 6.283;
+              const rr = rad * (1.45 + (k % 4) * 0.16);
+              put(sx + Math.cos(a) * rr, sy + Math.sin(a) * rr * 0.3, 0.55, [235, 218, 172], 0.75 * wSol * vis);
+            }
+          }
+        }
+      }
+
+      /* ── Earth: home ── */
+      if (wEar > 0.01) {
+        const lp = smooth(EAR[0], 1, p);
+        sphere(cx, cy, (0.17 + lp * 0.13) * S, t * 0.05 + 2.2, EARTH.col, wEar * vis, EARTH_TEX, EARTH_COL);
+      }
+
+      ctx.globalAlpha = 1;
+    };
+
+    /* ── loop ───────────────────────────────────────────────────────────────── */
+
+    let raf = 0, running = false, tick = 0;
+    const loop = (time: number) => {
+      raf = requestAnimationFrame(loop);
+
+      // Scroll still tracks every frame — only the drawing is throttled.
+      readScroll();
+      p += (pTarget - p) * 0.08;
+
+      if (++tick % skip) return;
+
+      // Time the draw itself, not the gap between frames: the gap is polluted by whatever
+      // else the page is doing, and it lies once frames are being skipped.
+      const t0 = performance.now();
+      draw(time);
+      tuneQuality(performance.now() - t0);
+    };
+
+    readScroll();
+    p = pTarget;
+    canvas.classList.add('ready');
+
+    if (reduced) {
+      draw(0);
+    } else {
+      const start = () => {
+        if (!running) {
+          running = true;
+          acc = 0;
+          frames = 0;
+          raf = requestAnimationFrame(loop);
+        }
+      };
+      const stop = () => {
+        running = false;
+        cancelAnimationFrame(raf);
+      };
+      start();
+      // Nothing is animated when the tab is in the background.
+      document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
+    }
+
+    let rt = 0;
+    window.addEventListener('resize', () => {
+      clearTimeout(rt);
+      rt = window.setTimeout(() => {
+        resize();
+        readScroll();
+        if (reduced) draw(0);
+      }, 150);
+    });
+  }
+</script>

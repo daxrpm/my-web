@@ -1,0 +1,204 @@
+---
+/**
+ * Umami, behind consent.
+ *
+ * Umami is cookieless, self-hosted and stores no personal data, so no law obliges this
+ * banner — Dax asks anyway, which is the whole point. The consequence is architectural: the
+ * tracker is NOT in the HTML. Nothing is requested from the analytics host, and no event is
+ * queued, until someone says yes. A "no" is remembered and never asked again; there is no
+ * dark pattern where declining quietly still loads the script.
+ *
+ * Most of the events are declared as `data-umami-event` attributes on the elements
+ * themselves and cost nothing extra. What is scripted here is the handful of things
+ * attributes cannot know: how far down the page a visitor got, how long they actually spent
+ * reading rather than idling in a background tab, and which links took them off the site.
+ */
+import { ui } from '../i18n/ui';
+import { t, type Lang } from '../i18n/config';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const HOST = import.meta.env.PUBLIC_UMAMI_HOST;
+const ID = import.meta.env.PUBLIC_UMAMI_ID;
+const enabled = Boolean(HOST && ID);
+---
+
+{
+  enabled && (
+    <>
+      {/* A notification, not a cookie wall: it sits in the bottom-right corner, it does not
+          dim the page, and it does not block a single pixel of the content. */}
+      <div
+        id="consent"
+        class="consent"
+        role="dialog"
+        aria-modal="false"
+        aria-label={t(ui.consent.label, lang)}
+        aria-live="polite"
+        hidden
+      >
+        <div class="flex gap-3">
+          <span class="consent-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3l7 3v5c0 4.2-2.9 7.6-7 8.7-4.1-1.1-7-4.5-7-8.7V6l7-3z" />
+              <path d="M9.5 12l1.8 1.8 3.4-3.6" />
+            </svg>
+          </span>
+          <div class="min-w-0">
+            <p class="text-sm font-semibold leading-snug text-fg">{t(ui.consent.title, lang)}</p>
+            <p class="mt-1 text-xs leading-relaxed text-fg-muted">{t(ui.consent.body, lang)}</p>
+          </div>
+        </div>
+
+        <div class="mt-1 flex items-center justify-end gap-2">
+          <button type="button" id="consent-no" class="consent-btn">
+            {t(ui.consent.decline, lang)}
+          </button>
+          <button type="button" id="consent-yes" class="consent-btn consent-btn-primary">
+            {t(ui.consent.accept, lang)}
+          </button>
+        </div>
+      </div>
+
+      <script is:inline define:vars={{ host: HOST, id: ID }}>
+        (() => {
+          const KEY = 'analytics-consent';
+          const banner = document.getElementById('consent');
+
+          /* ---- the tracker, loaded only on a yes ---------------------------------- */
+
+          let loaded = false;
+          const load = () => {
+            if (loaded) return;
+            loaded = true;
+            const s = document.createElement('script');
+            s.src = `${host}/script.js`;
+            s.defer = true;
+            s.dataset.websiteId = id;
+            s.dataset.doNotTrack = 'true'; // honour the browser's DNT on top of consent
+            s.addEventListener('load', instrument);
+            document.head.appendChild(s);
+          };
+
+          const track = (name, data) => window.umami?.track(name, data);
+
+          /* ---- the things an HTML attribute cannot measure -------------------------- */
+
+          function instrument() {
+            // How far down the page people actually get. Fired once per threshold.
+            const depths = [25, 50, 75, 100];
+            const hit = new Set();
+            const onScroll = () => {
+              const h = document.documentElement;
+              const max = h.scrollHeight - h.clientHeight;
+              const pct = max > 0 ? ((h.scrollTop / max) * 100) : 100;
+              for (const d of depths) {
+                if (pct >= d && !hit.has(d)) {
+                  hit.add(d);
+                  track('scroll-depth', { depth: d });
+                }
+              }
+              if (hit.size === depths.length) removeEventListener('scroll', onScroll);
+            };
+            addEventListener('scroll', onScroll, { passive: true });
+            onScroll();
+
+            // Which section was on screen, and for how long. `section-view` says they reached
+            // it; `section-time` says whether they read it or scrolled straight past.
+            if ('IntersectionObserver' in window) {
+              const seen = new Set();
+              const since = new Map();
+              const io = new IntersectionObserver(
+                (entries) => {
+                  for (const e of entries) {
+                    const id = e.target.id;
+                    if (e.isIntersecting) {
+                      if (!seen.has(id)) {
+                        seen.add(id);
+                        track('section-view', { section: id });
+                      }
+                      since.set(id, performance.now());
+                    } else if (since.has(id)) {
+                      const secs = Math.round((performance.now() - since.get(id)) / 1000);
+                      since.delete(id);
+                      if (secs >= 3) track('section-time', { section: id, seconds: secs });
+                    }
+                  }
+                },
+                { threshold: 0.35 },
+              );
+              document.querySelectorAll('main section[id]').forEach((s) => io.observe(s));
+            }
+
+            // Engaged time: the clock stops when the tab is hidden, so a page left open in a
+            // background tab overnight does not report as a twelve-hour read.
+            let engaged = 0;
+            let mark = performance.now();
+            const stop = () => {
+              if (document.visibilityState === 'hidden') {
+                engaged += performance.now() - mark;
+              } else {
+                mark = performance.now();
+              }
+            };
+            document.addEventListener('visibilitychange', stop);
+
+            addEventListener('pagehide', () => {
+              if (document.visibilityState !== 'hidden') engaged += performance.now() - mark;
+              const secs = Math.round(engaged / 1000);
+              if (secs < 2) return;
+              // Buckets, not raw seconds: the question is "did they read it", and a bucket
+              // answers that without building a timing fingerprint of one person's visit.
+              const bucket =
+                secs < 15 ? '0-15s' : secs < 60 ? '15-60s' : secs < 180 ? '1-3m' : '3m+';
+              track('engaged-time', { bucket, seconds: secs });
+            });
+
+            // Anything leaving the site that is not already declared with its own event.
+            document.addEventListener('click', (e) => {
+              const a = e.target.closest?.('a[href^="http"], a[href^="mailto"]');
+              if (!a || a.dataset.umamiEvent) return;
+              const to = a.getAttribute('href') ?? '';
+              track('outbound-click', { to, host: to.startsWith('mailto') ? 'email' : new URL(to).host });
+            });
+          }
+
+          /* ---- ask, once ------------------------------------------------------------ */
+
+          const decide = (answer) => {
+            localStorage.setItem(KEY, answer);
+            banner.hidden = true;
+            if (answer === 'granted') load();
+          };
+
+          // Delegated, so it does not matter whether the footer has been parsed yet when this
+          // runs — binding straight to #analytics-prefs silently did nothing when the script
+          // sat above it in the document.
+          document.addEventListener('click', (e) => {
+            const el = e.target.closest?.('#consent-yes, #consent-no, #analytics-prefs');
+            if (!el) return;
+            if (el.id === 'consent-yes') return decide('granted');
+            if (el.id === 'consent-no') return decide('denied');
+            // The footer link, for anyone who changes their mind.
+            e.preventDefault();
+            localStorage.removeItem(KEY);
+            banner.hidden = false;
+          });
+
+          const answer = localStorage.getItem(KEY);
+          if (answer === 'granted') load();
+          else if (answer !== 'denied') {
+            // Let the page paint first: the notice is a question, not an interruption.
+            setTimeout(() => {
+              banner.hidden = false;
+            }, 900);
+          }
+        })();
+      </script>
+
+    </>
+  )
+}

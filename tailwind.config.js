@@ -1,80 +1,43 @@
 /** @type {import('tailwindcss').Config} */
+
+// Colours resolve through CSS variables (see src/styles/global.css), so switching theme
+// is a variable swap rather than a second set of classes on every element. The
+// `<alpha-value>` placeholder keeps opacity modifiers (bg-surface/80) working.
+const v = (name) => `rgb(var(--${name}) / <alpha-value>)`;
+
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ['./src/**/*.{astro,html,js,ts,jsx,tsx,md}'],
+  darkMode: ['selector', '[data-theme="dark"]'],
   theme: {
     extend: {
       colors: {
-        background: {
-          DEFAULT: '#0a0a0a',
-          secondary: '#111111',
-          tertiary: '#1a1a1a',
+        canvas: v('canvas'),
+        surface: v('surface'),
+        'surface-hi': v('surface-hi'),
+        line: v('line'),
+        'line-hi': v('line-hi'),
+        fg: v('fg'),
+        'fg-muted': v('fg-muted'),
+        'fg-subtle': v('fg-subtle'),
+        accent: v('accent'),
+        'accent-hi': v('accent-hi'),
+        'accent-dim': v('accent-dim'),
+        level: {
+          0: v('level-0'),
+          1: v('level-1'),
+          2: v('level-2'),
+          3: v('level-3'),
+          4: v('level-4'),
         },
-        foreground: {
-          DEFAULT: '#ffffff',
-          secondary: '#a1a1aa',
-          muted: '#71717a',
-        },
-        primary: {
-          DEFAULT: '#00ff88',
-          secondary: '#00cc6a',
-          accent: '#00ffaa',
-        },
-        terminal: {
-          green: '#00ff41',
-          blue: '#0080ff',
-          purple: '#8000ff',
-          yellow: '#ffff00',
-          red: '#ff0040',
-        },
-        border: {
-          DEFAULT: '#27272a',
-          secondary: '#3f3f46',
-        }
       },
       fontFamily: {
-        mono: ['JetBrains Mono', 'Fira Code', 'Consolas', 'monospace'],
         sans: ['Inter', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
       },
-      animation: {
-        'glow': 'glow 2s ease-in-out infinite alternate',
-        'typing': 'typing 3.5s steps(40, end)',
-        'blink': 'blink 1s infinite',
-        'fade-in': 'fadeIn 0.5s ease-in-out',
-        'slide-up': 'slideUp 0.5s ease-out',
-      },
-      keyframes: {
-        glow: {
-          '0%': { boxShadow: '0 0 5px #00ff88, 0 0 10px #00ff88, 0 0 15px #00ff88' },
-          '100%': { boxShadow: '0 0 10px #00ff88, 0 0 20px #00ff88, 0 0 30px #00ff88' },
-        },
-        typing: {
-          'from': { width: '0' },
-          'to': { width: '100%' },
-        },
-        blink: {
-          '0%, 50%': { opacity: '1' },
-          '51%, 100%': { opacity: '0' },
-        },
-        fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
-        },
-        slideUp: {
-          '0%': { transform: 'translateY(20px)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' },
-        },
-      },
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'grid-pattern': 'linear-gradient(rgba(0, 255, 136, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 136, 0.1) 1px, transparent 1px)',
-      },
-      backgroundSize: {
-        'grid': '20px 20px',
+      maxWidth: {
+        content: '58rem',
       },
     },
   },
   plugins: [],
-} 
+};

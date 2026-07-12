@@ -1,0 +1,65 @@
+---
+import { site, contact } from '../data/profile';
+import { ui } from '../i18n/ui';
+import { t, type Lang } from '../i18n/config';
+import TechIcon from './TechIcon.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+
+<section id="contact" aria-labelledby="contact-h" class="wrap py-16 sm:py-20">
+  <h2 id="contact-h" class="eyebrow">{t(ui.contact.heading, lang)}</h2>
+
+  <p class="mt-3 max-w-2xl text-lg leading-relaxed text-fg">{t(contact.lead, lang)}</p>
+
+  <!-- The old page had a "form" that just opened a mailto: with an empty body. Real
+       addresses, plainly listed, are more useful and one click shorter. -->
+  <ul class="mt-8 space-y-2">
+    {
+      site.emails.map((e) => (
+        <li class="flex flex-wrap items-baseline gap-x-3">
+          <span class="w-16 shrink-0 font-mono text-xs text-fg-subtle">{t(e.label, lang)}</span>
+          <a
+            href={`mailto:${e.address}`}
+            class="link font-mono text-sm"
+            data-umami-event="email-click"
+            data-umami-event-inbox={t(e.label, 'en').toLowerCase()}
+          >
+            {e.address}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  <div class="mt-8 flex flex-wrap gap-3">
+    {
+      site.socials.map((s) => (
+        <a
+          href={s.url}
+          rel="noopener"
+          class="flex items-center gap-2 rounded-md border border-line-hi px-4 py-2 text-sm text-fg-muted transition-colors hover:border-accent/60 hover:text-accent"
+          data-umami-event="social-click"
+          data-umami-event-network={s.name.toLowerCase()}
+        >
+          {/* Mono: the button colours itself on hover, and a black GitHub mark would fight it. */}
+          <TechIcon name={s.name} class="h-4 w-4" mono />
+          {s.name}
+        </a>
+      ))
+    }
+  </div>
+
+  <footer class="mt-20 border-t border-line pt-6">
+    <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+      <p class="text-xs text-fg-subtle">© {new Date().getFullYear()} {site.displayName}</p>
+      {/* Consent has to be revocable, or it was never consent. The Analytics component
+          wires this up; if analytics is not configured, it simply does nothing. */}
+      <a href="#" id="analytics-prefs" class="link text-xs">{t(ui.consent.manage, lang)}</a>
+    </div>
+    <p class="mt-3 font-mono text-xs text-fg-subtle">{t(contact.quote, lang)}</p>
+  </footer>
+</section>

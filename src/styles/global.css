@@ -1,0 +1,223 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/**
+ * Theme tokens. Every colour in the app resolves through these, so light mode is a
+ * swap of eleven variables rather than a second set of classes on every element.
+ * Values are space-separated RGB channels so Tailwind's `<alpha-value>` still works
+ * (bg-surface/80 and friends).
+ */
+@layer base {
+  :root,
+  :root[data-theme='dark'] {
+    --canvas: 6 8 11;
+    --surface: 15 18 23;
+    --surface-hi: 22 26 33;
+    --line: 28 32 40;
+    --line-hi: 44 50 60;
+    --fg: 230 237 243;
+    --fg-muted: 139 148 158;
+    --fg-subtle: 110 118 129;
+    --accent: 63 185 80;
+    --accent-hi: 86 211 100;
+    --accent-dim: 31 111 58;
+
+    --level-0: 22 27 34;
+    --level-1: 14 68 41;
+    --level-2: 0 109 50;
+    --level-3: 38 166 65;
+    --level-4: 57 211 83;
+  }
+
+  :root[data-theme='light'] {
+    --canvas: 255 255 255;
+    --surface: 246 248 250;
+    --surface-hi: 238 241 244;
+    --line: 208 215 222;
+    --line-hi: 175 184 193;
+    --fg: 31 35 40;
+    --fg-muted: 89 99 110;
+    --fg-subtle: 110 119 129;
+    --accent: 26 127 55;
+    --accent-hi: 31 136 61;
+    --accent-dim: 172 238 187;
+
+    /* GitHub's light contribution scale. */
+    --level-0: 235 237 240;
+    --level-1: 155 233 168;
+    --level-2: 64 196 99;
+    --level-3: 48 161 78;
+    --level-4: 33 110 57;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    color-scheme: dark;
+  }
+  html[data-theme='light'] {
+    color-scheme: light;
+  }
+
+  body {
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'calt';
+  }
+
+  ::selection {
+    @apply bg-accent/25 text-fg;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-accent/70 ring-offset-2 ring-offset-canvas;
+  }
+
+  /* The old build animated 182 elements on load. Respect the setting this time. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .wrap {
+    @apply mx-auto w-full max-w-content px-5 sm:px-6;
+  }
+
+  .card {
+    @apply rounded-lg border border-line bg-surface transition-colors duration-200 hover:border-line-hi;
+  }
+
+  /* Section labels: the one place monospace earns its keep. */
+  .eyebrow {
+    @apply font-mono text-xs uppercase tracking-widest text-fg-subtle;
+  }
+
+  .chip {
+    @apply rounded-md border border-line bg-canvas px-2 py-0.5 font-mono text-xs text-fg-muted;
+  }
+
+  .link {
+    @apply text-fg-muted underline-offset-4 transition-colors hover:text-accent hover:underline;
+  }
+
+  /* Prose from profile.ts, where <em> means "lift this phrase", not "say it in italics". */
+  .rich em {
+    @apply not-italic text-fg;
+  }
+
+  /* Scrollable strips keep their scroll, lose the grey native bar. */
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Institution marks rendered as monochrome, so they need no plate behind them.
+     Flattened to white on dark, to black on light. */
+  .logo-mark {
+    filter: brightness(0) invert(1);
+    opacity: 0.82;
+  }
+  :root[data-theme='light'] .logo-mark {
+    filter: brightness(0);
+    opacity: 0.7;
+  }
+
+  /* Minimal icon button that sits over media. Media is dark in both themes, so this
+     stays light-on-dark regardless. */
+  .media-btn {
+    @apply inline-flex h-8 w-8 items-center justify-center rounded-md border border-white/15
+           bg-black/45 text-white/85 opacity-0 backdrop-blur transition
+           hover:border-white/35 hover:bg-black/65 hover:text-white
+           focus-visible:opacity-100 group-hover:opacity-100;
+  }
+  .media-btn svg {
+    @apply h-4 w-4;
+  }
+  /* Touch devices have no hover, so never hide the affordance there. */
+  @media (hover: none) {
+    .media-btn {
+      @apply opacity-100;
+    }
+  }
+
+  .zoom {
+    @apply cursor-zoom-in rounded-lg transition-opacity hover:opacity-95;
+  }
+
+  /**
+   * The analytics consent notice: a toast in the bottom-right corner, not a cookie wall.
+   * It lives here rather than in Analytics.astro because a <style> nested inside an Astro
+   * expression is silently dropped at build time.
+   */
+  .consent {
+    @apply fixed inset-x-3 bottom-3 z-50 flex flex-col gap-3 rounded-xl border border-line-hi
+           bg-surface/90 p-4 backdrop-blur-md
+           sm:inset-x-auto sm:bottom-6 sm:right-6 sm:w-[23rem];
+    /* Two shadows: a soft drop for depth, and a hairline inner highlight along the top edge
+       that reads as a lit surface rather than a flat rectangle. */
+    box-shadow:
+      0 16px 40px -12px rgb(0 0 0 / 0.55),
+      inset 0 1px 0 0 rgb(255 255 255 / 0.06);
+    animation: consent-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .consent[hidden] {
+    display: none;
+  }
+
+  .consent-icon {
+    @apply flex h-8 w-8 shrink-0 items-center justify-center rounded-lg
+           bg-accent/10 text-accent ring-1 ring-inset ring-accent/25;
+  }
+  .consent-icon svg {
+    @apply h-[1.05rem] w-[1.05rem];
+  }
+
+  .consent-btn {
+    @apply rounded-lg px-3 py-1.5 text-xs font-medium text-fg-muted transition-colors
+           hover:bg-surface-hi hover:text-fg;
+  }
+  .consent-btn-primary {
+    @apply bg-accent font-semibold text-canvas hover:bg-accent-hi hover:text-canvas;
+  }
+
+  @keyframes consent-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px) scale(0.98);
+    }
+  }
+}
+
+@layer components {
+  /**
+   * The lightbox must be `fixed`. A <dialog> in normal flow gets scrolled into view by
+   * showModal(), which is what was yanking the page upward when an image opened.
+   */
+  .lightbox {
+    @apply fixed inset-0 m-0 flex h-full max-h-none w-full max-w-none items-center
+           justify-center border-0 bg-transparent p-4;
+  }
+  /* `display: flex` above overrides the UA's `display: none` for a closed <dialog>, which
+     leaves the image sitting in the middle of the page. Put the default back. */
+  .lightbox:not([open]) {
+    display: none;
+  }
+  .lightbox::backdrop {
+    @apply bg-black/85 backdrop-blur-sm;
+  }
+  .lightbox img {
+    @apply max-h-[90vh] max-w-full rounded-lg border border-white/10 object-contain;
+  }
+  .lightbox .media-btn {
+    @apply fixed right-4 top-4 opacity-100;
+  }
+}
