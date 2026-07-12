@@ -119,14 +119,12 @@ const pageSchema = {
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
     />
 
-    {/* Must run before first paint, or the page flashes the wrong theme. */}
+    {/* Must run before first paint, or the page flashes the wrong theme.
+        Dark is the default for everyone. The OS preference is deliberately ignored —
+        this site is designed dark, and light is opt-in. */}
     <script is:inline>
-      (() => {
-        const saved = localStorage.getItem('theme');
-        const theme =
-          saved ?? (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
-        document.documentElement.dataset.theme = theme;
-      })();
+      document.documentElement.dataset.theme =
+        localStorage.getItem('theme') === 'light' ? 'light' : 'dark';
     </script>
 
     <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />

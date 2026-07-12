@@ -399,28 +399,68 @@
         }
       }
 
-      /* ── Black hole (Gargantua) ── */
+      /* ── Black hole (Gargantua) ──
+       * A black shadow on a near-black page is nothing at all. The hole is only visible
+       * because of what surrounds it, so the order matters:
+       *
+       *   glow  →  far half of the disc  →  lensed halo  →  the shadow  →  photon ring
+       *   →  near half of the disc, drawn last so it passes *in front* of the shadow.
+       *
+       * That last pass is the whole trick: a bright band crossing the face of the hole is
+       * what makes the eye read a sphere of darkness rather than a gap in the render.
+       */
       if (wBh > 0.01) {
         const lp = smooth(BH[0], BH[1], p);
-        const hr = (0.10 + lp * 0.06) * S;
-        const tilt = 0.10 + lp * 0.05;
+        // Small enough to sit inside the viewport. It used to be so large that the photon
+        // ring ran off the edges and only an arc of it was ever on screen.
+        const hr = (0.055 + lp * 0.025) * S;
+        const tilt = 0.11 + lp * 0.05; // near edge-on: the disc is a blade, not a ring
         const spin = t * 0.35;
+        const A = wBh * vis;
+
+        // The other scenes are large enough to read around the content column. This one is
+        // a compact disc, so at the shared centre it just sat behind a screenshot. Tuck it
+        // into the right-hand gutter instead, where the whole hole is actually visible.
+        const bx = W >= 1024 ? Math.min(W - hr * 1.15, W * 0.92) : W / 2;
+        const cx = bx;
+
+        // Bloom behind the hole. Without something brighter than the page behind it, the
+        // shadow has nothing to be a shadow against.
+        const glow = ctx.createRadialGradient(cx, cy, hr * 0.9, cx, cy, hr * 3.4);
+        glow.addColorStop(0, `rgba(255,176,92,${(0.30 * A).toFixed(3)})`);
+        glow.addColorStop(0.35, `rgba(214,126,60,${(0.13 * A).toFixed(3)})`);
+        glow.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.globalAlpha = 1;
+        lastAlpha = -1;
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(cx, cy, hr * 3.4, 0, 6.283);
+        ctx.fill();
 
         const nd = Math.round(disk.length * Q);
-        for (let i = 0; i < nd; i++) {
-          const d = disk[i];
-          const a = d.a + spin * d.w * 2.2;
-          const beam = 0.25 + 0.75 * Math.pow(Math.max(0, Math.cos(a - 1.57)), 0.7);
-          const heat = Math.min(1, (1.5 / d.r) * (0.5 + beam));
-          put(
-            cx + Math.cos(a) * d.r * hr,
-            cy + Math.sin(a) * d.r * hr * tilt,
-            Math.min(1, d.b * (0.35 + beam)),
-            [255, 140 + heat * 110, 50 + heat * 150],
-            Math.min(1, d.b * beam * 1.15) * wBh * vis,
-          );
-        }
+        /** One disc particle. `front` picks the half that orbits toward the viewer. */
+        const drawDisk = (front: boolean) => {
+          for (let i = 0; i < nd; i++) {
+            const d = disk[i];
+            const a = d.a + spin * d.w * 2.2;
+            const sn = Math.sin(a);
+            if (front === sn < 0) continue; // the other half of the orbit
+            // Doppler beaming: the side sweeping toward us is far brighter and whiter.
+            const beam = 0.3 + 0.7 * Math.pow(Math.max(0, Math.cos(a - 1.57)), 0.7);
+            const heat = Math.min(1, (1.6 / d.r) * (0.5 + beam));
+            put(
+              cx + Math.cos(a) * d.r * hr,
+              cy + sn * d.r * hr * tilt,
+              Math.min(1, d.b * (0.4 + beam)),
+              [255, 148 + heat * 105, 55 + heat * 150],
+              Math.min(1, d.b * beam * 1.5) * A,
+            );
+          }
+        };
 
+        drawDisk(false); // far half — behind the hole
+
+        // Lensed halo: light from the far side of the disc bent up and over the shadow.
         const nh = Math.round(halo.length * Q);
         for (let i = 0; i < nh; i++) {
           const h = halo[i];
@@ -432,34 +472,29 @@
             cy + Math.sin(th) * h.r * hr,
             Math.min(1, h.b * edge + 0.25),
             [255, 205, 140],
-            h.b * edge * beam * 1.25 * wBh * vis,
+            h.b * edge * beam * 1.5 * A,
           );
         }
 
-        // The event horizon. On dark it is punched out of everything drawn so far, which
-        // lets the page background show through — and the page is black, so it reads as a
-        // hole. On light that same punch would produce a *white* black hole, so there it
-        // has to be painted in.
+        // The shadow. Painted, not punched: `destination-out` would clear the glow behind
+        // it too, leaving the hole exactly the colour of the page — invisible.
         ctx.globalAlpha = 1;
         lastAlpha = -1;
         ctx.beginPath();
         ctx.arc(cx, cy, hr * 0.985, 0, 6.283);
-        if (LIGHT) {
-          // Tied to `vis` like everything else, so it lands as a soft shadow rather than
-          // an opaque disc sitting on top of the paragraph behind it.
-          ctx.fillStyle = `rgba(10,12,16,${Math.min(0.5, wBh * vis * 1.5).toFixed(3)})`;
-          ctx.fill();
-        } else {
-          ctx.globalCompositeOperation = 'destination-out';
-          ctx.fill();
-          ctx.globalCompositeOperation = 'source-over';
-        }
+        ctx.fillStyle = LIGHT
+          ? `rgba(12,14,18,${Math.min(0.55, A * 1.6).toFixed(3)})`
+          : `rgba(0,0,0,${Math.min(1, 0.55 + A).toFixed(3)})`;
+        ctx.fill();
 
-        const steps = Math.round((MOBILE ? 110 : 220) * Q);
+        // Photon ring: the hard bright edge that defines where the shadow ends.
+        const steps = Math.round((MOBILE ? 130 : 260) * Q);
         for (let i = 0; i < steps; i++) {
           const a = (i / steps) * 6.283;
-          put(cx + Math.cos(a) * hr, cy + Math.sin(a) * hr, 1, [255, 226, 178], 0.95 * wBh * vis);
+          put(cx + Math.cos(a) * hr, cy + Math.sin(a) * hr, 1, [255, 232, 190], Math.min(1, 1.4 * A));
         }
+
+        drawDisk(true); // near half — sweeps across the face of the hole
       }
 
       /* ── Solar System ──

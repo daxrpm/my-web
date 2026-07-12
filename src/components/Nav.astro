@@ -81,14 +81,10 @@ const links = [
     window.dispatchEvent(new CustomEvent('themechange', { detail: theme }));
   };
 
+  // Dark unless the visitor chose light. The OS preference is not consulted.
   document.getElementById('theme-toggle')?.addEventListener('click', () => {
     const next = root.dataset.theme === 'light' ? 'dark' : 'light';
     localStorage.setItem('theme', next);
     paint(next);
-  });
-
-  // Follow the OS until the visitor makes a choice of their own.
-  window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', (e) => {
-    if (!localStorage.getItem('theme')) paint(e.matches ? 'light' : 'dark');
   });
 </script>
