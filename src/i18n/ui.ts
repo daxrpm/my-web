@@ -116,8 +116,8 @@ export const ui = {
   consent: {
     title: { en: 'A quick ask', es: 'Una pregunta rápida' } as L,
     body: {
-      en: 'I care about privacy, so I will not measure anything without asking. If you allow it, I collect anonymous usage stats — which pages get read, which links get clicked — on analytics I host myself, on my own server. No cookies, no third parties, nothing sold, nothing that identifies you.',
-      es: 'Me importa la privacidad, así que no mido nada sin preguntar. Si lo permites, recojo estadísticas de uso anónimas — qué se lee y qué se hace clic — en una herramienta que alojo yo mismo, en mi propio servidor. Sin cookies, sin terceros, sin vender nada y sin nada que te identifique.',
+      en: 'I care about privacy, so I will not measure anything without asking. If you allow it, I collect basic, anonymous usage stats — self-hosted on my own server. No cookies, no third parties, nothing that identifies you.',
+      es: 'Me importa la privacidad, así que no mido nada sin preguntar. Si lo permites, recojo estadísticas de uso básicas y anónimas — alojadas en mi propio servidor. Sin cookies, sin terceros y sin nada que te identifique.',
     } as L,
     accept: { en: 'Allow', es: 'Permitir' } as L,
     decline: { en: 'No thanks', es: 'No, gracias' } as L,
