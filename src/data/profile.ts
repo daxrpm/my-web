@@ -12,7 +12,7 @@ export const site = {
   name: 'Dax Navarrete',
   handle: 'daxrpm',
   role: 'Computer Science undergraduate · CMS (CERN) collaborator',
-  tagline: 'I build systems software and machine learning for particle physics.',
+  tagline: 'Developer - Linux Enthusiast - Science Lover',
   summary:
     'Computer Science undergraduate at Escuela Politécnica Nacional in Quito, Ecuador. ' +
     'I work on machine learning for particle physics with the CMS collaboration at CERN, ' +
