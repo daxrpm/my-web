@@ -716,7 +716,22 @@ export const education = [
     } as L,
     href: 'https://aps.cec-epn.edu.ec/diplomas/2023/CAPACITACION_Y_CONSULTORIA/6/diploma_190908_53970-signed.pdf',
   },
+  {
+    institution: 'Escuela Politécnica Nacional',
+    logo: '/logos/epn.svg',
+    /* The certificate says "Academic Four"; C1 is what that maps to on the CEFR scale. Stated
+       that way round on purpose — claiming a "C1 certificate" would be claiming a document that
+       does not exist. */
+    title: { en: 'English — Academic Four', es: 'Inglés — Academic Four' } as L,
+    period: '2025',
+    note: {
+      en: 'The CEC-EPN language centre’s highest level, equivalent to C1 on the CEFR scale.',
+      es: 'El nivel más alto del centro de idiomas del CEC-EPN, equivalente a C1 en el MCER.',
+    } as L,
+    href: 'https://aps.cec-epn.edu.ec/diplomas/2025/LINGUISTICA/4/diploma_190908_60790-signed.pdf',
+  },
 ];
+
 
 /**
  * Grouped, not rated — and ordered the way Dax actually works: infrastructure first, AI last.
