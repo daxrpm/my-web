@@ -772,8 +772,8 @@ export const texTeller = {
 /** Invisible, but it is what makes a search engine or an LLM resolve the entity. */
 export const seo = {
   title: {
-    en: 'Dax Navarrete — Linux Infrastructure & Scientific Computing',
-    es: 'Dax Navarrete — Infraestructura Linux y computación científica',
+    en: 'Dax — Linux Infrastructure & Scientific Computing',
+    es: 'Dax — Infraestructura Linux y computación científica',
   } as L,
   /** Only these three. The legal name stays off the site entirely. */
   alternateNames: ['Dax', 'daxrpm'],
