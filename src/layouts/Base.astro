@@ -112,12 +112,22 @@ const pageSchema = {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
-    <meta name="theme-color" content="#0d1117" />
+    <meta id="theme-color" name="theme-color" content="#06080b" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
     />
+
+    {/* Must run before first paint, or the page flashes the wrong theme. */}
+    <script is:inline>
+      (() => {
+        const saved = localStorage.getItem('theme');
+        const theme =
+          saved ?? (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
 
     <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
     <script type="application/ld+json" set:html={JSON.stringify(pageSchema)} />

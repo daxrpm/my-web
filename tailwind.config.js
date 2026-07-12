@@ -1,29 +1,33 @@
 /** @type {import('tailwindcss').Config} */
+
+// Colours resolve through CSS variables (see src/styles/global.css), so switching theme
+// is a variable swap rather than a second set of classes on every element. The
+// `<alpha-value>` placeholder keeps opacity modifiers (bg-surface/80) working.
+const v = (name) => `rgb(var(--${name}) / <alpha-value>)`;
+
 export default {
   content: ['./src/**/*.{astro,html,js,ts,jsx,tsx,md}'],
+  darkMode: ['selector', '[data-theme="dark"]'],
   theme: {
     extend: {
       colors: {
-        canvas: '#0d1117',
-        surface: '#161b22',
-        'surface-hi': '#1c2128',
-        line: '#21262d',
-        'line-hi': '#30363d',
-        fg: '#e6edf3',
-        'fg-muted': '#8b949e',
-        'fg-subtle': '#6e7681',
-        // The old #00ff88 was doing too much work. Green stays the identity, but as
-        // an accent that only marks what matters, not the whole page.
-        accent: '#3fb950',
-        'accent-hi': '#56d364',
-        'accent-dim': '#1f6f3a',
-        // GitHub's own contribution scale, so the graph reads as familiar on sight.
+        canvas: v('canvas'),
+        surface: v('surface'),
+        'surface-hi': v('surface-hi'),
+        line: v('line'),
+        'line-hi': v('line-hi'),
+        fg: v('fg'),
+        'fg-muted': v('fg-muted'),
+        'fg-subtle': v('fg-subtle'),
+        accent: v('accent'),
+        'accent-hi': v('accent-hi'),
+        'accent-dim': v('accent-dim'),
         level: {
-          0: '#161b22',
-          1: '#0e4429',
-          2: '#006d32',
-          3: '#26a641',
-          4: '#39d353',
+          0: v('level-0'),
+          1: v('level-1'),
+          2: v('level-2'),
+          3: v('level-3'),
+          4: v('level-4'),
         },
       },
       fontFamily: {

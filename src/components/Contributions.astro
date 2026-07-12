@@ -78,7 +78,7 @@ const activeDays = days.filter((d) => d.count > 0).length;
               {w.map((day) =>
                 day ? (
                   <div
-                    class={`h-[11px] w-[11px] rounded-[2px] ${LEVEL_BG[day.level]} ring-1 ring-inset ring-white/[0.04]`}
+                    class={`h-[11px] w-[11px] rounded-[2px] ${LEVEL_BG[day.level]} ring-1 ring-inset ring-fg/[0.06]`}
                     title={`${day.count === 0 ? 'No contributions' : `${day.count} contribution${day.count === 1 ? '' : 's'}`} on ${fmt(day.date)}`}
                   />
                 ) : (
@@ -103,7 +103,7 @@ const activeDays = days.filter((d) => d.count > 0).length;
       </a>
       <div class="flex items-center gap-1">
         <span class="mr-1">Less</span>
-        {LEVEL_BG.map((bg) => <div class={`h-[11px] w-[11px] rounded-[2px] ${bg} ring-1 ring-inset ring-white/[0.04]`} />)}
+        {LEVEL_BG.map((bg) => <div class={`h-[11px] w-[11px] rounded-[2px] ${bg} ring-1 ring-inset ring-fg/[0.06]`} />)}
         <span class="ml-1">More</span>
       </div>
     </div>

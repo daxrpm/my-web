@@ -61,6 +61,19 @@
     const atlas = new Map<number, HTMLCanvasElement[]>();
     const CQ = 24; // colour quantisation step
 
+    /**
+     * Light mode. The palette is built for glowing points on black; on white the same
+     * colours are invisible. Rather than a second palette, each colour is darkened toward
+     * its own hue — a dim green Milky Way on white reads the same way a bright one does
+     * on black — and the whole field is pulled back further so the text stays dominant.
+     */
+    let LIGHT = document.documentElement.dataset.theme === 'light';
+    window.addEventListener('themechange', (e) => {
+      LIGHT = (e as CustomEvent).detail === 'light';
+      atlas.clear(); // every sprite is the wrong colour now
+      lastAlpha = -1;
+    });
+
     const sheetFor = (key: number, r: number, g: number, b: number) => {
       let sheet = atlas.get(key);
       if (sheet) return sheet;
@@ -93,9 +106,11 @@
       const qa = Math.round(a * 10) / 10;
       if (qa < 0.05) return;
 
-      const r = Math.min(255, Math.round(col[0] / CQ) * CQ);
-      const g = Math.min(255, Math.round(col[1] / CQ) * CQ);
-      const b = Math.min(255, Math.round(col[2] / CQ) * CQ);
+      // On white, darken the point toward its own hue instead of switching palettes.
+      const k = LIGHT ? 0.42 : 1;
+      const r = Math.min(255, Math.round((col[0] * k) / CQ) * CQ);
+      const g = Math.min(255, Math.round((col[1] * k) / CQ) * CQ);
+      const b = Math.min(255, Math.round((col[2] * k) / CQ) * CQ);
       const key = (r << 16) | (g << 8) | b;
 
       const gi = br <= 0 ? 0 : br >= 1 ? NG - 1 : (br * (NG - 1)) | 0;
@@ -341,8 +356,10 @@
       const S = Math.hypot(W, H);
 
       // Deliberately restrained: the cosmos is a backdrop, and the content has to be
-      // readable over it. Brightest in the hero, then it recedes.
-      const vis = 0.7 - win(p, 0.06, 1.1, 0.05) * 0.36;
+      // readable over it. Brightest in the hero, then it recedes. Pulled back further on
+      // light, where dark marks on white carry more visual weight than glow on black.
+      const ceiling = LIGHT ? 0.5 : 0.7;
+      const vis = ceiling - win(p, 0.06, 1.1, 0.05) * (LIGHT ? 0.28 : 0.36);
 
       const wGal = win(p, ...GAL);
       const wBh = win(p, ...BH);
@@ -419,14 +436,24 @@
           );
         }
 
-        // Punch the event horizon out of everything drawn so far.
+        // The event horizon. On dark it is punched out of everything drawn so far, which
+        // lets the page background show through — and the page is black, so it reads as a
+        // hole. On light that same punch would produce a *white* black hole, so there it
+        // has to be painted in.
         ctx.globalAlpha = 1;
         lastAlpha = -1;
-        ctx.globalCompositeOperation = 'destination-out';
         ctx.beginPath();
         ctx.arc(cx, cy, hr * 0.985, 0, 6.283);
-        ctx.fill();
-        ctx.globalCompositeOperation = 'source-over';
+        if (LIGHT) {
+          // Tied to `vis` like everything else, so it lands as a soft shadow rather than
+          // an opaque disc sitting on top of the paragraph behind it.
+          ctx.fillStyle = `rgba(10,12,16,${Math.min(0.5, wBh * vis * 1.5).toFixed(3)})`;
+          ctx.fill();
+        } else {
+          ctx.globalCompositeOperation = 'destination-out';
+          ctx.fill();
+          ctx.globalCompositeOperation = 'source-over';
+        }
 
         const steps = Math.round((MOBILE ? 110 : 220) * Q);
         for (let i = 0; i < steps; i++) {
