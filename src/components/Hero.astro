@@ -1,38 +1,46 @@
 ---
-import { site } from '../data/profile';
+import { site, intro, figures } from '../data/profile';
+import { ui } from '../i18n/ui';
+import { t, type Lang } from '../i18n/config';
 import github from '../data/github.json';
 
-const { stats } = github;
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
 
-const figures = [
-  { value: stats.public_repos, label: 'public repos' },
-  { value: stats.contributions_last_year.toLocaleString('en-US'), label: 'contributions, past year' },
-  { value: `${new Date().getFullYear() - stats.coding_since}y`, label: `experience` },
-];
+/** Figures are authored in profile.ts; only the live one is filled from the API. */
+const locale = lang === 'es' ? 'es-EC' : 'en-US';
+const live = {
+  repos: github.stats.public_repos.toLocaleString(locale),
+  contributions: github.stats.contributions_last_year.toLocaleString(locale),
+};
+
+const stats = figures.map((f) => ({
+  value: 'from' in f ? live[f.from] : typeof f.value === 'string' ? f.value : t(f.value, lang),
+  label: t(f.label, lang),
+}));
 ---
 
 <section id="top" class="relative flex min-h-[92vh] items-center">
   <div class="wrap py-24">
-    <p class="eyebrow">{site.location}</p>
+    <p class="eyebrow">{t(site.role, lang)}</p>
 
+    {/* "Dax" on the page; "Dax Navarrete" is what schema.org and the meta tags carry, which
+        is where a search engine actually resolves the entity. */}
     <h1 class="mt-4 text-6xl font-bold tracking-tight text-fg sm:text-7xl">
       {site.displayName}
     </h1>
 
     <p class="mt-5 max-w-2xl text-xl leading-snug text-fg sm:text-2xl">
-      {site.tagline}
+      {t(site.tagline, lang)}
     </p>
 
-    <p class="mt-6 max-w-2xl leading-relaxed text-fg-muted">
-      Computer Science undergraduate at <span class="text-fg">Escuela Politécnica Nacional</span>, and a
-      research collaborator on the <span class="text-fg">CMS experiment at CERN</span> — machine learning for
-      jet flavour tagging and dark matter searches. Outside the lab I write systems software in Rust and C,
-      and I care a lot about networks and security.
-    </p>
+    <p class="rich mt-6 max-w-2xl leading-relaxed text-fg-muted" set:html={t(intro, lang)} />
 
     <ul class="mt-10 flex flex-wrap gap-x-10 gap-y-5">
       {
-        figures.map((f) => (
+        stats.map((f) => (
           <li>
             <span class="block font-mono text-2xl font-medium text-accent">{f.value}</span>
             <span class="mt-0.5 block text-xs text-fg-subtle">{f.label}</span>
@@ -43,12 +51,12 @@ const figures = [
 
     <div class="mt-10 flex flex-wrap items-center gap-3">
       <a
-        href="#work"
+        href="#projects"
         class="rounded-md bg-accent px-4 py-2 text-sm font-medium text-canvas transition-colors hover:bg-accent-hi"
         data-umami-event="cta-click"
         data-umami-event-cta="see-the-work"
       >
-        See the work
+        {t(ui.hero.primaryCta, lang)}
       </a>
       <a
         href={`mailto:${site.email}`}
@@ -56,7 +64,7 @@ const figures = [
         data-umami-event="cta-click"
         data-umami-event-cta="get-in-touch"
       >
-        Get in touch
+        {t(ui.hero.secondaryCta, lang)}
       </a>
     </div>
   </div>

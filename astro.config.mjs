@@ -6,6 +6,17 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://daxrpm.dev',
   output: 'static',
-  integrations: [sitemap()],
+  integrations: [
+    // Teaching the sitemap about the locales makes it emit <xhtml:link rel="alternate">
+    // per URL — the second half of the hreflang contract, after the <link> tags in <head>.
+    // Without it Google sees two pages that merely look similar, rather than one page in
+    // two languages, and picks a winner instead of serving each to the right audience.
+    sitemap({
+      i18n: {
+        defaultLocale: 'en',
+        locales: { en: 'en', es: 'es' },
+      },
+    }),
+  ],
   build: { inlineStylesheets: 'auto' },
 });

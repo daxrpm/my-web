@@ -1,8 +1,16 @@
 ---
 import { existsSync } from 'node:fs';
-import { featured, secondary, type Project } from '../data/profile';
+import { featured, secondary, texTeller, site, type Project } from '../data/profile';
+import { ui, fill } from '../i18n/ui';
+import { t, type Lang } from '../i18n/config';
 import github from '../data/github.json';
 import TexTellerDemo from './TexTellerDemo.astro';
+import TechChip from './TechChip.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
 
 type Repo = {
   name: string; url: string; description: string | null;
@@ -15,49 +23,46 @@ for (const r of [...github.all, ...github.cms] as Repo[]) byName.set(r.name, r);
 const has = (p?: string) => Boolean(p && existsSync(`public${p}`));
 
 const items = featured.map((p: Project) => {
-  const repo = byName.get(p.repo);
+  const repo = p.repo ? byName.get(p.repo) : undefined;
   const media = (p.media ?? []).filter((m) => has(m.src));
   const video = p.video && has(p.video.webm) ? p.video : undefined;
   return {
     ...p,
-    // The first image leads — unless there is a video, in which case the video is the
-    // lead and every image goes into the strip beneath it.
+    // The first image leads — unless there is a video, in which case the video is the lead
+    // and every image goes into the strip beneath it.
     lead: video ? undefined : media[0],
     rest: video ? media : media.slice(1),
     video,
-    url: repo?.url ?? `https://github.com/${p.owner ?? 'daxrpm'}/${p.repo}`,
+    // Private work has no repo, and so no source link, no stars, and no "updated" date.
+    url: p.repo ? (repo?.url ?? `https://github.com/${p.owner ?? site.handle}/${p.repo}`) : undefined,
     stars: repo?.stars ?? 0,
     pushed_at: repo?.pushed_at,
   };
 });
 
-const featuredNames = new Set(featured.map((p) => p.repo));
+const featuredNames = new Set(featured.map((p) => p.repo).filter(Boolean));
 const more = [
   ...secondary.map((n) => byName.get(n)),
-  ...(github.recent as Repo[]).filter((r) => !featuredNames.has(r.name) && !secondary.includes(r.name as never)),
+  ...(github.recent as Repo[]).filter(
+    (r) => !featuredNames.has(r.name) && !secondary.includes(r.name as never),
+  ),
 ]
   .filter((r): r is Repo => Boolean(r))
   .slice(0, 12);
 
-const TAGS: Record<Project['tag'], string> = {
-  research: 'Physics · Numerics',
-  systems: 'Systems',
-  ai: 'AI / ML',
-  backend: 'Backend',
-};
-
 const ago = (iso?: string) => {
   if (!iso) return null;
+  const a = ui.projects.ago;
   const d = Math.floor((Date.now() - new Date(iso).getTime()) / 86_400_000);
-  if (d < 1) return 'today';
-  if (d < 30) return `${d}d ago`;
-  if (d < 365) return `${Math.floor(d / 30)}mo ago`;
-  return `${Math.floor(d / 365)}y ago`;
+  if (d < 1) return t(a.today, lang);
+  if (d < 30) return fill(t(a.days, lang), { n: d });
+  if (d < 365) return fill(t(a.months, lang), { n: Math.floor(d / 30) });
+  return fill(t(a.years, lang), { n: Math.floor(d / 365) });
 };
 ---
 
 <section id="projects" aria-labelledby="projects-h" class="wrap py-16 sm:py-20">
-  <h2 id="projects-h" class="eyebrow">Projects</h2>
+  <h2 id="projects-h" class="eyebrow">{t(ui.projects.heading, lang)}</h2>
 
   <div class="mt-8 space-y-16">
     {
@@ -65,35 +70,41 @@ const ago = (iso?: string) => {
         <article>
           <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
             <h3 class="text-xl font-semibold text-fg">
+              {p.url ? (
+                <a
+                  href={p.url}
+                  rel="noopener"
+                  class="transition-colors hover:text-accent"
+                  data-umami-event="project-click"
+                  data-umami-event-project={p.repo}
+                  data-umami-event-tag={p.tag}
+                  data-umami-event-target="title"
+                >
+                  {p.title}
+                </a>
+              ) : (
+                p.title
+              )}
+            </h3>
+            <span class="eyebrow shrink-0">{t(ui.projects.tags[p.tag], lang)}</span>
+          </div>
+
+          <p class="mt-2.5 max-w-3xl leading-relaxed text-fg-muted">{t(p.blurb, lang)}</p>
+
+          <div class="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+            {p.url && (
               <a
                 href={p.url}
                 rel="noopener"
-                class="transition-colors hover:text-accent"
+                class="link"
                 data-umami-event="project-click"
                 data-umami-event-project={p.repo}
                 data-umami-event-tag={p.tag}
-                data-umami-event-target="title"
+                data-umami-event-target="source"
               >
-                {p.title}
+                {t(ui.projects.source, lang)}
               </a>
-            </h3>
-            <span class="eyebrow shrink-0">{TAGS[p.tag]}</span>
-          </div>
-
-          <p class="mt-2.5 max-w-3xl leading-relaxed text-fg-muted">{p.blurb}</p>
-
-          <div class="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
-            <a
-              href={p.url}
-              rel="noopener"
-              class="link"
-              data-umami-event="project-click"
-              data-umami-event-project={p.repo}
-              data-umami-event-tag={p.tag}
-              data-umami-event-target="source"
-            >
-              Source
-            </a>
+            )}
             {p.live && (
               <a
                 href={p.live}
@@ -104,17 +115,23 @@ const ago = (iso?: string) => {
                 data-umami-event-tag={p.tag}
                 data-umami-event-target="live-demo"
               >
-                Live demo
+                {t(ui.projects.live, lang)}
               </a>
             )}
+            {/* Private work says so, in place of the links it does not have. */}
+            {p.status && <span class="text-xs text-fg-subtle">{t(p.status, lang)}</span>}
             {p.stars > 0 && <span class="font-mono text-xs text-fg-subtle">★ {p.stars}</span>}
-            {p.pushed_at && <span class="font-mono text-xs text-fg-subtle">updated {ago(p.pushed_at)}</span>}
+            {p.pushed_at && (
+              <span class="font-mono text-xs text-fg-subtle">
+                {fill(t(ui.projects.updated, lang), { when: ago(p.pushed_at) ?? '' })}
+              </span>
+            )}
             <span class="flex flex-wrap gap-1.5">
-              {p.stack.map((s) => <span class="chip">{s}</span>)}
+              {p.stack.map((s) => <TechChip name={s} />)}
             </span>
           </div>
 
-          {p.repo === 'TexTeller-Rust' && <TexTellerDemo />}
+          {p.repo === texTeller.repo && <TexTellerDemo lang={lang} />}
 
           {p.video && (
             <figure class="group relative mt-5">
@@ -126,7 +143,7 @@ const ago = (iso?: string) => {
                 loop
                 playsinline
                 preload="none"
-                aria-label={p.video.caption}
+                aria-label={t(p.video.caption, lang)}
               >
                 <source src={p.video.webm} type="video/webm" />
                 <source src={p.video.mp4} type="video/mp4" />
@@ -135,7 +152,7 @@ const ago = (iso?: string) => {
                 type="button"
                 class="media-btn absolute right-3 top-3"
                 data-fullscreen
-                aria-label="Play video full screen"
+                aria-label={t(ui.projects.fullscreen, lang)}
                 data-umami-event="media-fullscreen"
                 data-umami-event-project={p.repo}
               >
@@ -143,7 +160,7 @@ const ago = (iso?: string) => {
                   <path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" />
                 </svg>
               </button>
-              <figcaption class="mt-2 text-xs text-fg-subtle">{p.video.caption}</figcaption>
+              <figcaption class="mt-2 text-xs text-fg-subtle">{t(p.video.caption, lang)}</figcaption>
             </figure>
           )}
 
@@ -153,14 +170,14 @@ const ago = (iso?: string) => {
                 type="button"
                 class="zoom block w-full"
                 data-src={p.lead.src}
-                data-alt={p.lead.alt}
-                aria-label={`Open image: ${p.lead.alt}`}
+                data-alt={t(p.lead.alt, lang)}
+                aria-label={fill(t(ui.projects.openImage, lang), { alt: t(p.lead.alt, lang) })}
                 data-umami-event="media-open"
                 data-umami-event-project={p.repo}
               >
                 <img
                   src={p.lead.src}
-                  alt={p.lead.alt}
+                  alt={t(p.lead.alt, lang)}
                   loading="lazy"
                   decoding="async"
                   class="w-full rounded-lg border border-line bg-canvas"
@@ -172,13 +189,15 @@ const ago = (iso?: string) => {
                   </svg>
                 </span>
               </button>
-              {p.lead.caption && <figcaption class="mt-2 text-xs text-fg-subtle">{p.lead.caption}</figcaption>}
+              {p.lead.caption && (
+                <figcaption class="mt-2 text-xs text-fg-subtle">{t(p.lead.caption, lang)}</figcaption>
+              )}
             </figure>
           )}
 
           {p.rest.length > 0 && (
-            /* Scroll-snap strip. `no-scrollbar` hides the native bar — the cards are
-               visibly clipped at the edge, which is a clearer affordance anyway. */
+            /* Scroll-snap strip. `no-scrollbar` hides the native bar — the cards are visibly
+               clipped at the edge, which is a clearer affordance anyway. */
             <div class="no-scrollbar mt-4 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-1">
               {p.rest.map((m) => (
                 <figure class="w-[80%] shrink-0 snap-start sm:w-[47%]">
@@ -186,20 +205,24 @@ const ago = (iso?: string) => {
                     type="button"
                     class="zoom relative block w-full"
                     data-src={m.src}
-                    data-alt={m.alt}
-                    aria-label={`Open image: ${m.alt}`}
+                    data-alt={t(m.alt, lang)}
+                    aria-label={fill(t(ui.projects.openImage, lang), { alt: t(m.alt, lang) })}
                     data-umami-event="media-open"
                     data-umami-event-project={p.repo}
                   >
                     <img
                       src={m.src}
-                      alt={m.alt}
+                      alt={t(m.alt, lang)}
                       loading="lazy"
                       decoding="async"
                       class="w-full rounded-lg border border-line bg-canvas"
                     />
                   </button>
-                  {m.caption && <figcaption class="mt-2 text-xs leading-relaxed text-fg-subtle">{m.caption}</figcaption>}
+                  {m.caption && (
+                    <figcaption class="mt-2 text-xs leading-relaxed text-fg-subtle">
+                      {t(m.caption, lang)}
+                    </figcaption>
+                  )}
                 </figure>
               ))}
             </div>
@@ -213,7 +236,7 @@ const ago = (iso?: string) => {
     }
   </div>
 
-  <h3 class="eyebrow mt-16">Also on GitHub</h3>
+  <h3 class="eyebrow mt-16">{t(ui.projects.moreHeading, lang)}</h3>
   <ul class="mt-5 grid gap-3 sm:grid-cols-2">
     {
       more.map((r) => (
@@ -238,23 +261,23 @@ const ago = (iso?: string) => {
   </ul>
 
   <p class="mt-6 text-sm text-fg-subtle">
-    This list updates itself from the GitHub API.{' '}
+    {t(ui.projects.moreNote, lang)}{' '}
     <a
-      href="https://github.com/daxrpm?tab=repositories"
+      href={`https://github.com/${site.handle}?tab=repositories`}
       rel="noopener"
       class="link"
       data-umami-event="github-profile"
       data-umami-event-source="all-repos"
     >
-      See all {github.stats.public_repos} repositories
+      {fill(t(ui.projects.moreLink, lang), { count: github.stats.public_repos })}
     </a>.
   </p>
 </section>
 
 <!-- Lightbox. One <dialog> reused for every image; native ESC-to-close and backdrop. -->
-<dialog id="lightbox" class="lightbox" aria-label="Image viewer">
+<dialog id="lightbox" class="lightbox" aria-label={t(ui.projects.viewer, lang)}>
   <img id="lightbox-img" src="" alt="" />
-  <button type="button" id="lightbox-close" class="media-btn" aria-label="Close image">
+  <button type="button" id="lightbox-close" class="media-btn" aria-label={t(ui.projects.close, lang)}>
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
       <path d="M6 6l12 12M18 6L6 18" />
     </svg>

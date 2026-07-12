@@ -1,22 +1,30 @@
 ---
-const links = [
-  { label: 'Education', href: '#education' },
-  { label: 'Work', href: '#work' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Stack', href: '#stack' },
-  { label: 'Contact', href: '#contact' },
-];
+import { site } from '../data/profile';
+import { ui } from '../i18n/ui';
+import { t, localeUrl, otherLocale, localeNames, type Lang } from '../i18n/config';
+import TechIcon from './TechIcon.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const other = otherLocale(lang);
+const github = site.socials.find((s) => s.name === 'GitHub')!.url;
 ---
 
 <header class="sticky top-0 z-40 border-b border-line/70 bg-canvas/80 backdrop-blur">
   <nav class="wrap flex h-16 items-center justify-between" aria-label="Primary">
-    <a href="#top" class="font-mono text-sm font-medium text-fg transition-colors hover:text-accent">
-      daxrpm<span class="text-accent">.</span>dev
+    <a
+      href={localeUrl(lang)}
+      class="font-mono text-sm font-medium text-fg transition-colors hover:text-accent"
+    >
+      {site.handle}<span class="text-accent">.</span>dev
     </a>
 
     <ul class="hidden items-center gap-7 text-sm sm:flex">
       {
-        links.map((l) => (
+        ui.nav.links.map((l) => (
           <li>
             <a
               href={l.href}
@@ -24,7 +32,7 @@ const links = [
               data-umami-event="nav-click"
               data-umami-event-section={l.href.slice(1)}
             >
-              {l.label}
+              {t(l.label, lang)}
             </a>
           </li>
         ))
@@ -32,11 +40,26 @@ const links = [
     </ul>
 
     <div class="flex items-center gap-2">
+      {/* A real link to a real URL, so it is crawlable and shareable — not a JS text swap. */}
+      <a
+        href={localeUrl(other)}
+        id="lang-toggle"
+        data-lang={other}
+        hreflang={other}
+        class="flex h-8 items-center rounded-md border border-line-hi px-2.5 font-mono text-xs uppercase text-fg-muted transition-colors hover:border-accent/60 hover:text-accent"
+        aria-label={t(ui.nav.langToggle, lang)}
+        title={localeNames[other]}
+        data-umami-event="lang-toggle"
+        data-umami-event-to={other}
+      >
+        {other}
+      </a>
+
       <button
         type="button"
         id="theme-toggle"
         class="flex h-8 w-8 items-center justify-center rounded-md border border-line-hi text-fg-muted transition-colors hover:border-accent/60 hover:text-accent"
-        aria-label="Switch theme"
+        aria-label={t(ui.nav.themeToggle, lang)}
         data-umami-event="theme-toggle"
       >
         {/* Both icons ship; CSS shows whichever matches the active theme. */}
@@ -50,12 +73,15 @@ const links = [
       </button>
 
       <a
-        href="https://github.com/daxrpm"
+        href={github}
         rel="noopener"
-        class="rounded-md border border-line-hi px-3 py-1.5 text-sm text-fg-muted transition-colors hover:border-accent/60 hover:text-accent"
+        class="flex items-center gap-2 rounded-md border border-line-hi px-3 py-1.5 text-sm text-fg-muted transition-colors hover:border-accent/60 hover:text-accent"
         data-umami-event="github-profile"
         data-umami-event-source="nav"
       >
+        {/* Mono: the button already colours itself on hover, and the black GitHub mark
+            would fight the accent. */}
+        <TechIcon name="GitHub" class="h-4 w-4" mono />
         GitHub
       </a>
     </div>
@@ -86,5 +112,11 @@ const links = [
     const next = root.dataset.theme === 'light' ? 'dark' : 'light';
     localStorage.setItem('theme', next);
     paint(next);
+  });
+
+  // Remember the language the visitor picked, so the auto-redirect never overrules them.
+  const langToggle = document.getElementById('lang-toggle') as HTMLAnchorElement | null;
+  langToggle?.addEventListener('click', () => {
+    localStorage.setItem('lang', langToggle.dataset.lang ?? 'en');
   });
 </script>

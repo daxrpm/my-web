@@ -1,97 +1,120 @@
 ---
-import { site, experience } from '../data/profile';
+import { site, seo, experience, research, featured } from '../data/profile';
+import { t, localeUrl, locales, defaultLocale, otherLocale, type Lang } from '../i18n/config';
+import { ui } from '../i18n/ui';
 import github from '../data/github.json';
 import Analytics from '../components/Analytics.astro';
 import Cosmos from '../components/Cosmos.astro';
 import '../styles/global.css';
 
 interface Props {
+  lang: Lang;
   title?: string;
   description?: string;
 }
 
-const {
-  title = `${site.name} — Systems & ML for Particle Physics`,
-  description = site.summary,
-} = Astro.props;
+const { lang, title = t(seo.title, lang), description = t(site.summary, lang) } = Astro.props;
 
-const canonical = new URL(Astro.url.pathname, site.url).href;
+const canonical = new URL(localeUrl(lang), site.url).href;
 const ogImage = new URL('/og.png', site.url).href;
 const updated = github.generated_at;
 
+/** Facebook/LinkedIn want the territory, not just the language. */
+const ogLocale: Record<Lang, string> = { en: 'en_US', es: 'es_EC' };
+
 /**
- * One Person entity with everything hanging off it. `sameAs` is what lets Google and
- * the LLM crawlers reconcile "Dax Navarrete", "daxrpm" and the CERN author name as
- * the same person — that reconciliation is most of what entity SEO actually is.
+ * One Person entity with everything hanging off it. `sameAs` is what lets Google and the LLM
+ * crawlers reconcile "Dax Navarrete", "daxrpm" and the CERN author name as the same person —
+ * that reconciliation is most of what entity SEO actually is.
  */
 const personSchema = {
   '@context': 'https://schema.org',
   '@type': 'Person',
   '@id': `${site.url}/#person`,
   name: site.name,
-  alternateName: ['daxrpm', 'Ariel Dax Navarrete Freire'],
+  alternateName: seo.alternateNames,
   url: site.url,
-  image: `${site.url}/og.png`,
+  image: ogImage,
   email: `mailto:${site.email}`,
-  jobTitle: 'Computer Science Undergraduate & Research Collaborator',
-  description: site.summary,
+  jobTitle: t(seo.jobTitle, lang),
+  description: t(site.summary, lang),
   address: {
     '@type': 'PostalAddress',
-    addressLocality: 'Quito',
-    addressCountry: 'EC',
+    addressLocality: seo.address.locality,
+    addressCountry: seo.address.country,
   },
-  affiliation: [
-    { '@type': 'CollegeOrUniversity', name: 'Escuela Politécnica Nacional', url: 'https://www.epn.edu.ec/' },
-    { '@type': 'ResearchOrganization', name: 'CMS Collaboration, CERN', url: 'https://cms.cern/' },
-  ],
-  worksFor: [
-    { '@type': 'ResearchOrganization', name: 'CERN — CMS Experiment', url: 'https://cms.cern/' },
-    { '@type': 'Organization', name: 'ADA Data Science Laboratory' },
-  ],
+  affiliation: seo.affiliations.map((a) => ({ '@type': a.type, name: a.name, url: a.url })),
+  worksFor: seo.worksFor.map((w) => ({ '@type': w.type, name: w.name, url: w.url })),
   hasOccupation: experience.map((e) => ({
     '@type': 'Role',
-    roleName: e.role,
-    description: e.note,
+    roleName: t(e.role, lang),
+    description: t(e.note, lang),
     startDate: e.period.split('—')[0].trim(),
   })),
-  alumniOf: { '@type': 'CollegeOrUniversity', name: 'Escuela Politécnica Nacional' },
-  knowsAbout: [
-    'Machine learning for particle physics',
-    'Jet flavour tagging',
-    'Rust systems programming',
-    'Linux PAM authentication',
-    'Network engineering',
-    'Cybersecurity',
-    'Numerical methods',
-    'Backend development',
-  ],
-  knowsLanguage: ['Spanish', 'English'],
-  sameAs: [
-    'https://github.com/daxrpm',
-    'https://www.linkedin.com/in/dax-navarrete-b07b3826a/',
-    'https://github.com/CMS-EPN',
-  ],
+  alumniOf: { '@type': seo.alumniOf.type, name: seo.alumniOf.name },
+  knowsAbout: seo.knowsAbout,
+  knowsLanguage: seo.knowsLanguage,
+  sameAs: seo.sameAs,
 };
+
+/** The paper is a citable thing in its own right; schema.org can say so before a DOI exists. */
+const scholarlySchema = research.map((r) => ({
+  '@context': 'https://schema.org',
+  '@type': 'ScholarlyArticle',
+  headline: r.title,
+  author: { '@id': `${site.url}/#person` },
+  creativeWorkStatus: t(r.status, lang),
+  publisher: { '@type': 'CollegeOrUniversity', name: 'Escuela Politécnica Nacional' },
+}));
+
+/**
+ * Each public project as a citable work of its own. This is the part most portfolios skip,
+ * and it is the part an LLM actually needs: without it, "Dax built a PAM module in Rust" is
+ * a sentence in a paragraph; with it, it is a typed fact with a repository attached to a
+ * named author.
+ */
+const projectSchema = featured
+  .filter((p) => p.repo)
+  .map((p) => ({
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareSourceCode',
+    name: p.title,
+    description: t(p.blurb, lang),
+    codeRepository: `https://github.com/${p.owner ?? site.handle}/${p.repo}`,
+    programmingLanguage: p.stack,
+    author: { '@id': `${site.url}/#person` },
+    inLanguage: lang,
+  }));
 
 const pageSchema = {
   '@context': 'https://schema.org',
   '@type': 'ProfilePage',
-  '@id': `${site.url}/#page`,
-  url: site.url,
+  '@id': `${canonical}#page`,
+  url: canonical,
   name: title,
   description,
+  inLanguage: lang,
   dateModified: updated,
   mainEntity: { '@id': `${site.url}/#person` },
 };
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/png" href="/logo.png" />
     <link rel="canonical" href={canonical} />
+
+    {/* Each locale declares the other, plus x-default for anyone Google cannot place.
+        This is the whole reason /es/ is a real URL and not a JavaScript toggle. */}
+    {
+      locales.map((l) => (
+        <link rel="alternate" hreflang={l} href={new URL(localeUrl(l), site.url).href} />
+      ))
+    }
+    <link rel="alternate" hreflang="x-default" href={new URL(localeUrl(defaultLocale), site.url).href} />
 
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -103,14 +126,28 @@ const pageSchema = {
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={t(seo.imageAlt, lang)} />
     <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content={ogLocale[lang]} />
+    <meta property="og:locale:alternate" content={ogLocale[otherLocale(lang)]} />
+    <meta property="profile:first_name" content="Dax" />
+    <meta property="profile:last_name" content="Navarrete" />
+    <meta property="profile:username" content={site.handle} />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
+    {/* Everyone sets twitter:image and forgets the alt, which is what a screen reader on
+        X actually reads out. */}
+    <meta name="twitter:image:alt" content={t(seo.imageAlt, lang)} />
+
+    {/* rel="me" is how Mastodon, IndieAuth and a few crawlers verify that the person who
+        owns this domain is the same person who owns those accounts. */}
+    {site.socials.map((s) => <link rel="me" href={s.url} />)}
 
     <meta id="theme-color" name="theme-color" content="#06080b" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -127,19 +164,41 @@ const pageSchema = {
         localStorage.getItem('theme') === 'light' ? 'light' : 'dark';
     </script>
 
+    {/* Language: a Spanish-speaking browser landing on the English page is sent to /es/ once.
+        A stored choice always wins, so the toggle is never overruled, and the redirect never
+        fires on /es/ itself — which keeps both URLs crawlable and free of redirect loops. */}
+    {
+      lang === defaultLocale && (
+        <script is:inline>
+          (() => {
+            const stored = localStorage.getItem('lang');
+            const wants = stored ?? (navigator.language || '').slice(0, 2);
+            if (wants === 'es' && location.pathname === '/') location.replace('/es/');
+          })();
+        </script>
+      )
+    }
+
     <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
     <script type="application/ld+json" set:html={JSON.stringify(pageSchema)} />
-
-    <Analytics />
+    {scholarlySchema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
+    {projectSchema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
   </head>
 
   <body class="bg-canvas text-fg antialiased">
-    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded focus:bg-accent focus:px-4 focus:py-2 focus:text-canvas">
-      Skip to content
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded focus:bg-accent focus:px-4 focus:py-2 focus:text-canvas"
+    >
+      {t(ui.nav.skipToContent, lang)}
     </a>
     <Cosmos />
     <div class="relative z-10">
       <slot />
     </div>
+
+    {/* Last in the body: the consent notice renders markup, and its script wires up the
+        footer's "change your mind" link — neither of which exists yet from inside <head>. */}
+    <Analytics lang={lang} />
   </body>
 </html>
