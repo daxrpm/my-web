@@ -1,0 +1,341 @@
+---
+/**
+ * A standalone ASCII solar system, held wide and turning on its own.
+ *
+ * This is the /github bridge's backdrop. Where Cosmos.astro flies the whole galaxy →
+ * black hole → solar system → Earth as one scroll-driven shot, this page has nothing to
+ * scroll: it is a single card floating over one held view of the solar system, so the
+ * scenes, the scroll input and the finale are all stripped out. What is left is the same
+ * renderer — the glyph atlas, the sphere shader, the same eight planets — running on a
+ * fixed camera with the orbits advancing continuously.
+ *
+ * Decorative: aria-hidden, behind the content, and the page reads fine without it (no JS,
+ * reduced motion, a crawler). It never carries meaning — it is a moving texture.
+ */
+---
+
+<canvas id="cosmos-solar" aria-hidden="true"></canvas>
+
+<style>
+  #cosmos-solar {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+    contain: strict;
+  }
+  #cosmos-solar.ready {
+    opacity: 1;
+  }
+</style>
+
+<script>
+  const canvas = document.getElementById('cosmos-solar') as HTMLCanvasElement | null;
+  if (canvas) {
+    const ctx = canvas.getContext('2d', { alpha: true, desynchronized: true })!;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const RAMP = '.·:-=+*#%@';
+    const NG = RAMP.length;
+
+    let W = 0, H = 0, DPR = 1, MOBILE = false, FS = 12;
+
+    /* ── glyph atlas ── rasterise each (colour, glyph) pair once, blit with drawImage. */
+    const atlas = new Map<number, HTMLCanvasElement[]>();
+    const CQ = 24;
+
+    let LIGHT = document.documentElement.dataset.theme === 'light';
+    window.addEventListener('themechange', (e) => {
+      LIGHT = (e as CustomEvent).detail === 'light';
+      atlas.clear();
+      lastAlpha = -1;
+    });
+
+    const sheetFor = (key: number, r: number, g: number, b: number) => {
+      const sheet: HTMLCanvasElement[] = [];
+      const size = Math.ceil(FS * 1.6);
+      for (let i = 0; i < NG; i++) {
+        const c = document.createElement('canvas');
+        c.width = c.height = size;
+        const cc = c.getContext('2d')!;
+        cc.font = `${FS}px "JetBrains Mono", ui-monospace, monospace`;
+        cc.textAlign = 'center';
+        cc.textBaseline = 'middle';
+        cc.fillStyle = `rgb(${r},${g},${b})`;
+        cc.fillText(RAMP[i], size / 2, size / 2);
+        sheet.push(c);
+      }
+      atlas.set(key, sheet);
+      return sheet;
+    };
+
+    let half = 0;
+    let lastAlpha = -1;
+
+    const put = (x: number, y: number, br: number, col: number[], a: number) => {
+      if (a < 0.02 || x < -14 || x > W + 14 || y < -14 || y > H + 14) return;
+      const qa = Math.round(a * 10) / 10;
+      if (qa < 0.05) return;
+
+      // On white, darken toward the point's own hue rather than switching palettes.
+      const k = LIGHT ? 0.42 : 1;
+      const r = Math.min(255, Math.round((col[0] * k) / CQ) * CQ);
+      const g = Math.min(255, Math.round((col[1] * k) / CQ) * CQ);
+      const b = Math.min(255, Math.round((col[2] * k) / CQ) * CQ);
+      const key = (r << 16) | (g << 8) | b;
+
+      const gi = br <= 0 ? 0 : br >= 1 ? NG - 1 : (br * (NG - 1)) | 0;
+      const sheet = atlas.get(key) ?? sheetFor(key, r, g, b);
+
+      if (qa !== lastAlpha) {
+        ctx.globalAlpha = qa;
+        lastAlpha = qa;
+      }
+      ctx.drawImage(sheet[gi], (x - half) | 0, (y - half) | 0);
+    };
+
+    const resize = () => {
+      W = window.innerWidth;
+      H = window.innerHeight;
+      MOBILE = W < 768;
+      DPR = Math.min(window.devicePixelRatio || 1, MOBILE ? 1 : 1.25);
+      FS = MOBILE ? 10 : 12;
+      half = Math.ceil(FS * 1.6) / 2;
+      canvas.width = Math.round(W * DPR);
+      canvas.height = Math.round(H * DPR);
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      atlas.clear();
+      lastAlpha = -1;
+    };
+    resize();
+
+    /* ── adaptive quality ── measure the draw, then spend what is left. */
+    let Q = MOBILE ? 0.55 : 1;
+    let skip = 1;
+    let acc = 0, frames = 0;
+    const tuneQuality = (dt: number) => {
+      acc += dt;
+      if (++frames < 30) return;
+      const avg = acc / frames;
+      acc = 0;
+      frames = 0;
+      if (avg > 9 && Q > 0.5) Q = Math.max(0.5, Q - 0.1);
+      else if (avg > 10 && skip < 2) skip = 2;
+      else if (avg < 5) {
+        if (skip > 1) skip = 1;
+        else if (Q < 1) Q = Math.min(1, Q + 0.06);
+      }
+    };
+
+    /* ── geometry: sphere shells + a shader that reads recognisable surfaces. ── */
+    const LAND: [number, number, number, number][] = [
+      [50, -100, 26, 32], [15, -90, 9, 9], [-15, -60, 26, 13], [5, 20, 33, 20],
+      [50, 18, 14, 22], [45, 95, 26, 48], [20, 78, 11, 11], [0, 115, 9, 16],
+      [-25, 134, 13, 19], [72, -42, 9, 14], [-82, 0, 9, 180],
+    ];
+    const isLand = (lat: number, lon: number) => {
+      for (let i = 0; i < LAND.length; i++) {
+        const [la, lo, dla, dlo] = LAND[i];
+        let dl = Math.abs(lon - lo);
+        if (dl > 180) dl = 360 - dl;
+        if (((lat - la) / dla) ** 2 + (dl / dlo) ** 2 < 1) return true;
+      }
+      return false;
+    };
+
+    type Pt = { x: number; y: number; z: number; lat: number; lon: number; land: boolean };
+
+    const fib = (n: number): Pt[] =>
+      Array.from({ length: n }, (_, i) => {
+        const t = (i + 0.5) / n;
+        const phi = Math.acos(1 - 2 * t);
+        const th = Math.PI * (1 + Math.sqrt(5)) * i;
+        const lat = 90 - (phi * 180) / Math.PI;
+        const lon = (((th * 180) / Math.PI) % 360) - 180;
+        return {
+          x: Math.sin(phi) * Math.cos(th),
+          y: Math.cos(phi),
+          z: Math.sin(phi) * Math.sin(th),
+          lat, lon, land: isLand(lat, lon),
+        };
+      });
+
+    const LODS = [fib(48), fib(150), fib(400), fib(1000), fib(2400)];
+    const lodFor = (r: number, cap = 1) => {
+      const want = r * r * 0.075 * Q * cap;
+      for (let i = 0; i < LODS.length; i++) if (LODS[i].length >= want) return LODS[i];
+      return LODS[LODS.length - 1];
+    };
+
+    const sphere = (
+      cx: number, cy: number, r: number, spin: number,
+      col: number[], alpha: number,
+      tex?: (p: Pt) => number,
+      colFn?: (p: Pt) => number[],
+      cap = 1,
+    ) => {
+      if (r < 1.2 || alpha < 0.02) return;
+      if (cx + r < -16 || cx - r > W + 16 || cy + r < -16 || cy - r > H + 16) return;
+      const pts = lodFor(r, cap);
+      const cs = Math.cos(spin), sn = Math.sin(spin);
+      const ct = Math.cos(-0.4), st = Math.sin(-0.4);
+      for (let i = 0; i < pts.length; i++) {
+        const p = pts[i];
+        const x1 = p.x * cs - p.z * sn;
+        const z1 = p.x * sn + p.z * cs;
+        const y1 = p.y * ct - z1 * st;
+        const z2 = p.y * st + z1 * ct;
+        if (z2 < -0.06) continue;
+        const light = Math.max(0, -x1 * 0.42 + y1 * 0.3 + z2 * 0.86);
+        const shade = tex ? tex(p) : 1;
+        const b = (0.18 + light * 0.92) * shade;
+        put(cx + x1 * r, cy + y1 * r, b > 1 ? 1 : b, colFn ? colFn(p) : col, (0.3 + light * 0.95) * alpha);
+      }
+    };
+
+    /* ── a light dusting of far stars behind the system. ── */
+    const N_STAR = MOBILE ? 120 : 260;
+    const stars = Array.from({ length: N_STAR }, () => ({
+      x: (Math.random() - 0.5) * 2.6,
+      y: (Math.random() - 0.5) * 2.6,
+      b: 0.2 + Math.random() * 0.8,
+    }));
+
+    /* ── planet surfaces. ── */
+    const bands = (n: number, depth: number) => (p: Pt) =>
+      1 - depth * 0.5 * (1 + Math.sin(p.lat * n * 0.11));
+
+    const LAND_COL = [104, 196, 118];
+    const SEA_COL = [64, 132, 220];
+    const EARTH_TEX = (p: Pt) => (p.land ? 1.05 : 0.72);
+    const EARTH_COL = (p: Pt) => (p.land ? LAND_COL : SEA_COL);
+
+    type Body = {
+      name: string; r: number; size: number; speed: number; col: number[];
+      ring?: boolean; tex?: (p: Pt) => number; colFn?: (p: Pt) => number[];
+    };
+    const SUN: Body = { name: 'Sun', r: 0, size: 5.2, speed: 0, col: [255, 226, 150] };
+    const PLANETS: Body[] = [
+      { name: 'Mercury', r: 0.32, size: 0.9, speed: 1.60, col: [172, 168, 158], tex: (p) => 0.75 + 0.25 * Math.sin(p.lat * 0.3 + p.lon * 0.2) },
+      { name: 'Venus',   r: 0.45, size: 1.5, speed: 1.18, col: [235, 198, 126], tex: bands(3, 0.35) },
+      { name: 'Earth',   r: 0.58, size: 1.6, speed: 1.00, col: [64, 132, 220], tex: EARTH_TEX, colFn: EARTH_COL },
+      { name: 'Mars',    r: 0.75, size: 1.2, speed: 0.80, col: [214, 106, 66], tex: (p) => (Math.abs(p.lat) > 72 ? 1.35 : 0.85 + 0.15 * Math.sin(p.lat * 0.2)) },
+      { name: 'Jupiter', r: 1.05, size: 3.6, speed: 0.44, col: [219, 184, 142], tex: bands(9, 0.5) },
+      { name: 'Saturn',  r: 1.32, size: 3.1, speed: 0.32, col: [230, 212, 162], ring: true, tex: bands(7, 0.38) },
+      { name: 'Uranus',  r: 1.56, size: 2.2, speed: 0.23, col: [150, 214, 220], tex: bands(4, 0.22) },
+      { name: 'Neptune', r: 1.76, size: 2.1, speed: 0.18, col: [96, 122, 218], tex: bands(5, 0.3) },
+    ];
+
+    /* ── render: one held wide shot, orbits turning. ── */
+    const draw = (time: number) => {
+      const t = time * 0.001;
+      ctx.clearRect(0, 0, W, H);
+      lastAlpha = -1;
+
+      const cx = W / 2;
+      const cy = H / 2;
+      const S = Math.hypot(W, H);
+      const vis = LIGHT ? 0.55 : 0.85;
+
+      /* far stars */
+      for (let i = 0; i < stars.length; i++) {
+        const s = stars[i];
+        put(cx + s.x * S * 0.5, cy + s.y * S * 0.5, s.b * 0.5, [190, 220, 210], s.b * 0.22 * vis);
+      }
+
+      const tilt = 0.42;
+      // Size the system so Neptune's orbit spans ~90% of the viewport's longer axis. That
+      // pushes the outer orbits and planets out past the centred card, so they sweep around
+      // it instead of hiding behind it — the whole point of the backdrop on this page.
+      const R = Math.max(W, H) * 0.9 / (2 * 1.76);
+      const K = MOBILE ? 0.055 : 0.045;
+
+      const posOf = (b: Body) => {
+        if (b.r === 0) return { x: 0, y: 0 };
+        const a = t * b.speed * 0.18 + PLANETS.indexOf(b) * 1.7;
+        return { x: Math.cos(a) * b.r, y: Math.sin(a) * b.r * tilt };
+      };
+      const px = (x: number) => cx + x * R;
+      const py = (y: number) => cy + y * R;
+
+      /* orbit rings */
+      const ringAlpha = 0.30 * vis;
+      for (let bi = 0; bi < PLANETS.length; bi++) {
+        const b = PLANETS[bi];
+        const rx = b.r * R, ry = b.r * tilt * R;
+        if (cx + rx < -16 || cx - rx > W + 16 || cy + ry < -16 || cy - ry > H + 16) continue;
+        const steps = Math.round((MOBILE ? 90 : 170) * Q);
+        for (let i = 0; i < steps; i++) {
+          const a = (i / steps) * 6.283;
+          put(px(Math.cos(a) * b.r), py(Math.sin(a) * b.r * tilt), 0.25, [80, 150, 120], ringAlpha);
+        }
+      }
+
+      /* the Sun — uniform ball, so a fraction of the points. */
+      sphere(px(0), py(0), SUN.size * R * K, t * 0.05, SUN.col, vis, undefined, undefined, 0.28);
+
+      for (let i = 0; i < PLANETS.length; i++) {
+        const b = PLANETS[i];
+        const pos = posOf(b);
+        const sx = px(pos.x), sy = py(pos.y);
+        const rad = b.size * R * K;
+        sphere(sx, sy, rad, t * 0.12 + i, b.col, vis, b.tex, b.colFn);
+
+        if (b.ring) {
+          const steps = Math.round((MOBILE ? 70 : 200) * Q);
+          for (let k = 0; k < steps; k++) {
+            const a = (k / steps) * 6.283;
+            const rr = rad * (1.45 + (k % 4) * 0.16);
+            put(sx + Math.cos(a) * rr, sy + Math.sin(a) * rr * 0.3, 0.55, [235, 218, 172], 0.75 * vis);
+          }
+        }
+      }
+
+      ctx.globalAlpha = 1;
+    };
+
+    /* ── loop ── */
+    let raf = 0, running = false, tick = 0;
+    const loop = (time: number) => {
+      raf = requestAnimationFrame(loop);
+      if (++tick % skip) return;
+      const t0 = performance.now();
+      draw(time);
+      tuneQuality(performance.now() - t0);
+    };
+
+    canvas.classList.add('ready');
+
+    if (reduced) {
+      draw(0);
+    } else {
+      const start = () => {
+        if (!running) {
+          running = true;
+          acc = 0;
+          frames = 0;
+          raf = requestAnimationFrame(loop);
+        }
+      };
+      const stop = () => {
+        running = false;
+        cancelAnimationFrame(raf);
+      };
+      start();
+      document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
+    }
+
+    let rt = 0;
+    window.addEventListener('resize', () => {
+      clearTimeout(rt);
+      rt = window.setTimeout(() => {
+        resize();
+        if (reduced) draw(0);
+      }, 150);
+    });
+  }
+</script>
