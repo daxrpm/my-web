@@ -1,0 +1,331 @@
+---
+/**
+ * /github — a share bridge, rendered once per locale (src/pages/github.astro and
+ * src/pages/es/github.astro).
+ *
+ * The idea: instead of pasting a raw github.com/daxrpm link into a chat, share this. It
+ * shows the avatar, the contribution graph and the strongest repos over the same turning
+ * ASCII solar system the rest of the site uses as a backdrop, with one button that opens
+ * the real GitHub profile in a new tab and one that goes home. Deliberately minimal: one
+ * card, a few facts, two ways out. Not another copy of the homepage.
+ *
+ * It carries its own social card (public/og-github.png — the avatar, the handle and the
+ * GitHub numbers) and a full hreflang pair, so a shared link previews well and Google serves
+ * the right language. It deliberately does NOT emit the Person/ProfilePage schema the
+ * homepage owns: one entity definition, on `/`, is the point — this is only a doorway to it.
+ *
+ * Analytics here is deliberately NOT the consent-gated tracker the rest of the site uses.
+ * This page's whole job is to measure how a shared link performs, so Umami loads for every
+ * visit (still cookieless, still honouring the browser's Do-Not-Track). The main site keeps
+ * its banner; only this doorway counts all traffic.
+ */
+import { site, featured } from '../data/profile';
+import github from '../data/github.json';
+import { t, localeUrl, locales, defaultLocale, otherLocale, type Lang, type L } from '../i18n/config';
+import CosmosSolar from '../components/CosmosSolar.astro';
+import '../styles/global.css';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const { user, stats, calendar } = github;
+const profileUrl = `https://github.com/${site.handle}`;
+const homeUrl = localeUrl(lang, '/');
+
+const locale = lang === 'es' ? 'es-EC' : 'en-US';
+const nf = new Intl.NumberFormat(locale);
+
+/* ── copy, both languages ── */
+const ui = {
+  repos: { en: 'repos', es: 'repos' },
+  followers: { en: 'followers', es: 'seguidores' },
+  contributions: { en: 'contributions', es: 'contribuciones' },
+  openGithub: { en: 'Open my GitHub', es: 'Abrir mi GitHub' },
+  visitWeb: { en: 'Visit my site', es: 'Visita mi web' },
+} satisfies Record<string, L>;
+
+const title = lang === 'es' ? 'Dax en GitHub' : 'Dax on GitHub';
+const description =
+  lang === 'es'
+    ? `El GitHub de ${user.name} — open source en infraestructura Linux, seguridad y computación científica. ${nf.format(stats.public_repos)} repos y ${nf.format(stats.contributions_last_year)} contribuciones en el último año.`
+    : `${user.name}'s GitHub — open source across Linux infrastructure, security and scientific computing. ${nf.format(stats.public_repos)} repos and ${nf.format(stats.contributions_last_year)} contributions in the last year.`;
+const contribAria =
+  lang === 'es'
+    ? `${nf.format(calendar.total)} contribuciones en el último año`
+    : `${nf.format(calendar.total)} contributions in the last year`;
+
+const canonical = new URL(localeUrl(lang, '/github'), site.url).href;
+const ogImage = new URL('/og-github.png', site.url).href;
+const ogLocale: Record<Lang, string> = { en: 'en_US', es: 'es_EC' };
+const ogImageAlt =
+  lang === 'es'
+    ? `Tarjeta de GitHub de ${user.name}: su foto de perfil, @${site.handle} y sus números de GitHub sobre un mapa mundial en ASCII.`
+    : `${user.name}'s GitHub card: profile photo, @${site.handle} and GitHub stats over an ASCII world map.`;
+
+/* ── contribution grid: same column-of-weeks layout GitHub uses. ── */
+type Day = { date: string; count: number; level: number };
+const days = calendar.days as Day[];
+const weeks: (Day | null)[][] = [];
+let week: (Day | null)[] = Array(new Date(days[0].date + 'T00:00:00Z').getUTCDay()).fill(null);
+for (const day of days) {
+  week.push(day);
+  if (week.length === 7) {
+    weeks.push(week);
+    week = [];
+  }
+}
+if (week.length) weeks.push([...week, ...Array(7 - week.length).fill(null)]);
+
+const LEVEL_BG = ['bg-level-0', 'bg-level-1', 'bg-level-2', 'bg-level-3', 'bg-level-4'];
+
+/* ── repos: the curated best, not merely the most-recently pushed. ──
+ * `featured` in profile.ts is the hand-picked shortlist; take the ones with a public
+ * source and enrich each with live language/stars/url from the API. Two of them carry no
+ * GitHub "description" field, so a short one-liner stands in — the rest read as the repo
+ * descriptions they are. */
+type Repo = { name: string; url: string; description: string | null; language: string | null; stars: number };
+const apiRepo = new Map((([...github.all, ...github.cms]) as Repo[]).map((r) => [r.name, r]));
+const FALLBACK_DESC: Record<string, string> = {
+  'server-monitor': 'Agentless web console to operate a whole fleet of Linux servers.',
+  'dax-assistant': 'Self-hosted, voice-first AI assistant that can act on your machine.',
+};
+const repos = featured
+  .filter((p): p is typeof p & { repo: string } => Boolean(p.repo))
+  .slice(0, 6)
+  .map((p) => {
+    const r = apiRepo.get(p.repo);
+    return {
+      name: p.repo,
+      url: r?.url ?? `${profileUrl.replace(site.handle, p.owner ?? site.handle)}/${p.repo}`,
+      description: r?.description ?? FALLBACK_DESC[p.repo] ?? null,
+      language: r?.language ?? null,
+      stars: r?.stars ?? 0,
+    };
+  });
+
+/* ── analytics: load for every visit on this bridge only (see the file header). ── */
+const UMAMI_HOST = import.meta.env.PUBLIC_UMAMI_HOST;
+const UMAMI_ID = import.meta.env.PUBLIC_UMAMI_ID;
+const umamiEnabled = Boolean(UMAMI_HOST && UMAMI_ID);
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="canonical" href={canonical} />
+
+    {/* Both locales declare each other, plus x-default — the same hreflang contract as `/`. */}
+    {
+      locales.map((l) => (
+        <link rel="alternate" hreflang={l} href={new URL(localeUrl(l, '/github'), site.url).href} />
+      ))
+    }
+    <link rel="alternate" hreflang="x-default" href={new URL(localeUrl(defaultLocale, '/github'), site.url).href} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={site.name} />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="theme-color" content="#06080b" />
+
+    <meta property="og:type" content="profile" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogImageAlt} />
+    <meta property="og:site_name" content={site.displayName} />
+    <meta property="og:locale" content={ogLocale[lang]} />
+    <meta property="og:locale:alternate" content={ogLocale[otherLocale(lang)]} />
+    <meta property="profile:username" content={site.handle} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+
+    {/* Match the rest of the site: dark by default, light only if the visitor opted in there. */}
+    <script is:inline>
+      document.documentElement.dataset.theme =
+        localStorage.getItem('theme') === 'light' ? 'light' : 'dark';
+    </script>
+
+    {/* Cookieless, DNT-respecting, no consent gate — this page exists to be measured. */}
+    {
+      umamiEnabled && (
+        <script
+          is:inline
+          defer
+          src={`${UMAMI_HOST}/script.js`}
+          data-website-id={UMAMI_ID}
+          data-do-not-track="true"
+        />
+      )
+    }
+  </head>
+
+  <body class="bg-canvas text-fg antialiased">
+    <CosmosSolar />
+
+    <main class="relative z-10 flex min-h-screen items-center justify-center px-4 py-10">
+      <div
+        class="w-full max-w-xl rounded-2xl border border-line bg-surface/55 p-6 backdrop-blur-[2px] sm:p-8"
+        style="box-shadow: 0 24px 60px -20px rgb(0 0 0 / 0.6), inset 0 1px 0 0 rgb(255 255 255 / 0.05);"
+      >
+        {/* ── identity ── */}
+        <div class="flex items-center gap-4">
+          <img
+            src={user.avatar}
+            alt={`${user.name} on GitHub`}
+            width="88"
+            height="88"
+            class="shrink-0 rounded-full ring-1 ring-line-hi"
+            style="height: 5.5rem; width: 5.5rem;"
+          />
+          <div class="min-w-0">
+            <h1 class="truncate text-xl font-semibold text-fg">{user.name}</h1>
+            <a
+              href={profileUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-umami-event="github-handle"
+              class="font-mono text-sm text-fg-muted transition-colors hover:text-accent"
+            >
+              @{site.handle}
+            </a>
+          </div>
+        </div>
+
+        {/* ── stats ── */}
+        <div class="mt-5 grid grid-cols-3 gap-3 text-center">
+          <div class="rounded-lg border border-line bg-canvas/40 py-3">
+            <div class="font-mono text-lg font-semibold text-fg">{nf.format(stats.public_repos)}</div>
+            <div class="text-xs text-fg-subtle">{t(ui.repos, lang)}</div>
+          </div>
+          <div class="rounded-lg border border-line bg-canvas/40 py-3">
+            <div class="font-mono text-lg font-semibold text-fg">{nf.format(user.followers)}</div>
+            <div class="text-xs text-fg-subtle">{t(ui.followers, lang)}</div>
+          </div>
+          <div class="rounded-lg border border-line bg-canvas/40 py-3">
+            <div class="font-mono text-lg font-semibold text-fg">{nf.format(stats.contributions_last_year)}</div>
+            <div class="text-xs text-fg-subtle">{t(ui.contributions, lang)}</div>
+          </div>
+        </div>
+
+        {/* ── contribution graph ──
+             Full-size cells, wider than the card on every screen. A script parks it at the
+             right edge on load, so the recent weeks show first and older ones scroll into
+             view. The scrollbar itself is hidden. */}
+        <div id="contrib-scroll" class="no-scrollbar mt-5 overflow-x-auto rounded-lg border border-line bg-canvas/40 p-3">
+          <div class="flex min-w-max gap-[3px]" role="img" aria-label={contribAria}>
+            {
+              weeks.map((w) => (
+                <div class="flex flex-col gap-[3px]">
+                  {w.map((day) =>
+                    day ? (
+                      <div
+                        class={`h-[10px] w-[10px] rounded-[2px] ${LEVEL_BG[day.level]} ring-1 ring-inset ring-fg/[0.06]`}
+                        title={`${day.count} · ${day.date}`}
+                      />
+                    ) : (
+                      <div class="h-[10px] w-[10px]" />
+                    ),
+                  )}
+                </div>
+              ))
+            }
+          </div>
+        </div>
+
+        {/* ── repos ── */}
+        <ul class="mt-5 grid gap-2 sm:grid-cols-2">
+          {
+            repos.map((r) => (
+              <li>
+                <a
+                  href={r.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-umami-event="repo-click"
+                  data-umami-event-repo={r.name}
+                  class="group flex h-full flex-col rounded-lg border border-line bg-canvas/40 px-3 py-2.5 transition-colors hover:border-line-hi hover:bg-surface-hi/50"
+                >
+                  <span class="truncate font-mono text-sm text-fg group-hover:text-accent">{r.name}</span>
+                  {r.description && (
+                    <span class="mt-0.5 line-clamp-2 text-xs text-fg-subtle">{r.description}</span>
+                  )}
+                  <span class="mt-auto flex items-center gap-3 pt-2 text-xs text-fg-subtle">
+                    {r.language && (
+                      <span class="flex items-center gap-1.5">
+                        <span class="inline-block h-2 w-2 rounded-full bg-accent" />
+                        {r.language}
+                      </span>
+                    )}
+                    {r.stars > 0 && <span>★ {r.stars}</span>}
+                  </span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+
+        {/* ── actions ── */}
+        <div class="mt-6 flex flex-col gap-3">
+          <a
+            id="open-github-btn"
+            href={profileUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-umami-event="open-github"
+            class="flex items-center justify-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-semibold text-canvas transition-colors hover:bg-accent-hi"
+          >
+            <svg viewBox="0 0 16 16" width="18" height="18" fill="currentColor" aria-hidden="true">
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+            </svg>
+            {t(ui.openGithub, lang)}
+          </a>
+          <a
+            href={homeUrl}
+            data-umami-event="visit-web"
+            class="rounded-lg border border-line-hi bg-surface/40 px-4 py-2.5 text-center text-sm font-semibold text-fg transition-colors hover:border-accent hover:text-accent"
+          >
+            {t(ui.visitWeb, lang)}
+          </a>
+        </div>
+      </div>
+    </main>
+
+    {/* On a phone the graph is wider than the card; park it at the recent (right) end. */}
+    <script is:inline define:vars={{ homeUrl }}>
+      (() => {
+        const g = document.getElementById('contrib-scroll');
+        if (g) g.scrollLeft = g.scrollWidth;
+
+        // Opening GitHub is the visitor's cue that they're done here: the profile opens in a
+        // new tab (the click's own target=_blank) and, three seconds later, this tab — the
+        // bridge — steps aside and lands them on the site itself (in their language).
+        const gh = document.getElementById('open-github-btn');
+        if (gh) {
+          gh.addEventListener('click', () => {
+            setTimeout(() => { window.location.href = homeUrl; }, 3000);
+          });
+        }
+      })();
+    </script>
+  </body>
+</html>
