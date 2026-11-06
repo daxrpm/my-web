@@ -1,24 +1,24 @@
 {
-  "generated_at": "2026-07-12T04:09:47.636Z",
+  "generated_at": "2026-11-06T14:44:28.671Z",
   "user": {
     "login": "daxrpm",
     "name": "Dax",
     "bio": "Computer Science BSc. \r\nLove Science",
     "avatar": "https://avatars.githubusercontent.com/u/86321595?v=4",
     "url": "https://github.com/daxrpm",
-    "followers": 15,
-    "public_repos": 86,
+    "followers": 20,
+    "public_repos": 91,
     "created_at": "2021-06-22T18:44:28Z"
   },
   "stats": {
-    "public_repos": 86,
-    "stars": 6,
-    "contributions_last_year": 1373,
+    "public_repos": 91,
+    "stars": 8,
+    "contributions_last_year": 2300,
     "coding_since": 2021,
     "languages": [
       {
         "name": "Python",
-        "count": 15
+        "count": 16
       },
       {
         "name": "Jupyter Notebook",
@@ -30,7 +30,7 @@
       },
       {
         "name": "TypeScript",
-        "count": 8
+        "count": 10
       },
       {
         "name": "JavaScript",
@@ -45,575 +45,15 @@
         "count": 2
       },
       {
-        "name": "HTML",
+        "name": "CMake",
         "count": 1
       }
     ]
   },
   "calendar": {
-    "total": 1373,
+    "total": 2300,
     "source": "proxy",
     "days": [
-      {
-        "date": "2025-07-13",
-        "count": 7,
-        "level": 1
-      },
-      {
-        "date": "2025-07-14",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-07-15",
-        "count": 5,
-        "level": 1
-      },
-      {
-        "date": "2025-07-16",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-07-17",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-07-18",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-07-19",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-07-20",
-        "count": 1,
-        "level": 1
-      },
-      {
-        "date": "2025-07-21",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-07-22",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-07-23",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-07-24",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-07-25",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-07-26",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-07-27",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-07-28",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-07-29",
-        "count": 1,
-        "level": 1
-      },
-      {
-        "date": "2025-07-30",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-07-31",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-08-01",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-08-02",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-08-03",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-08-04",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-08-05",
-        "count": 5,
-        "level": 1
-      },
-      {
-        "date": "2025-08-06",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-08-07",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-08-08",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-08-09",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-08-10",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-08-11",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-08-12",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-08-13",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-08-14",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-08-15",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-08-16",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-08-17",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-08-18",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-08-19",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-08-20",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-08-21",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-08-22",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-08-23",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-08-24",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-08-25",
-        "count": 1,
-        "level": 1
-      },
-      {
-        "date": "2025-08-26",
-        "count": 6,
-        "level": 1
-      },
-      {
-        "date": "2025-08-27",
-        "count": 1,
-        "level": 1
-      },
-      {
-        "date": "2025-08-28",
-        "count": 2,
-        "level": 1
-      },
-      {
-        "date": "2025-08-29",
-        "count": 4,
-        "level": 1
-      },
-      {
-        "date": "2025-08-30",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-08-31",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-09-01",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-09-02",
-        "count": 4,
-        "level": 1
-      },
-      {
-        "date": "2025-09-03",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-09-04",
-        "count": 19,
-        "level": 3
-      },
-      {
-        "date": "2025-09-05",
-        "count": 9,
-        "level": 2
-      },
-      {
-        "date": "2025-09-06",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-09-07",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-09-08",
-        "count": 1,
-        "level": 1
-      },
-      {
-        "date": "2025-09-09",
-        "count": 4,
-        "level": 1
-      },
-      {
-        "date": "2025-09-10",
-        "count": 7,
-        "level": 1
-      },
-      {
-        "date": "2025-09-11",
-        "count": 7,
-        "level": 1
-      },
-      {
-        "date": "2025-09-12",
-        "count": 11,
-        "level": 2
-      },
-      {
-        "date": "2025-09-13",
-        "count": 2,
-        "level": 1
-      },
-      {
-        "date": "2025-09-14",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-09-15",
-        "count": 1,
-        "level": 1
-      },
-      {
-        "date": "2025-09-16",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-09-17",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-09-18",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-09-19",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-09-20",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-09-21",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-09-22",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-09-23",
-        "count": 8,
-        "level": 1
-      },
-      {
-        "date": "2025-09-24",
-        "count": 3,
-        "level": 1
-      },
-      {
-        "date": "2025-09-25",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-09-26",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-09-27",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-09-28",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-09-29",
-        "count": 2,
-        "level": 1
-      },
-      {
-        "date": "2025-09-30",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-10-01",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-10-02",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-10-03",
-        "count": 3,
-        "level": 1
-      },
-      {
-        "date": "2025-10-04",
-        "count": 2,
-        "level": 1
-      },
-      {
-        "date": "2025-10-05",
-        "count": 3,
-        "level": 1
-      },
-      {
-        "date": "2025-10-06",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-10-07",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-10-08",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-10-09",
-        "count": 1,
-        "level": 1
-      },
-      {
-        "date": "2025-10-10",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-10-11",
-        "count": 2,
-        "level": 1
-      },
-      {
-        "date": "2025-10-12",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-10-13",
-        "count": 5,
-        "level": 1
-      },
-      {
-        "date": "2025-10-14",
-        "count": 6,
-        "level": 1
-      },
-      {
-        "date": "2025-10-15",
-        "count": 1,
-        "level": 1
-      },
-      {
-        "date": "2025-10-16",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-10-17",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-10-18",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-10-19",
-        "count": 1,
-        "level": 1
-      },
-      {
-        "date": "2025-10-20",
-        "count": 5,
-        "level": 1
-      },
-      {
-        "date": "2025-10-21",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-10-22",
-        "count": 1,
-        "level": 1
-      },
-      {
-        "date": "2025-10-23",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-10-24",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-10-25",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-10-26",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-10-27",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-10-28",
-        "count": 4,
-        "level": 1
-      },
-      {
-        "date": "2025-10-29",
-        "count": 9,
-        "level": 2
-      },
-      {
-        "date": "2025-10-30",
-        "count": 1,
-        "level": 1
-      },
-      {
-        "date": "2025-10-31",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-11-01",
-        "count": 0,
-        "level": 0
-      },
       {
         "date": "2025-11-02",
         "count": 0,
@@ -701,7 +141,7 @@
       },
       {
         "date": "2025-11-19",
-        "count": 5,
+        "count": 3,
         "level": 1
       },
       {
@@ -711,8 +151,8 @@
       },
       {
         "date": "2025-11-21",
-        "count": 9,
-        "level": 2
+        "count": 8,
+        "level": 1
       },
       {
         "date": "2025-11-22",
@@ -862,7 +302,7 @@
       {
         "date": "2025-12-21",
         "count": 11,
-        "level": 2
+        "level": 1
       },
       {
         "date": "2025-12-22",
@@ -896,8 +336,8 @@
       },
       {
         "date": "2025-12-28",
-        "count": 1,
-        "level": 1
+        "count": 0,
+        "level": 0
       },
       {
         "date": "2025-12-29",
@@ -962,7 +402,7 @@
       {
         "date": "2026-01-10",
         "count": 9,
-        "level": 2
+        "level": 1
       },
       {
         "date": "2026-01-11",
@@ -972,7 +412,7 @@
       {
         "date": "2026-01-12",
         "count": 28,
-        "level": 4
+        "level": 3
       },
       {
         "date": "2026-01-13",
@@ -1017,7 +457,7 @@
       {
         "date": "2026-01-21",
         "count": 30,
-        "level": 4
+        "level": 3
       },
       {
         "date": "2026-01-22",
@@ -1037,7 +477,7 @@
       {
         "date": "2026-01-25",
         "count": 12,
-        "level": 2
+        "level": 1
       },
       {
         "date": "2026-01-26",
@@ -1047,7 +487,7 @@
       {
         "date": "2026-01-27",
         "count": 11,
-        "level": 2
+        "level": 1
       },
       {
         "date": "2026-01-28",
@@ -1071,7 +511,7 @@
       },
       {
         "date": "2026-02-01",
-        "count": 8,
+        "count": 4,
         "level": 1
       },
       {
@@ -1081,8 +521,8 @@
       },
       {
         "date": "2026-02-03",
-        "count": 2,
-        "level": 1
+        "count": 0,
+        "level": 0
       },
       {
         "date": "2026-02-04",
@@ -1157,7 +597,7 @@
       {
         "date": "2026-02-18",
         "count": 26,
-        "level": 4
+        "level": 3
       },
       {
         "date": "2026-02-19",
@@ -1182,7 +622,7 @@
       {
         "date": "2026-02-23",
         "count": 26,
-        "level": 4
+        "level": 3
       },
       {
         "date": "2026-02-24",
@@ -1232,7 +672,7 @@
       {
         "date": "2026-03-05",
         "count": 11,
-        "level": 2
+        "level": 1
       },
       {
         "date": "2026-03-06",
@@ -1282,7 +722,7 @@
       {
         "date": "2026-03-15",
         "count": 9,
-        "level": 2
+        "level": 1
       },
       {
         "date": "2026-03-16",
@@ -1332,12 +772,12 @@
       {
         "date": "2026-03-25",
         "count": 20,
-        "level": 3
+        "level": 2
       },
       {
         "date": "2026-03-26",
         "count": 17,
-        "level": 3
+        "level": 2
       },
       {
         "date": "2026-03-27",
@@ -1346,8 +786,8 @@
       },
       {
         "date": "2026-03-28",
-        "count": 0,
-        "level": 0
+        "count": 3,
+        "level": 1
       },
       {
         "date": "2026-03-29",
@@ -1377,7 +817,7 @@
       {
         "date": "2026-04-03",
         "count": 10,
-        "level": 2
+        "level": 1
       },
       {
         "date": "2026-04-04",
@@ -1387,7 +827,7 @@
       {
         "date": "2026-04-05",
         "count": 19,
-        "level": 3
+        "level": 2
       },
       {
         "date": "2026-04-06",
@@ -1396,7 +836,7 @@
       },
       {
         "date": "2026-04-07",
-        "count": 3,
+        "count": 5,
         "level": 1
       },
       {
@@ -1412,7 +852,7 @@
       {
         "date": "2026-04-10",
         "count": 20,
-        "level": 3
+        "level": 2
       },
       {
         "date": "2026-04-11",
@@ -1516,8 +956,8 @@
       },
       {
         "date": "2026-05-01",
-        "count": 20,
-        "level": 3
+        "count": 19,
+        "level": 2
       },
       {
         "date": "2026-05-02",
@@ -1552,7 +992,7 @@
       {
         "date": "2026-05-08",
         "count": 17,
-        "level": 3
+        "level": 2
       },
       {
         "date": "2026-05-09",
@@ -1592,12 +1032,12 @@
       {
         "date": "2026-05-16",
         "count": 17,
-        "level": 3
+        "level": 2
       },
       {
         "date": "2026-05-17",
         "count": 28,
-        "level": 4
+        "level": 3
       },
       {
         "date": "2026-05-18",
@@ -1607,7 +1047,7 @@
       {
         "date": "2026-05-19",
         "count": 17,
-        "level": 3
+        "level": 2
       },
       {
         "date": "2026-05-20",
@@ -1711,12 +1151,12 @@
       },
       {
         "date": "2026-06-09",
-        "count": 6,
+        "count": 12,
         "level": 1
       },
       {
         "date": "2026-06-10",
-        "count": 5,
+        "count": 6,
         "level": 1
       },
       {
@@ -1742,7 +1182,7 @@
       {
         "date": "2026-06-15",
         "count": 9,
-        "level": 2
+        "level": 1
       },
       {
         "date": "2026-06-16",
@@ -1761,8 +1201,8 @@
       },
       {
         "date": "2026-06-19",
-        "count": 16,
-        "level": 2
+        "count": 27,
+        "level": 3
       },
       {
         "date": "2026-06-20",
@@ -1777,7 +1217,7 @@
       {
         "date": "2026-06-22",
         "count": 23,
-        "level": 3
+        "level": 2
       },
       {
         "date": "2026-06-23",
@@ -1787,7 +1227,7 @@
       {
         "date": "2026-06-24",
         "count": 21,
-        "level": 3
+        "level": 2
       },
       {
         "date": "2026-06-25",
@@ -1797,7 +1237,7 @@
       {
         "date": "2026-06-26",
         "count": 33,
-        "level": 4
+        "level": 3
       },
       {
         "date": "2026-06-27",
@@ -1817,17 +1257,17 @@
       {
         "date": "2026-06-30",
         "count": 19,
-        "level": 3
+        "level": 2
       },
       {
         "date": "2026-07-01",
         "count": 32,
-        "level": 4
+        "level": 3
       },
       {
         "date": "2026-07-02",
         "count": 12,
-        "level": 2
+        "level": 1
       },
       {
         "date": "2026-07-03",
@@ -1842,12 +1282,12 @@
       {
         "date": "2026-07-05",
         "count": 22,
-        "level": 3
+        "level": 2
       },
       {
         "date": "2026-07-06",
         "count": 20,
-        "level": 3
+        "level": 2
       },
       {
         "date": "2026-07-07",
@@ -1856,8 +1296,8 @@
       },
       {
         "date": "2026-07-08",
-        "count": 9,
-        "level": 2
+        "count": 11,
+        "level": 1
       },
       {
         "date": "2026-07-09",
@@ -1871,11 +1311,596 @@
       },
       {
         "date": "2026-07-11",
+        "count": 31,
+        "level": 3
+      },
+      {
+        "date": "2026-07-12",
+        "count": 21,
+        "level": 2
+      },
+      {
+        "date": "2026-07-13",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2026-07-14",
+        "count": 7,
+        "level": 1
+      },
+      {
+        "date": "2026-07-15",
+        "count": 14,
+        "level": 2
+      },
+      {
+        "date": "2026-07-16",
+        "count": 22,
+        "level": 2
+      },
+      {
+        "date": "2026-07-17",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2026-07-18",
+        "count": 16,
+        "level": 2
+      },
+      {
+        "date": "2026-07-19",
+        "count": 20,
+        "level": 2
+      },
+      {
+        "date": "2026-07-20",
+        "count": 28,
+        "level": 3
+      },
+      {
+        "date": "2026-07-21",
+        "count": 7,
+        "level": 1
+      },
+      {
+        "date": "2026-07-22",
+        "count": 4,
+        "level": 1
+      },
+      {
+        "date": "2026-07-23",
+        "count": 4,
+        "level": 1
+      },
+      {
+        "date": "2026-07-24",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-07-25",
+        "count": 13,
+        "level": 2
+      },
+      {
+        "date": "2026-07-26",
+        "count": 15,
+        "level": 2
+      },
+      {
+        "date": "2026-07-27",
+        "count": 45,
+        "level": 4
+      },
+      {
+        "date": "2026-07-28",
+        "count": 2,
+        "level": 1
+      },
+      {
+        "date": "2026-07-29",
+        "count": 4,
+        "level": 1
+      },
+      {
+        "date": "2026-07-30",
+        "count": 4,
+        "level": 1
+      },
+      {
+        "date": "2026-07-31",
+        "count": 8,
+        "level": 1
+      },
+      {
+        "date": "2026-08-01",
+        "count": 12,
+        "level": 1
+      },
+      {
+        "date": "2026-08-02",
+        "count": 2,
+        "level": 1
+      },
+      {
+        "date": "2026-08-03",
         "count": 5,
         "level": 1
       },
       {
-        "date": "2026-07-12",
+        "date": "2026-08-04",
+        "count": 24,
+        "level": 2
+      },
+      {
+        "date": "2026-08-05",
+        "count": 12,
+        "level": 1
+      },
+      {
+        "date": "2026-08-06",
+        "count": 3,
+        "level": 1
+      },
+      {
+        "date": "2026-08-07",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-08-08",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-08-09",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-08-10",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2026-08-11",
+        "count": 4,
+        "level": 1
+      },
+      {
+        "date": "2026-08-12",
+        "count": 6,
+        "level": 1
+      },
+      {
+        "date": "2026-08-13",
+        "count": 58,
+        "level": 4
+      },
+      {
+        "date": "2026-08-14",
+        "count": 12,
+        "level": 1
+      },
+      {
+        "date": "2026-08-15",
+        "count": 6,
+        "level": 1
+      },
+      {
+        "date": "2026-08-16",
+        "count": 8,
+        "level": 1
+      },
+      {
+        "date": "2026-08-17",
+        "count": 27,
+        "level": 3
+      },
+      {
+        "date": "2026-08-18",
+        "count": 59,
+        "level": 4
+      },
+      {
+        "date": "2026-08-19",
+        "count": 32,
+        "level": 3
+      },
+      {
+        "date": "2026-08-20",
+        "count": 17,
+        "level": 2
+      },
+      {
+        "date": "2026-08-21",
+        "count": 18,
+        "level": 2
+      },
+      {
+        "date": "2026-08-22",
+        "count": 15,
+        "level": 2
+      },
+      {
+        "date": "2026-08-23",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2026-08-24",
+        "count": 26,
+        "level": 3
+      },
+      {
+        "date": "2026-08-25",
+        "count": 38,
+        "level": 4
+      },
+      {
+        "date": "2026-08-26",
+        "count": 28,
+        "level": 3
+      },
+      {
+        "date": "2026-08-27",
+        "count": 38,
+        "level": 4
+      },
+      {
+        "date": "2026-08-28",
+        "count": 3,
+        "level": 1
+      },
+      {
+        "date": "2026-08-29",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-08-30",
+        "count": 8,
+        "level": 1
+      },
+      {
+        "date": "2026-08-31",
+        "count": 50,
+        "level": 4
+      },
+      {
+        "date": "2026-09-01",
+        "count": 18,
+        "level": 2
+      },
+      {
+        "date": "2026-09-02",
+        "count": 19,
+        "level": 2
+      },
+      {
+        "date": "2026-09-03",
+        "count": 6,
+        "level": 1
+      },
+      {
+        "date": "2026-09-04",
+        "count": 6,
+        "level": 1
+      },
+      {
+        "date": "2026-09-05",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-09-06",
+        "count": 4,
+        "level": 1
+      },
+      {
+        "date": "2026-09-07",
+        "count": 11,
+        "level": 1
+      },
+      {
+        "date": "2026-09-08",
+        "count": 9,
+        "level": 1
+      },
+      {
+        "date": "2026-09-09",
+        "count": 12,
+        "level": 1
+      },
+      {
+        "date": "2026-09-10",
+        "count": 7,
+        "level": 1
+      },
+      {
+        "date": "2026-09-11",
+        "count": 27,
+        "level": 3
+      },
+      {
+        "date": "2026-09-12",
+        "count": 13,
+        "level": 2
+      },
+      {
+        "date": "2026-09-13",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2026-09-14",
+        "count": 48,
+        "level": 4
+      },
+      {
+        "date": "2026-09-15",
+        "count": 5,
+        "level": 1
+      },
+      {
+        "date": "2026-09-16",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-09-17",
+        "count": 2,
+        "level": 1
+      },
+      {
+        "date": "2026-09-18",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-09-19",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2026-09-20",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-09-21",
+        "count": 16,
+        "level": 2
+      },
+      {
+        "date": "2026-09-22",
+        "count": 4,
+        "level": 1
+      },
+      {
+        "date": "2026-09-23",
+        "count": 8,
+        "level": 1
+      },
+      {
+        "date": "2026-09-24",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2026-09-25",
+        "count": 4,
+        "level": 1
+      },
+      {
+        "date": "2026-09-26",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-09-27",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-09-28",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-09-29",
+        "count": 4,
+        "level": 1
+      },
+      {
+        "date": "2026-09-30",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-10-01",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-10-02",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-10-03",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-10-04",
+        "count": 14,
+        "level": 2
+      },
+      {
+        "date": "2026-10-05",
+        "count": 10,
+        "level": 1
+      },
+      {
+        "date": "2026-10-06",
+        "count": 6,
+        "level": 1
+      },
+      {
+        "date": "2026-10-07",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-10-08",
+        "count": 2,
+        "level": 1
+      },
+      {
+        "date": "2026-10-09",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-10-10",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-10-11",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-10-12",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-10-13",
+        "count": 2,
+        "level": 1
+      },
+      {
+        "date": "2026-10-14",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-10-15",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-10-16",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-10-17",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-10-18",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-10-19",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-10-20",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-10-21",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-10-22",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2026-10-23",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-10-24",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-10-25",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-10-26",
+        "count": 2,
+        "level": 1
+      },
+      {
+        "date": "2026-10-27",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-10-28",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-10-29",
+        "count": 25,
+        "level": 2
+      },
+      {
+        "date": "2026-10-30",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-10-31",
+        "count": 10,
+        "level": 1
+      },
+      {
+        "date": "2026-11-01",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2026-11-02",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-11-03",
+        "count": 2,
+        "level": 1
+      },
+      {
+        "date": "2026-11-04",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-11-05",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-11-06",
         "count": 1,
         "level": 1
       }
@@ -1883,6 +1908,83 @@
   },
   "recent": [
     {
+      "name": "MiniHTTPd",
+      "full_name": "daxrpm/MiniHTTPd",
+      "description": "Minimal low level HTTP server. No AI",
+      "url": "https://github.com/daxrpm/MiniHTTPd",
+      "homepage": null,
+      "language": "CMake",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-11-03T23:59:18Z"
+    },
+    {
+      "name": "epn-tracker",
+      "full_name": "daxrpm/epn-tracker",
+      "description": "A simple tracker for EPN courses",
+      "url": "https://github.com/daxrpm/epn-tracker",
+      "homepage": null,
+      "language": "Python",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-11-02T21:48:47Z"
+    },
+    {
+      "name": "superproductivity-mcp-offline",
+      "full_name": "daxrpm/superproductivity-mcp-offline",
+      "description": null,
+      "url": "https://github.com/daxrpm/superproductivity-mcp-offline",
+      "homepage": null,
+      "language": "TypeScript",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-08-24T23:22:27Z"
+    },
+    {
+      "name": "ai-optimizers-benchmark",
+      "full_name": "daxrpm/ai-optimizers-benchmark",
+      "description": null,
+      "url": "https://github.com/daxrpm/ai-optimizers-benchmark",
+      "homepage": null,
+      "language": "Python",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-08-06T13:49:38Z"
+    },
+    {
+      "name": "dax-assistant",
+      "full_name": "daxrpm/dax-assistant",
+      "description": null,
+      "url": "https://github.com/daxrpm/dax-assistant",
+      "homepage": null,
+      "language": "Python",
+      "topics": [],
+      "stars": 2,
+      "pushed_at": "2026-07-26T23:12:50Z"
+    },
+    {
+      "name": "linux-course",
+      "full_name": "daxrpm/linux-course",
+      "description": null,
+      "url": "https://github.com/daxrpm/linux-course",
+      "homepage": null,
+      "language": "TypeScript",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-07-16T22:37:30Z"
+    },
+    {
+      "name": "my-web",
+      "full_name": "daxrpm/my-web",
+      "description": "My personal web page",
+      "url": "https://github.com/daxrpm/my-web",
+      "homepage": "https://daxrpm.dev",
+      "language": "TypeScript",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-07-15T03:26:28Z"
+    },
+    {
       "name": "server-monitor",
       "full_name": "daxrpm/server-monitor",
       "description": null,
@@ -1903,28 +2005,6 @@
       "topics": [],
       "stars": 1,
       "pushed_at": "2026-07-06T22:15:49Z"
-    },
-    {
-      "name": "epn-tracker",
-      "full_name": "daxrpm/epn-tracker",
-      "description": "A simple tracker for EPN courses",
-      "url": "https://github.com/daxrpm/epn-tracker",
-      "homepage": null,
-      "language": "Python",
-      "topics": [],
-      "stars": 0,
-      "pushed_at": "2026-07-06T22:08:06Z"
-    },
-    {
-      "name": "dax-assistant",
-      "full_name": "daxrpm/dax-assistant",
-      "description": null,
-      "url": "https://github.com/daxrpm/dax-assistant",
-      "homepage": null,
-      "language": "Python",
-      "topics": [],
-      "stars": 0,
-      "pushed_at": "2026-07-01T01:06:09Z"
     },
     {
       "name": "dotfiles",
@@ -1953,7 +2033,7 @@
         "pam-module",
         "python"
       ],
-      "stars": 1,
+      "stars": 2,
       "pushed_at": "2026-06-09T20:54:44Z"
     },
     {
@@ -1966,69 +2046,87 @@
       "topics": [],
       "stars": 0,
       "pushed_at": "2026-05-02T02:03:44Z"
-    },
-    {
-      "name": "dax-sync",
-      "full_name": "daxrpm/dax-sync",
-      "description": null,
-      "url": "https://github.com/daxrpm/dax-sync",
-      "homepage": null,
-      "language": null,
-      "topics": [],
-      "stars": 0,
-      "pushed_at": "2026-05-01T01:06:24Z"
-    },
-    {
-      "name": "fedora-dotfiles",
-      "full_name": "daxrpm/fedora-dotfiles",
-      "description": null,
-      "url": "https://github.com/daxrpm/fedora-dotfiles",
-      "homepage": null,
-      "language": "JavaScript",
-      "topics": [],
-      "stars": 0,
-      "pushed_at": "2026-04-11T16:13:04Z"
-    },
-    {
-      "name": "drone-detector",
-      "full_name": "daxrpm/drone-detector",
-      "description": "A simple computer vision–based drone detection system that sends notifications via WhatsApp.",
-      "url": "https://github.com/daxrpm/drone-detector",
-      "homepage": null,
-      "language": "Python",
-      "topics": [],
-      "stars": 0,
-      "pushed_at": "2026-04-03T19:08:46Z"
-    },
-    {
-      "name": "ai-optimizers-benchmark",
-      "full_name": "daxrpm/ai-optimizers-benchmark",
-      "description": null,
-      "url": "https://github.com/daxrpm/ai-optimizers-benchmark",
-      "homepage": null,
-      "language": "Python",
-      "topics": [],
-      "stars": 0,
-      "pushed_at": "2026-02-28T03:17:30Z"
-    },
-    {
-      "name": "apogee",
-      "full_name": "daxrpm/apogee",
-      "description": "A rocket launch ascent simulator for circular Low Earth Orbit insertion with numerical methods",
-      "url": "https://github.com/daxrpm/apogee",
-      "homepage": "https://apogee.daxrpm.dev",
-      "language": "TypeScript",
-      "topics": [
-        "physics",
-        "physics-simulation",
-        "python"
-      ],
-      "stars": 2,
-      "pushed_at": "2026-02-03T19:34:34Z"
     }
   ],
   "all": [
     {
+      "name": "MiniHTTPd",
+      "full_name": "daxrpm/MiniHTTPd",
+      "description": "Minimal low level HTTP server. No AI",
+      "url": "https://github.com/daxrpm/MiniHTTPd",
+      "homepage": null,
+      "language": "CMake",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-11-03T23:59:18Z"
+    },
+    {
+      "name": "epn-tracker",
+      "full_name": "daxrpm/epn-tracker",
+      "description": "A simple tracker for EPN courses",
+      "url": "https://github.com/daxrpm/epn-tracker",
+      "homepage": null,
+      "language": "Python",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-11-02T21:48:47Z"
+    },
+    {
+      "name": "superproductivity-mcp-offline",
+      "full_name": "daxrpm/superproductivity-mcp-offline",
+      "description": null,
+      "url": "https://github.com/daxrpm/superproductivity-mcp-offline",
+      "homepage": null,
+      "language": "TypeScript",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-08-24T23:22:27Z"
+    },
+    {
+      "name": "ai-optimizers-benchmark",
+      "full_name": "daxrpm/ai-optimizers-benchmark",
+      "description": null,
+      "url": "https://github.com/daxrpm/ai-optimizers-benchmark",
+      "homepage": null,
+      "language": "Python",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-08-06T13:49:38Z"
+    },
+    {
+      "name": "dax-assistant",
+      "full_name": "daxrpm/dax-assistant",
+      "description": null,
+      "url": "https://github.com/daxrpm/dax-assistant",
+      "homepage": null,
+      "language": "Python",
+      "topics": [],
+      "stars": 2,
+      "pushed_at": "2026-07-26T23:12:50Z"
+    },
+    {
+      "name": "linux-course",
+      "full_name": "daxrpm/linux-course",
+      "description": null,
+      "url": "https://github.com/daxrpm/linux-course",
+      "homepage": null,
+      "language": "TypeScript",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-07-16T22:37:30Z"
+    },
+    {
+      "name": "my-web",
+      "full_name": "daxrpm/my-web",
+      "description": "My personal web page",
+      "url": "https://github.com/daxrpm/my-web",
+      "homepage": "https://daxrpm.dev",
+      "language": "TypeScript",
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-07-15T03:26:28Z"
+    },
+    {
       "name": "server-monitor",
       "full_name": "daxrpm/server-monitor",
       "description": null,
@@ -2049,28 +2147,6 @@
       "topics": [],
       "stars": 1,
       "pushed_at": "2026-07-06T22:15:49Z"
-    },
-    {
-      "name": "epn-tracker",
-      "full_name": "daxrpm/epn-tracker",
-      "description": "A simple tracker for EPN courses",
-      "url": "https://github.com/daxrpm/epn-tracker",
-      "homepage": null,
-      "language": "Python",
-      "topics": [],
-      "stars": 0,
-      "pushed_at": "2026-07-06T22:08:06Z"
-    },
-    {
-      "name": "dax-assistant",
-      "full_name": "daxrpm/dax-assistant",
-      "description": null,
-      "url": "https://github.com/daxrpm/dax-assistant",
-      "homepage": null,
-      "language": "Python",
-      "topics": [],
-      "stars": 0,
-      "pushed_at": "2026-07-01T01:06:09Z"
     },
     {
       "name": "dotfiles",
@@ -2099,7 +2175,7 @@
         "pam-module",
         "python"
       ],
-      "stars": 1,
+      "stars": 2,
       "pushed_at": "2026-06-09T20:54:44Z"
     },
     {
@@ -2112,17 +2188,6 @@
       "topics": [],
       "stars": 0,
       "pushed_at": "2026-05-02T02:03:44Z"
-    },
-    {
-      "name": "dax-sync",
-      "full_name": "daxrpm/dax-sync",
-      "description": null,
-      "url": "https://github.com/daxrpm/dax-sync",
-      "homepage": null,
-      "language": null,
-      "topics": [],
-      "stars": 0,
-      "pushed_at": "2026-05-01T01:06:24Z"
     },
     {
       "name": "fedora-dotfiles",
@@ -2145,17 +2210,6 @@
       "topics": [],
       "stars": 0,
       "pushed_at": "2026-04-03T19:08:46Z"
-    },
-    {
-      "name": "ai-optimizers-benchmark",
-      "full_name": "daxrpm/ai-optimizers-benchmark",
-      "description": null,
-      "url": "https://github.com/daxrpm/ai-optimizers-benchmark",
-      "homepage": null,
-      "language": "Python",
-      "topics": [],
-      "stars": 0,
-      "pushed_at": "2026-02-28T03:17:30Z"
     },
     {
       "name": "MN-examen-02",
@@ -2180,7 +2234,7 @@
         "physics-simulation",
         "python"
       ],
-      "stars": 2,
+      "stars": 1,
       "pushed_at": "2026-02-03T19:34:34Z"
     },
     {
@@ -2305,6 +2359,17 @@
       "pushed_at": "2025-11-25T18:52:28Z"
     },
     {
+      "name": "Proyecto_EDAII",
+      "full_name": "daxrpm/Proyecto_EDAII",
+      "description": null,
+      "url": "https://github.com/daxrpm/Proyecto_EDAII",
+      "homepage": null,
+      "language": "Python",
+      "topics": [],
+      "stars": 1,
+      "pushed_at": "2025-11-21T21:00:32Z"
+    },
+    {
       "name": "linux-dotfiles",
       "full_name": "daxrpm/linux-dotfiles",
       "description": "My personal linux dotfiles and scripts ",
@@ -2327,17 +2392,6 @@
       ],
       "stars": 0,
       "pushed_at": "2025-11-14T23:13:55Z"
-    },
-    {
-      "name": "my-web",
-      "full_name": "daxrpm/my-web",
-      "description": "My personal web page",
-      "url": "https://github.com/daxrpm/my-web",
-      "homepage": null,
-      "language": "TypeScript",
-      "topics": [],
-      "stars": 0,
-      "pushed_at": "2025-11-14T15:36:10Z"
     },
     {
       "name": "PDFeditor-api",
@@ -2515,7 +2569,7 @@
       "homepage": null,
       "language": "Python",
       "topics": [],
-      "stars": 1,
+      "stars": 0,
       "pushed_at": "2025-03-31T02:32:13Z"
     },
     {
@@ -2807,6 +2861,17 @@
   ],
   "cms": [
     {
+      "name": "search-for-dark-matter-docs",
+      "full_name": "CMS-EPN/search-for-dark-matter-docs",
+      "description": "Graphs generation of Search for dark matter produced in association with a single top quark or a top quark pair in proton-proton collisions at √s = 13 TeV",
+      "url": "https://github.com/CMS-EPN/search-for-dark-matter-docs",
+      "homepage": null,
+      "language": null,
+      "topics": [],
+      "stars": 0,
+      "pushed_at": "2026-09-29T17:28:27Z"
+    },
+    {
       "name": "minipart-topology-vs-flavor-autonomous",
       "full_name": "CMS-EPN/minipart-topology-vs-flavor-autonomous",
       "description": null,
@@ -2827,17 +2892,6 @@
       "topics": [],
       "stars": 0,
       "pushed_at": "2026-07-06T02:22:24Z"
-    },
-    {
-      "name": "search-for-dark-matter-docs",
-      "full_name": "CMS-EPN/search-for-dark-matter-docs",
-      "description": "Graphs generation of Search for dark matter produced in association with a single top quark or a top quark pair in proton-proton collisions at √s = 13 TeV",
-      "url": "https://github.com/CMS-EPN/search-for-dark-matter-docs",
-      "homepage": null,
-      "language": null,
-      "topics": [],
-      "stars": 0,
-      "pushed_at": "2026-04-07T12:48:16Z"
     },
     {
       "name": "workshop-webpage",
