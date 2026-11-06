@@ -65,14 +65,19 @@ const personSchema = {
   sameAs: seo.sameAs,
 };
 
-/** The paper is a citable thing in its own right; schema.org can say so before a DOI exists. */
+/** Each paper is a citable thing in its own right; schema.org can say so before a DOI exists. */
 const scholarlySchema = research.map((r) => ({
   '@context': 'https://schema.org',
   '@type': 'ScholarlyArticle',
   headline: r.title,
   author: { '@id': `${site.url}/#person` },
   creativeWorkStatus: t(r.status, lang),
-  publisher: { '@type': 'CollegeOrUniversity', name: 'Escuela Politécnica Nacional' },
+  publisher: { '@type': 'Organization', name: r.publisher },
+  ...(r.url && { url: r.url }),
+  ...(r.doi && {
+    identifier: { '@type': 'PropertyValue', propertyID: 'DOI', value: r.doi },
+    sameAs: `https://doi.org/${r.doi}`,
+  }),
 }));
 
 /**

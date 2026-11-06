@@ -74,7 +74,8 @@ const build = () => {
     '## Research',
     '',
     ...research.map(
-      (r) => `- **${r.title}**. ${r.authors}. ${r.venue}. ${r.status.en}. ${r.summary.en} ${r.contribution.en}`,
+      (r) =>
+        `- **${r.title}**. ${r.authors}. ${r.venue}. ${r.status.en}.${r.doi ? ` https://doi.org/${r.doi}` : ''} ${r.summary.en} ${r.contribution.en}`,
     ),
     '',
     '## Education',

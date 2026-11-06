@@ -565,22 +565,34 @@ export const affiliation = {
   ],
 };
 
+export type Paper = {
+  title: string;
+  authors: string;
+  venue: string;
+  publisher: string;
+  status: L;
+  /** Set once a DOI or proceedings page exists; the title then links to it. */
+  url?: string;
+  doi?: string;
+  summary: L;
+  contribution: L;
+};
+
 /**
- * Stated exactly as it stands: presented, not yet published. "Co-authored a paper" would
- * undersell the contribution and could not be checked; this can. Add `url` the day a DOI,
- * preprint or proceedings link exists.
+ * Each stated exactly as it stands — published with its DOI, or accepted and not yet out.
+ * "Co-authored a paper" would undersell the contribution and could not be checked; this can.
  */
-export const research = [
+export const research: Paper[] = [
   {
     title:
       'Toward Computationally Efficient AI: A Comparative Study of Optimization Paradigms in DNN Training',
     authors:
       'D. Navarrete, A. Flores-Reyes, A. E. Camino, G. Suntaxi, L. Recalde, D. Martinez-Mosquera',
-    venue: 'Escuela Politécnica Nacional, Quito',
-    status: {
-      en: 'Presented at conference · publication pending',
-      es: 'Presentado en conferencia · pendiente de publicación',
-    } as L,
+    venue: 'ICEDEG 2026 · Lisbon, Portugal · pp. 179–187',
+    publisher: 'IEEE',
+    status: { en: 'Published · IEEE Xplore', es: 'Publicado · IEEE Xplore' } as L,
+    url: 'https://ieeexplore.ieee.org/document/11695520',
+    doi: '10.1109/ICEDEG70169.2026.11695520',
     summary: {
       en: 'A comparative study of optimization paradigms for training deep neural networks — first-order against second-order and adaptive methods — asking not which one converges best, but what each one actually costs in compute to get there.',
       es: 'Un estudio comparativo de paradigmas de optimización para entrenar redes neuronales profundas — primer orden frente a segundo orden y métodos adaptativos — que no pregunta cuál converge mejor, sino cuánto cómputo cuesta realmente llegar ahí con cada uno.',
@@ -588,6 +600,25 @@ export const research = [
     contribution: {
       en: 'First author. I designed the experimental methodology and ran the entire evaluation end to end: the training and benchmarking pipelines, every run and measurement, the figures, and the analysis the conclusions rest on.',
       es: 'Primer autor. Diseñé la metodología experimental y ejecuté toda la evaluación de principio a fin: los pipelines de entrenamiento y benchmarking, cada corrida y cada medición, las figuras, y el análisis sobre el que se apoyan las conclusiones.',
+    } as L,
+  },
+  {
+    title: 'The Carbon Footprint of Optimizers in Deep Neural Networks: A Green AI Benchmark',
+    // TODO(dax): replace with the full author list and order.
+    authors: 'D. Navarrete et al.',
+    venue: 'SIMBig 2026 · Springer CCIS',
+    publisher: 'Springer',
+    status: {
+      en: 'Accepted · oral presentation · proceedings forthcoming',
+      es: 'Aceptado · presentación oral · actas por publicarse',
+    } as L,
+    summary: {
+      en: 'A Green AI benchmark that measures what training a deep neural network costs the planet, optimizer by optimizer — energy drawn and carbon emitted, not only accuracy reached.',
+      es: 'Un benchmark de Green AI que mide cuánto le cuesta al planeta entrenar una red neuronal profunda, optimizador por optimizador — energía consumida y carbono emitido, no solo la precisión alcanzada.',
+    } as L,
+    contribution: {
+      en: 'Corresponding author. The follow-up to the ICEDEG study: the same question of cost, asked in carbon instead of compute.',
+      es: 'Autor de correspondencia. La continuación del estudio de ICEDEG: la misma pregunta por el costo, hecha en carbono en vez de cómputo.',
     } as L,
   },
 ];
@@ -631,12 +662,12 @@ export const experience = [
       en: [
         'Researched optimization methods for deep neural networks, including second-order optimizers.',
         'Designed and implemented the Python pipelines for training, evaluation and benchmarking.',
-        'First author of a comparative study on optimization paradigms in DNN training (presented; publication pending).',
+        'First author of a comparative study on optimization paradigms in DNN training (IEEE ICEDEG 2026); author of a Green AI benchmark on the carbon footprint of optimizers (accepted at SIMBig 2026).',
       ],
       es: [
         'Investigué métodos de optimización para redes neuronales profundas, incluidos optimizadores de segundo orden.',
         'Diseñé e implementé los pipelines en Python para entrenamiento, evaluación y benchmarking.',
-        'Primer autor de un estudio comparativo sobre paradigmas de optimización en el entrenamiento de DNNs (presentado; pendiente de publicación).',
+        'Primer autor de un estudio comparativo sobre paradigmas de optimización en el entrenamiento de DNNs (IEEE ICEDEG 2026); autor de un benchmark de Green AI sobre la huella de carbono de los optimizadores (aceptado en SIMBig 2026).',
       ],
     } as L<string[]>,
   },
