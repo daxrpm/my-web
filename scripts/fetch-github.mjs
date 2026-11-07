@@ -13,7 +13,7 @@ import { fileURLToPath } from 'node:url';
 
 const USER = 'daxrpm';
 const ORG = 'CMS-EPN';
-const TOKEN = process.env.GITHUB_TOKEN;
+let TOKEN = process.env.GITHUB_TOKEN;
 const OUT = resolve(dirname(fileURLToPath(import.meta.url)), '../src/data/github.json');
 
 const headers = {
@@ -24,6 +24,15 @@ const headers = {
 
 async function gh(path) {
   const res = await fetch(`https://api.github.com${path}`, { headers });
+  // An expired or revoked token gets a 401 where no token at all would get a 200. Treat it
+  // like a missing token — public data, proxy calendar — so a stale secret cannot take the
+  // deploy down. Loud, so the secret still gets rotated.
+  if (res.status === 401 && TOKEN) {
+    console.warn('[github] GITHUB_TOKEN was rejected (401) — continuing without it. Rotate the secret.');
+    TOKEN = undefined;
+    delete headers.Authorization;
+    return gh(path);
+  }
   if (!res.ok) throw new Error(`GET ${path} -> ${res.status} ${res.statusText}`);
   return res.json();
 }
