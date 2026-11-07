@@ -604,8 +604,8 @@ export const research: Paper[] = [
   },
   {
     title: 'The Carbon Footprint of Optimizers in Deep Neural Networks: A Green AI Benchmark',
-    // TODO(dax): replace with the full author list and order.
-    authors: 'D. Navarrete et al.',
+    authors:
+      'A. E. Camino, D. Navarrete, A. Flores-Reyes, D. Cabrera, G. Suntaxi, L. Recalde, D. Martinez-Mosquera',
     venue: 'SIMBig 2026 · Springer CCIS',
     publisher: 'Springer',
     status: {
@@ -613,12 +613,12 @@ export const research: Paper[] = [
       es: 'Aceptado · presentación oral · actas por publicarse',
     } as L,
     summary: {
-      en: 'A Green AI benchmark that measures what training a deep neural network costs the planet, optimizer by optimizer — energy drawn and carbon emitted, not only accuracy reached.',
-      es: 'Un benchmark de Green AI que mide cuánto le cuesta al planeta entrenar una red neuronal profunda, optimizador por optimizador — energía consumida y carbono emitido, no solo la precisión alcanzada.',
+      en: 'A Green AI benchmark of five optimizers — SGD, Adam, AdamW, AdaMuon and K-FAC — across six workloads, measured with direct GPU (NVML) and CPU (RAPL) energy telemetry. K-FAC converged fastest, but at twice the energy and five times the peak memory; and where the training runs mattered more than which optimizer it used — the grid’s carbon intensity moved emissions by up to 7.9×.',
+      es: 'Un benchmark de Green AI de cinco optimizadores — SGD, Adam, AdamW, AdaMuon y K-FAC — sobre seis cargas de trabajo, medido con telemetría directa de energía de GPU (NVML) y CPU (RAPL). K-FAC convergió más rápido, pero al doble de energía y con cinco veces la memoria pico; y dónde se entrena pesó más que con qué optimizador — la intensidad de carbono de la red eléctrica movió las emisiones hasta 7,9×.',
     } as L,
     contribution: {
-      en: 'Corresponding author. The follow-up to the ICEDEG study: the same question of cost, asked in carbon instead of compute.',
-      es: 'Autor de correspondencia. La continuación del estudio de ICEDEG: la misma pregunta por el costo, hecha en carbono en vez de cómputo.',
+      en: 'Second author. The same team and the same question as the ICEDEG study — what an optimizer really costs — now asked in energy and carbon instead of compute.',
+      es: 'Segundo autor. El mismo equipo y la misma pregunta que el estudio de ICEDEG — cuánto cuesta realmente un optimizador — ahora hecha en energía y carbono en vez de cómputo.',
     } as L,
   },
 ];
@@ -662,12 +662,12 @@ export const experience = [
       en: [
         'Researched optimization methods for deep neural networks, including second-order optimizers.',
         'Designed and implemented the Python pipelines for training, evaluation and benchmarking.',
-        'First author of a comparative study on optimization paradigms in DNN training (IEEE ICEDEG 2026); author of a Green AI benchmark on the carbon footprint of optimizers (accepted at SIMBig 2026).',
+        'First author of a comparative study on optimization paradigms in DNN training (IEEE ICEDEG 2026); second author of a Green AI benchmark on the carbon footprint of optimizers (accepted at SIMBig 2026).',
       ],
       es: [
         'Investigué métodos de optimización para redes neuronales profundas, incluidos optimizadores de segundo orden.',
         'Diseñé e implementé los pipelines en Python para entrenamiento, evaluación y benchmarking.',
-        'Primer autor de un estudio comparativo sobre paradigmas de optimización en el entrenamiento de DNNs (IEEE ICEDEG 2026); autor de un benchmark de Green AI sobre la huella de carbono de los optimizadores (aceptado en SIMBig 2026).',
+        'Primer autor de un estudio comparativo sobre paradigmas de optimización en el entrenamiento de DNNs (IEEE ICEDEG 2026); segundo autor de un benchmark de Green AI sobre la huella de carbono de los optimizadores (aceptado en SIMBig 2026).',
       ],
     } as L<string[]>,
   },
